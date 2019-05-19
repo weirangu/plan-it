@@ -1,19 +1,11 @@
-from rest_framework import generics
+from rest_framework import viewsets
 from .models import Course
 from .serializers import CourseSerializer
 
 
-class CourseList(generics.ListAPIView):
+class CourseViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    Returns data for all courses.
-    """
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
-
-
-class CourseInstance(generics.RetrieveAPIView):
-    """
-    Returns data for a single course.
+    A simple viewset for courses.
     """
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
