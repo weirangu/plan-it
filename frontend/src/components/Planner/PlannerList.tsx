@@ -3,12 +3,13 @@ import { Droppable } from 'react-beautiful-dnd'
 import PlannerItem, { PlannerItemData } from 'components/Planner/PlannerItem'
 
 export interface PlannerListProps {
+    id: string
     items: PlannerItemData[]
 }
 
 const PlannerList: React.FC<PlannerListProps> = (props: PlannerListProps) => {
     return (
-        <Droppable droppableId="droppable" key="droppable">
+        <Droppable droppableId={props.id} key={props.id}>
             {(provided: any) => (
                 <div
                     className="name"
