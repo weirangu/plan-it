@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Course
+from .models import Course, Plan, Term, PlannedCourse
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -7,5 +7,20 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = '__all__'  # Allows all fields to be serialized
 
-    def create(self, data):
-        return Course.objects.create(**data)
+
+class PlanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Plan
+        fields = '__all__'
+
+
+class TermSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Term
+        fields = '__all__'
+
+
+class PlannedCourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PlannedCourse
+        fields = '__all__'
