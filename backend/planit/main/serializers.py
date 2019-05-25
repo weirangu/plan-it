@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Course, Plan, Term, PlannedCourse
+from .models.course_models import Course
+from .models.plan_models import Plan, Term, PlannedCourse
 
 
 class CourseSerializer(serializers.ModelSerializer):
