@@ -9,19 +9,24 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = '__all__'  # Allows all fields to be serialized
 
 
-class PlanSerializer(serializers.ModelSerializer):
+class PlannedCourseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Plan
+        model = PlannedCourse
         fields = '__all__'
 
 
 class TermSerializer(serializers.ModelSerializer):
+    courses = PlannedCourseSerializer(many=True, read_only=True)
+
     class Meta:
         model = Term
         fields = '__all__'
 
 
-class PlannedCourseSerializer(serializers.ModelSerializer):
+class PlanSerializer(serializers.ModelSerializer):
+    terms = TermSerializer(many=True, read_only=True)
+
     class Meta:
-        model = PlannedCourse
+        model = Plan
         fields = '__all__'
+
