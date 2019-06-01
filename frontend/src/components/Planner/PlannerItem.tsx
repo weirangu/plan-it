@@ -1,25 +1,26 @@
 import React from 'react'
 import { Draggable } from 'react-beautiful-dnd'
+import { Course } from 'reducers/state-types'
 
-export interface PlannerItemData {
-    id: string
-    name: string
-}
-
-export interface PlannerItemProps extends PlannerItemData {
+/** The props used for PlannerItem. */
+export interface PlannerItemProps {
+    course: Course
     index: number
 }
 
 const PlannerItem: React.FC<PlannerItemProps> = (props: PlannerItemProps) => {
     return (
-        <Draggable key={props.id} draggableId={props.id} index={props.index}>
+        <Draggable
+            key={props.course.code}
+            draggableId={props.course.code}
+            index={props.index}>
             {(provided: any) => (
                 <div
                     className="a class"
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}>
-                    {props.name}
+                    {props.course.code}
                 </div>
             )}
         </Draggable>
