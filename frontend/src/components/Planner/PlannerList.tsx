@@ -1,16 +1,17 @@
 import React from 'react'
-import {Dispatch} from 'redux'
+import { Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import { Droppable } from 'react-beautiful-dnd'
 import { Course } from 'reducers/state-types'
 import PlannerItem from 'components/Planner/PlannerItem'
-import { addCourse } from 'actions/course-actions'
+import { addCourse, deleteCourse } from 'actions/course-actions'
 
 /** The props for PlannerList. */
 export interface PlannerListProps {
     id: string
     items: Course[]
     add: (term: string) => any
+    del: (index: number, term: string) => any
 }
 
 function mapDispatchToProps (dispatch: Dispatch) {
@@ -25,11 +26,20 @@ function mapDispatchToProps (dispatch: Dispatch) {
                     },
                     termID: term
                 })
+            ),
+        del: (index: number, term: string) =>
+            dispatch(
+                deleteCourse({
+                    index: index,
+                    termID: term
+                })
             )
     }
 }
 
-const ConnectedPlannerList: React.FC<any> = (props: any) => (
+const ConnectedPlannerList: React.FC<PlannerListProps> = (
+    props: PlannerListProps
+) => (
     <Droppable droppableId={props.id} key={props.id}>
         {(provided: any) => (
             <div
@@ -37,7 +47,12 @@ const ConnectedPlannerList: React.FC<any> = (props: any) => (
                 ref={provided.innerRef}
                 {...provided.droppableProps}>
                 {props.items.map((item: Course, index: number) => (
-                    <PlannerItem course={item} index={index} />
+                    <PlannerItem
+                        course={item}
+                        index={index}
+                        key={item.code}
+                        delete={() => props.del(index, props.id)}
+                    />
                 ))}
                 {provided.placeholder}
                 <button onClick={() => props.add(props.id)}>Add Course</button>

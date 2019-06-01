@@ -29,7 +29,7 @@ function onDragEnd (result: DropResult): void {
 const ConnectedPlanner: React.FC<Plan> = (props: Plan) => (
     <DragDropContext onDragEnd={onDragEnd}>
         {Object.entries(props.terms).map((val: [string, Course[]]) => (
-            <PlannerList items={val[1]} id={val[0]} />
+            <PlannerList items={val[1]} id={val[0]} key={val[0]} />
         ))}
     </DragDropContext>
 )

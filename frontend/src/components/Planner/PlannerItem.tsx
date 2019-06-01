@@ -6,9 +6,12 @@ import { Course } from 'reducers/state-types'
 export interface PlannerItemProps {
     course: Course
     index: number
+    delete: () => any // The function that deletes this PlannerItem
 }
 
-const PlannerItem: React.FC<PlannerItemProps> = (props: PlannerItemProps) => {
+const PlannerItem: React.FC<PlannerItemProps> = (
+    props: PlannerItemProps
+) => {
     return (
         <Draggable
             key={props.course.code}
@@ -21,6 +24,7 @@ const PlannerItem: React.FC<PlannerItemProps> = (props: PlannerItemProps) => {
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}>
                     {props.course.code}
+                    <button onClick={props.delete}>X</button>
                 </div>
             )}
         </Draggable>
