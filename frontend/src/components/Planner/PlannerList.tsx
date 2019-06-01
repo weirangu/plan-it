@@ -10,8 +10,9 @@ import { addCourse, deleteCourse } from 'actions/course-actions'
 export interface PlannerListProps {
     id: string
     items: Course[]
-    add: (term: string) => any
-    del: (index: number, term: string) => any
+    delList: () => any // Deletes this PlannerList
+    add: (term: string) => any // Provided by mapDispatchToProps
+    delItem: (index: number, term: string) => any // Provided by mapDispathToProps
 }
 
 function mapDispatchToProps (dispatch: Dispatch) {
@@ -27,7 +28,7 @@ function mapDispatchToProps (dispatch: Dispatch) {
                     termID: term
                 })
             ),
-        del: (index: number, term: string) =>
+        delItem: (index: number, term: string) =>
             dispatch(
                 deleteCourse({
                     index: index,
@@ -51,11 +52,12 @@ const ConnectedPlannerList: React.FC<PlannerListProps> = (
                         course={item}
                         index={index}
                         key={item.code}
-                        delete={() => props.del(index, props.id)}
+                        delete={() => props.delItem(index, props.id)}
                     />
                 ))}
                 {provided.placeholder}
                 <button onClick={() => props.add(props.id)}>Add Course</button>
+                <button onClick={props.delList}>Delete Term</button>
             </div>
         )}
     </Droppable>
