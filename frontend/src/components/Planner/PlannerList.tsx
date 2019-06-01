@@ -1,15 +1,35 @@
 import React from 'react'
+import {Dispatch} from 'redux'
+import { connect } from 'react-redux'
 import { Droppable } from 'react-beautiful-dnd'
 import { Course } from 'reducers/state-types'
 import PlannerItem from 'components/Planner/PlannerItem'
+import { addCourse } from 'actions/course-actions'
 
 /** The props for PlannerList. */
 export interface PlannerListProps {
     id: string
     items: Course[]
+    add: (term: string) => any
 }
 
-const PlannerList: React.FC<PlannerListProps> = (props: PlannerListProps) => (
+function mapDispatchToProps (dispatch: Dispatch) {
+    return {
+        add: (term: string) =>
+            dispatch(
+                addCourse({
+                    course: {
+                        code: Math.random()
+                            .toString(36)
+                            .substring(6)
+                    },
+                    termID: term
+                })
+            )
+    }
+}
+
+const ConnectedPlannerList: React.FC<any> = (props: any) => (
     <Droppable droppableId={props.id} key={props.id}>
         {(provided: any) => (
             <div
@@ -20,9 +40,15 @@ const PlannerList: React.FC<PlannerListProps> = (props: PlannerListProps) => (
                     <PlannerItem course={item} index={index} />
                 ))}
                 {provided.placeholder}
+                <button onClick={() => props.add(props.id)}>Add Course</button>
             </div>
         )}
     </Droppable>
 )
+
+export const PlannerList = connect(
+    null,
+    mapDispatchToProps
+)(ConnectedPlannerList)
 
 export default PlannerList
