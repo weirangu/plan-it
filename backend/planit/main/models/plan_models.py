@@ -11,7 +11,7 @@ class Term(models.Model):
     # The plan this term belongs to
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE,
                              related_name="terms")
-    term = models.CharField(max_length=5)
+    name = models.CharField(max_length=5)
 
     class Meta:
         constraints = [
