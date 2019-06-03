@@ -41,23 +41,27 @@ function mapDispatchToProps (dispatch: Dispatch) {
 const ConnectedPlannerList: React.FC<PlannerListProps> = (
     props: PlannerListProps
 ) => (
-    <Droppable droppableId={props.id} key={props.id}>
+    <Droppable droppableId={props.id} key={props.id} direction="horizontal">
         {(provided: any) => (
-            <div
-                className="name"
-                ref={provided.innerRef}
-                {...provided.droppableProps}>
-                {props.items.map((item: Course, index: number) => (
-                    <PlannerItem
-                        course={item}
-                        index={index}
-                        key={item.code}
-                        delete={() => props.delItem(index, props.id)}
-                    />
-                ))}
-                {provided.placeholder}
-                <button onClick={() => props.add(props.id)}>Add Course</button>
-                <button onClick={props.delList}>Delete Term</button>
+            <div>
+                <div
+                    className="name container"
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}>
+                    {props.items.map((item: Course, index: number) => (
+                        <PlannerItem
+                            course={item}
+                            index={index}
+                            key={item.code}
+                            delete={() => props.delItem(index, props.id)}
+                        />
+                    ))}
+                    {provided.placeholder}
+                </div>
+                <div>
+                    <button onClick={() => props.add(props.id)}>Add Course</button>
+                    <button onClick={props.delList}>Delete Term</button>
+                </div>
             </div>
         )}
     </Droppable>

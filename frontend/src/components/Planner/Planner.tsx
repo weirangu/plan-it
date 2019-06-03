@@ -7,6 +7,7 @@ import { moveCourse } from 'actions/course-actions'
 import { addTerm, deleteTerm } from 'actions/term-actions'
 import { Plan, Course } from 'reducers/state-types'
 import PlannerList from 'components/Planner/PlannerList'
+import './planner.css'
 
 export interface PlannerProps {
     plan: Plan
