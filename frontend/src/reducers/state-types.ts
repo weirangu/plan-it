@@ -18,4 +18,8 @@ export type Terms = { [id: string]: Course[] }
 export interface Plan {
     name: string
     terms: Terms
+
+    // The id of this plan as stored on the backend, if undefined it means that
+    // we're waiting on the server for an id
+    id?: string
 }

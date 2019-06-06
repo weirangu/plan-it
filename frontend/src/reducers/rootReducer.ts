@@ -1,12 +1,31 @@
 import { Action, ActionType } from 'actions/action-types'
 import { Plan, Terms, Course } from 'reducers/state-types'
+import Axios from 'axios'
 
 const initialState: Plan = {
     name: 'Default Plan',
     terms: {
         20199: [{ code: 'csc108' }, { code: 'csc148' }, { code: 'csc207' }],
         20201: [{ code: 'csc209' }, { code: 'csc369' }, { code: 'csc469' }]
+    },
+    id: getPlanID() // The ID of this plan on the server
+}
+
+/**
+ * Gets the plan ID from localStorage,
+ * or gets a new one from the backend if one doesn't exist.
+ */
+function getPlanID (): string | undefined {
+    let id: string | null = localStorage.getItem('planID')
+    if (id !== null) {
+        return id
     }
+    Axios.post('http://localhost:8000/plan/', {
+        terms: [],
+        name: ''
+    }).then(res => {
+        // TODO: Set ID
+    }).catch(err => console.log(err))
 }
 
 export function rootReducer (state: Plan = initialState, action: Action): Plan {
@@ -21,7 +40,8 @@ export function rootReducer (state: Plan = initialState, action: Action): Plan {
             terms: {
                 ...state.terms,
                 [action.payload.termID]: newTerm
-            }
+            },
+            id: state.id
         }
     case ActionType.MOVE_COURSE:
         const { oldIndex, oldTermID, newTermID, newIndex } = action.payload
@@ -39,7 +59,8 @@ export function rootReducer (state: Plan = initialState, action: Action): Plan {
             termCopy[oldTermID] = oldItems
             return {
                 name: state.name,
-                terms: termCopy
+                terms: termCopy,
+                id: state.id
             }
         } else {
             const source: Course[] = Array.from(state.terms[oldTermID])
@@ -55,7 +76,8 @@ export function rootReducer (state: Plan = initialState, action: Action): Plan {
             termCopy[newTermID] = dest
             return {
                 name: state.name,
-                terms: termCopy
+                terms: termCopy,
+                id: state.id
             }
         }
     case ActionType.DELETE_COURSE:
@@ -67,7 +89,8 @@ export function rootReducer (state: Plan = initialState, action: Action): Plan {
             terms: {
                 ...state.terms,
                 [action.payload.termID]: term
-            }
+            },
+            id: state.id
         }
     case ActionType.ADD_TERM:
         return {
@@ -75,14 +98,16 @@ export function rootReducer (state: Plan = initialState, action: Action): Plan {
             terms: {
                 ...state.terms,
                 [action.payload.termID]: []
-            }
+            },
+            id: state.id
         }
     case ActionType.DELETE_TERM:
         var terms: Terms = Object.assign({}, state.terms)
         delete terms[action.payload.termID]
         return {
             name: state.name,
-            terms: terms
+            terms: terms,
+            id: state.id
         }
     default:
         return state

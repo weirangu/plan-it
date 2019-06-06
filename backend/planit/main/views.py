@@ -21,14 +21,12 @@ class PlanViewSet(viewsets.ModelViewSet):
     serializer_class = PlanSerializer
 
 
-
 class TermViewSet(viewsets.ModelViewSet):
     """
     A simple viewset for Plans.
     """
     queryset = Term.objects.all()
     serializer_class = TermSerializer
-
 
 
 class PlannedCourseViewSet(viewsets.ModelViewSet):

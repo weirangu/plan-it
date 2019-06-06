@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from .models.course_models import Course
 from .models.plan_models import Plan, Term, PlannedCourse
 
@@ -12,7 +13,7 @@ class CourseSerializer(serializers.ModelSerializer):
 class PlannedCourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlannedCourse
-        fields = ('course',)
+        exclude = ('term',)  # Term is set by the Term serializer, not the user
 
 
 class TermSerializer(serializers.ModelSerializer):
@@ -20,7 +21,7 @@ class TermSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Term
-        fields = ('name', 'courses')
+        exclude = ('plan',)  # Plan is set by the Plan serializer, not the user
 
     def create(self, validated_data):
         courses = validated_data.pop('courses')
@@ -28,6 +29,11 @@ class TermSerializer(serializers.ModelSerializer):
         for course in courses:
             PlannedCourse.objects.create(term=term, **course)
         return term
+
+    def to_representation(self, instance):
+        res = super().to_representation(instance)
+        res['courses'] = {course.pop('id'): course for course in res['courses']}
+        return res
 
 
 class PlanSerializer(serializers.ModelSerializer):
@@ -49,3 +55,8 @@ class PlanSerializer(serializers.ModelSerializer):
             serializer.is_valid()
             serializer.save(plan=plan)
         return plan
+
+    def to_representation(self, instance):
+        res = super().to_representation(instance)
+        res['terms'] = {term.pop('id'): term for term in res['terms']}
+        return res
