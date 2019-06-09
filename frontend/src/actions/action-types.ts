@@ -1,5 +1,5 @@
 import { Action } from 'redux'
-import { Course } from 'reducers/state-types'
+import { Course, Plan } from 'reducers/state-types'
 
 /**
  * All the possible redux actions for this web app. This type is different from
@@ -9,7 +9,9 @@ export type Action =
     | AddCourseAction
     | MoveCourseAction
     | DeleteCourseAction
-    | TermAction
+    | AddTermAction
+    | DeleteTermAction
+    | PlanAction
 
 /** The action that adds a course to our plan. */
 export interface AddCourseAction extends Action<ActionType.ADD_COURSE> {
@@ -26,13 +28,18 @@ export interface DeleteCourseAction extends Action<ActionType.DELETE_COURSE> {
     payload: DeleteCoursePayload
 }
 
-/**
- * This action is used for both adding or deleting terms (as the payload for
- * both are the same.)
- */
-export interface TermAction
-    extends Action<ActionType.ADD_TERM | ActionType.DELETE_TERM> {
-    payload: TermPayload
+/** This action is used for adding a term. */
+export interface AddTermAction extends Action<ActionType.ADD_TERM> {
+    payload: AddTermPayload
+}
+
+/** This action is used for deleting a term. */
+export interface DeleteTermAction extends Action<ActionType.DELETE_TERM> {
+    payload: DeleteTermPayload
+}
+
+export interface PlanAction extends Action<ActionType.SET_PLAN> {
+    payload: PlanPayload
 }
 
 /** The payload for adding a course. */
@@ -55,9 +62,20 @@ export interface DeleteCoursePayload {
     termID: string
 }
 
-/** The payload for operations on terms. */
-export interface TermPayload {
+/** The payload for deleting a term. */
+export interface DeleteTermPayload {
     termID: string // The termID to add/delete
+}
+
+/** The payload for adding a term. */
+export interface AddTermPayload {
+    name: string // The name of the payload to add
+    termID: string // The termID to add/delete
+}
+
+/** The payload for operations on plans. */
+export interface PlanPayload {
+    plan: Plan
 }
 
 /** An enum of possible actions in Redux. */
@@ -66,5 +84,6 @@ export enum ActionType {
     MOVE_COURSE = 'MOVE_COURSE',
     DELETE_COURSE = 'DELETE_COURSE',
     ADD_TERM = 'ADD_TERM',
-    DELETE_TERM = 'DELETE_TERM'
+    DELETE_TERM = 'DELETE_TERM',
+    SET_PLAN = 'SET_PLAN'
 }

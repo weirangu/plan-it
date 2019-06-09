@@ -1,5 +1,5 @@
-import axios, { AxiosResponse, AxiosPromise } from 'axios'
+import axios, { AxiosPromise, AxiosResponse } from 'axios'
 
-export default function getCourseDetails (id: string): AxiosPromise<AxiosResponse> {
+export function getCourseDetails (id: string): AxiosPromise<AxiosResponse> {
     return axios.get(`http://localhost:8000/courses/`)
 }

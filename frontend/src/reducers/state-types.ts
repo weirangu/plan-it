@@ -9,16 +9,24 @@ export interface Course {
  * A dictionary of terms.
  * Each term consists of courses that are taken during that term.
  */
-export type Terms = { [id: string]: Course[] }
+export interface Term {
+    name: string
+    courses: Course[]
+}
 
 /**
  * A plan consists of multiple terms.
- * This is the main state for the rootReducer.
  */
-export interface Plan {
+export interface PlanData {
     name: string
-    terms: Terms
+    terms: { [id: string]: Term } // The id is the ID of the term in the backend
+}
 
+/**
+ * This is the main state for the rootReducer. It is PlanData with the ID
+ * obtained from the backend.
+ */
+export interface Plan extends PlanData {
     // The id of this plan as stored on the backend, if undefined it means that
     // we're waiting on the server for an id
     id?: string

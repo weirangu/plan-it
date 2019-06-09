@@ -59,7 +59,9 @@ const ConnectedPlannerList: React.FC<PlannerListProps> = (
                     {provided.placeholder}
                 </div>
                 <div>
-                    <button onClick={() => props.add(props.id)}>Add Course</button>
+                    <button onClick={() => props.add(props.id)}>
+                        Add Course
+                    </button>
                     <button onClick={props.delList}>Delete Term</button>
                 </div>
             </div>

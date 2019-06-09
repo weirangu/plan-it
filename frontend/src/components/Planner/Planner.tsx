@@ -1,18 +1,18 @@
-import React from 'react'
-import { Dispatch } from 'redux'
-import { DragDropContext, DropResult } from 'react-beautiful-dnd'
-import { connect } from 'react-redux'
-import store from 'store'
 import { moveCourse } from 'actions/course-actions'
 import { addTerm, deleteTerm } from 'actions/term-actions'
-import { Plan, Course } from 'reducers/state-types'
 import PlannerList from 'components/Planner/PlannerList'
+import React from 'react'
+import { DragDropContext, DropResult } from 'react-beautiful-dnd'
+import { connect } from 'react-redux'
+import { Plan, Term } from 'reducers/state-types'
+import { Dispatch } from 'redux'
+import store from 'store'
 import './planner.css'
 
 export interface PlannerProps {
     plan: Plan
-    add: (term: string) => any // Provided by mapDispatchToProps
-    del: (term: string) => any // Provided by mapDispatchToProps
+    add: (termID: string, name: string) => any // Provided by mapDispatchToProps
+    del: (termID: string) => any // Provided by mapDispatchToProps
 }
 
 function mapStateToProps (state: Plan): { plan: Plan } {
@@ -21,8 +21,9 @@ function mapStateToProps (state: Plan): { plan: Plan } {
 
 function mapDispatchToProps (dispatch: Dispatch) {
     return {
-        add: (term: string) => dispatch(addTerm({ termID: term })),
-        del: (term: string) => dispatch(deleteTerm({ termID: term }))
+        add: (termID: string, name: string) =>
+            dispatch(addTerm({ name: name, termID: termID })),
+        del: (termID: string) => dispatch(deleteTerm({ termID: termID }))
     }
 }
 
@@ -44,11 +45,11 @@ function onDragEnd (result: DropResult): void {
 // Redux should feed us the props
 const ConnectedPlanner: React.FC<PlannerProps> = (props: PlannerProps) => (
     <DragDropContext onDragEnd={onDragEnd}>
-        {Object.entries(props.plan.terms).map((val: [string, Course[]]) => (
+        {Object.entries(props.plan.terms).map((val: [string, Term]) => (
             <div>
-                <h3>Term: {val[0]}</h3>
+                <h3>Term: {val[1].name}</h3>
                 <PlannerList
-                    items={val[1]}
+                    items={val[1].courses}
                     id={val[0]}
                     key={val[0]}
                     delList={() => props.del(val[0])}
@@ -58,6 +59,7 @@ const ConnectedPlanner: React.FC<PlannerProps> = (props: PlannerProps) => (
         <button
             onClick={() =>
                 props.add(
+                    '20199',
                     Math.random()
                         .toString(36)
                         .substring(6)
