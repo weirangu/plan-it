@@ -1,5 +1,5 @@
-Django==2.2.1
+Django==2.2.2
 psycopg2==2.8.2
-djangorestframework==3.9.3
-python-dotenv==0.10.1
+djangorestframework==3.9.4
+python-dotenv==0.10.3
 pep8==1.7.1
