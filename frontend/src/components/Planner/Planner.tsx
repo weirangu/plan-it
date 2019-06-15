@@ -4,14 +4,14 @@ import PlannerList from 'components/Planner/PlannerList'
 import React from 'react'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import { connect } from 'react-redux'
-import { Plan, Term } from 'reducers/state-types'
+import { Plan, Term } from 'reducers/types'
 import { Dispatch } from 'redux'
 import store from 'store'
 import './planner.css'
 
 export interface PlannerProps {
     plan: Plan
-    add: (termID: string, name: string) => any // Provided by mapDispatchToProps
+    add: (termID: string, term: Term) => any // Provided by mapDispatchToProps
     del: (termID: string) => any // Provided by mapDispatchToProps
 }
 
@@ -21,9 +21,9 @@ function mapStateToProps (state: Plan): { plan: Plan } {
 
 function mapDispatchToProps (dispatch: Dispatch) {
     return {
-        add: (termID: string, name: string) =>
-            dispatch(addTerm({ name: name, termID: termID })),
-        del: (termID: string) => dispatch(deleteTerm({ termID: termID }))
+        add: (termID: string, term: Term) =>
+            dispatch(addTerm({ term, termID })),
+        del: (termID: string) => dispatch(deleteTerm({ termID }))
     }
 }
 
@@ -59,10 +59,15 @@ const ConnectedPlanner: React.FC<PlannerProps> = (props: PlannerProps) => (
         <button
             onClick={() =>
                 props.add(
-                    '20199',
                     Math.random()
                         .toString(36)
-                        .substring(6)
+                        .substring(5),
+                    {
+                        name: Math.random()
+                            .toString(36)
+                            .substring(6),
+                        courses: []
+                    }
                 )
             }>
             Add Term

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Course } from 'reducers/state-types'
+import { Course } from 'reducers/types'
 
 export interface CourseSearchProps extends React.HTMLProps<CourseSearch> {
     callback: (course: Course) => any

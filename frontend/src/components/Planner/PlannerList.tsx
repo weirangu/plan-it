@@ -2,7 +2,7 @@ import React from 'react'
 import { Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import { Droppable } from 'react-beautiful-dnd'
-import { Course } from 'reducers/state-types'
+import { Course } from 'reducers/types'
 import PlannerItem from 'components/Planner/PlannerItem'
 import { addCourse, deleteCourse } from 'actions/course-actions'
 
@@ -12,7 +12,7 @@ export interface PlannerListProps {
     items: Course[]
     delList: () => any // Deletes this PlannerList
     add: (term: string) => any // Provided by mapDispatchToProps
-    delItem: (index: number, term: string) => any // Provided by mapDispathToProps
+    delItem: (course: string, term: string) => any // Provided by mapDispathToProps
 }
 
 function mapDispatchToProps (dispatch: Dispatch) {
@@ -28,13 +28,8 @@ function mapDispatchToProps (dispatch: Dispatch) {
                     termID: term
                 })
             ),
-        delItem: (index: number, term: string) =>
-            dispatch(
-                deleteCourse({
-                    index: index,
-                    termID: term
-                })
-            )
+        delItem: (course: string, termID: string) =>
+            dispatch(deleteCourse({ course: course, termID }))
     }
 }
 
@@ -53,7 +48,7 @@ const ConnectedPlannerList: React.FC<PlannerListProps> = (
                             course={item}
                             index={index}
                             key={item.code}
-                            delete={() => props.delItem(index, props.id)}
+                            delete={() => props.delItem(item.code, props.id)}
                         />
                     ))}
                     {provided.placeholder}

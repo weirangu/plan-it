@@ -10,9 +10,9 @@ function saveState (id: string) {
 }
 
 store.subscribe(() => {
-    const id = store.getState().id
+    const id = store.getState().plan.id
     if (id !== undefined) {
-        saveState(store.getState().id as string)
+        // TODO
     }
 })
 

@@ -1,5 +1,5 @@
 import { Action } from 'redux'
-import { Course, Plan } from 'reducers/state-types'
+import { Course, Plan, Term } from 'reducers/types'
 
 /**
  * All the possible redux actions for this web app. This type is different from
@@ -58,7 +58,7 @@ export interface MoveCoursePayload {
 
 /** The payload for deleting a course. */
 export interface DeleteCoursePayload {
-    index: number
+    course: string
     termID: string
 }
 
@@ -69,7 +69,7 @@ export interface DeleteTermPayload {
 
 /** The payload for adding a term. */
 export interface AddTermPayload {
-    name: string // The name of the payload to add
+    term: Term // The data of the Term to add
     termID: string // The termID to add/delete
 }
 

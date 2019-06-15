@@ -6,7 +6,7 @@ import {
     MoveCourseAction,
     MoveCoursePayload,
     DeleteCourseAction
-} from 'actions/action-types'
+} from 'actions/types'
 
 /** Adds a course to the plan. */
 export function addCourse (payload: AddCoursePayload): AddCourseAction {

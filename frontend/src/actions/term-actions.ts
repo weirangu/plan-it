@@ -4,7 +4,7 @@ import {
     DeleteTermPayload,
     AddTermAction,
     DeleteTermAction
-} from 'actions/action-types'
+} from 'actions/types'
 
 /** Adds a term to the plan. */
 export function addTerm (payload: AddTermPayload): AddTermAction {

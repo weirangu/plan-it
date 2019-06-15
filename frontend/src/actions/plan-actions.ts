@@ -1,4 +1,4 @@
-import { ActionType, PlanPayload, PlanAction } from 'actions/action-types'
+import { ActionType, PlanPayload, PlanAction } from 'actions/types'
 
 /** Sets the current plan. */
 export function setPlan (payload: PlanPayload): PlanAction {
