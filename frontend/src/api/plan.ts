@@ -1,7 +1,7 @@
 import axios, { AxiosPromise } from 'axios'
 import { PlanData, Plan } from 'reducers/types'
 
-export function makeNewPlan (plan: PlanData): AxiosPromise<Plan> {
+export function newPlan (plan: PlanData): AxiosPromise<Plan> {
     // PlanData isn't what the API takes in, so we need to convert it into
     // APIPlan
     const request = { name: plan.name, terms: Object.values(plan.terms) }
