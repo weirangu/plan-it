@@ -15,7 +15,10 @@ class Term(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE,
                              related_name="terms")
-    name = models.CharField(max_length=5)
+    name = models.CharField(max_length=5)  # In the form YYYYM (e.g. 20191)
+
+    class Meta:
+        ordering = ["name"]
 
 
 class PlannedCourse(models.Model):
@@ -23,6 +26,11 @@ class PlannedCourse(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     term = models.ForeignKey(Term, on_delete=models.CASCADE,
                              related_name="courses")
+    index = models.IntegerField()  # The index of this course in the Term
 
     # A course code is enough for us to get information from the Course table.
     course = models.CharField(max_length=9)
+
+    class Meta:
+        ordering = ["index"]
+        unique_together = ("index", "term")
