@@ -1,20 +1,29 @@
-import { setPlan } from 'actions/plan-actions'
-import { getPlan, newPlan } from 'api/plan'
-import { Plan } from 'reducers/types'
+import { updatePlanAction } from 'actions/planActions'
+import { getPlanAPI, newPlanAPI } from 'api/plan'
+import { APIRequestPlan } from 'api/types/requestTypes'
+import { getTerm } from 'effects/term'
+import { State } from 'reducers/types'
 import { AnyAction, Dispatch } from 'redux'
-import { ThunkAction } from 'redux-thunk'
+import { ThunkDispatch } from 'redux-thunk'
 
 /**
- * Sets the Redux plan with the data of a plan from the API.
+ * Gets the Redux plan with the data of a plan from the API.
  * @param id The ID of the plan to set.
  */
-export function setPlanFromAPI (id: string) {
+export function getPlan (id: string) {
     return async (
-        dispatch: Dispatch<AnyAction>,
-        getState: () => Plan
+        dispatch: ThunkDispatch<State, void, AnyAction>,
+        getState: () => State
     ): Promise<AnyAction> => {
-        const resp = await getPlan(id)
-        return dispatch(setPlan({ plan: resp.data }))
+        const resp = await getPlanAPI(id)
+        const terms = resp.data.terms
+        for (const term of terms) {
+            if (!(term in getState().terms)) {
+                // We need to get the term from the API
+                await dispatch(getTerm(term))
+            }
+        }
+        return dispatch(updatePlanAction(resp.data))
     }
 }
 
@@ -22,11 +31,9 @@ export function setPlanFromAPI (id: string) {
  * Sets the Redux plan with the data of a new plan from the API.
  * @param plan The new plan to POST to the backend.
  */
-export function newPlanFromAPI (
-    plan: Plan
-): ThunkAction<Promise<AnyAction>, Plan, void, AnyAction> {
-    return async (dispatch, getState): Promise<AnyAction> => {
-        const resp = await newPlan(plan)
-        return dispatch(setPlan({ plan: resp.data }))
+export function newPlan (plan: APIRequestPlan) {
+    return async (dispatch: Dispatch<AnyAction>): Promise<AnyAction> => {
+        const resp = await newPlanAPI(plan)
+        return dispatch(updatePlanAction(resp.data))
     }
 }

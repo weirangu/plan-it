@@ -1,74 +1,82 @@
-import { moveCourse } from 'actions/course-actions'
-import { addTerm, deleteTerm } from 'actions/term-actions'
 import PlannerList from 'components/Planner/PlannerList'
+import { movePlannedCourse } from 'effects/course'
+import { deleteTerm, newTerm } from 'effects/term'
 import React from 'react'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import { connect } from 'react-redux'
-import { Plan, Term } from 'reducers/types'
-import { Dispatch } from 'redux'
+import { CourseReducerState } from 'reducers/courseReducer'
+import { TermReducerState } from 'reducers/termReducer'
+import { Plan, State, Term } from 'reducers/types'
+import { AnyAction } from 'redux'
+import { ThunkDispatch } from 'redux-thunk'
 import store from 'store'
 import './planner.css'
 
 export interface PlannerProps {
     plan: Plan
-    add: (termID: string, term: Term) => any // Provided by mapDispatchToProps
-    del: (termID: string) => any // Provided by mapDispatchToProps
+    terms: TermReducerState
+    courses: CourseReducerState
+    addTerm: (term: Term) => any // Provided by mapDispatchToProps
+    delTerm: (id: string) => any // Provided by mapDispatchToProps
 }
 
-function mapStateToProps (state: Plan): { plan: Plan } {
-    return { plan: state }
+function mapStateToProps (state: State): State {
+    return state
 }
 
-function mapDispatchToProps (dispatch: Dispatch) {
+function mapDispatchToProps (dispatch: ThunkDispatch<State, void, AnyAction>) {
     return {
-        add: (termID: string, term: Term) =>
-            dispatch(addTerm({ term, termID })),
-        del: (termID: string) => dispatch(deleteTerm({ termID }))
+        addTerm: (term: Term) => dispatch(newTerm(term)),
+        delTerm: (id: string) => dispatch(deleteTerm(id))
     }
 }
 
-// Runs when the user finishes dragging
-function onDragEnd (result: DropResult): void {
+function onDragEnd (result: DropResult, terms: TermReducerState): void {
     if (!result.destination) {
         return
     }
-    store.dispatch(
-        moveCourse({
-            oldIndex: result.source.index,
-            oldTermID: result.source.droppableId,
-            newTermID: result.destination.droppableId,
-            newIndex: result.destination.index
-        })
-    )
+    const source = result.source
+    const dest = result.destination
+    const courseID = terms[source.droppableId].courses[source.index]
+
+    if (source === dest) {
+        store.dispatch(movePlannedCourse(courseID, dest.index))
+    } else {
+        store.dispatch(
+            movePlannedCourse(courseID, dest.index, dest.droppableId)
+        )
+    }
 }
 
-// Redux should feed us the props
 const ConnectedPlanner: React.FC<PlannerProps> = (props: PlannerProps) => (
-    <DragDropContext onDragEnd={onDragEnd}>
-        {Object.entries(props.plan.terms).map((val: [string, Term]) => (
-            <div>
-                <h3>Term: {val[1].name}</h3>
-                <PlannerList
-                    items={val[1].courses}
-                    id={val[0]}
-                    key={val[0]}
-                    delList={() => props.del(val[0])}
-                />
-            </div>
-        ))}
+    <DragDropContext onDragEnd={result => onDragEnd(result, props.terms)}>
+        {props.plan.terms.map((val: string) => {
+            const { terms, courses } = props
+            const courseArray = terms[val].courses.map((id: string) => ({
+                id,
+                ...courses[id]
+            }))
+            return (
+                <div>
+                    <h3>Term: {props.terms[val].name}</h3>
+                    <PlannerList
+                        items={courseArray}
+                        id={val}
+                        key={val}
+                        delList={() => props.delTerm(val)}
+                    />
+                </div>
+            )
+        })}
         <button
             onClick={() =>
-                props.add(
-                    Math.random()
+                props.addTerm({
+                    name: Math.random()
                         .toString(36)
-                        .substring(5),
-                    {
-                        name: Math.random()
-                            .toString(36)
-                            .substring(6),
-                        courses: []
-                    }
-                )
+                        .substring(0, 5),
+                    courses: [],
+                    plan: props.plan.id as string
+                })
             }>
             Add Term
         </button>

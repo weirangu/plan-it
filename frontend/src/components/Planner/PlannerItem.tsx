@@ -1,29 +1,25 @@
 import React from 'react'
 import { Draggable } from 'react-beautiful-dnd'
-import { Course } from 'reducers/types'
+import { PlannedCourse } from 'reducers/types'
 
 /** The props used for PlannerItem. */
 export interface PlannerItemProps {
-    course: Course
+    id: string
+    course: PlannedCourse
     index: number
     delete: () => any // The function that deletes this PlannerItem
 }
 
-const PlannerItem: React.FC<PlannerItemProps> = (
-    props: PlannerItemProps
-) => {
+const PlannerItem: React.FC<PlannerItemProps> = (props: PlannerItemProps) => {
     return (
-        <Draggable
-            key={props.course.code}
-            draggableId={props.course.code}
-            index={props.index}>
+        <Draggable key={props.id} draggableId={props.id} index={props.index}>
             {(provided: any) => (
                 <div
                     className="a class"
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}>
-                    {props.course.code}
+                    {props.course.course}
                     <button onClick={props.delete}>X</button>
                 </div>
             )}

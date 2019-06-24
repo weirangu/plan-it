@@ -1,35 +1,33 @@
 import React from 'react'
-import { Dispatch } from 'redux'
+import { AnyAction } from 'redux'
 import { connect } from 'react-redux'
 import { Droppable } from 'react-beautiful-dnd'
-import { Course } from 'reducers/types'
 import PlannerItem from 'components/Planner/PlannerItem'
-import { addCourse, deleteCourse } from 'actions/course-actions'
+import { PlannedCourse, ID, State } from 'reducers/types'
+import { addPlannedCourse, deletePlannedCourse } from 'effects/course'
+import { ThunkDispatch } from 'redux-thunk'
 
 /** The props for PlannerList. */
 export interface PlannerListProps {
     id: string
-    items: Course[]
+    items: (PlannedCourse & ID)[]
     delList: () => any // Deletes this PlannerList
     add: (term: string) => any // Provided by mapDispatchToProps
-    delItem: (course: string, term: string) => any // Provided by mapDispathToProps
+    delItem: (id: string) => any // Provided by mapDispathToProps
 }
 
-function mapDispatchToProps (dispatch: Dispatch) {
+function mapDispatchToProps (dispatch: ThunkDispatch<State, void, AnyAction>) {
     return {
         add: (term: string) =>
             dispatch(
-                addCourse({
-                    course: {
-                        code: Math.random()
-                            .toString(36)
-                            .substring(6)
-                    },
-                    termID: term
-                })
+                addPlannedCourse(
+                    Math.random()
+                        .toString(36)
+                        .substring(6),
+                    term
+                )
             ),
-        delItem: (course: string, termID: string) =>
-            dispatch(deleteCourse({ course: course, termID }))
+        delItem: (id: string) => dispatch(deletePlannedCourse(id))
     }
 }
 
@@ -43,14 +41,17 @@ const ConnectedPlannerList: React.FC<PlannerListProps> = (
                     className="name container"
                     ref={provided.innerRef}
                     {...provided.droppableProps}>
-                    {props.items.map((item: Course, index: number) => (
-                        <PlannerItem
-                            course={item}
-                            index={index}
-                            key={item.code}
-                            delete={() => props.delItem(item.code, props.id)}
-                        />
-                    ))}
+                    {props.items.map(
+                        (item: PlannedCourse & ID, index: number) => (
+                            <PlannerItem
+                                id={item.id}
+                                course={item}
+                                index={index}
+                                key={item.id}
+                                delete={() => props.delItem(item.id)}
+                            />
+                        )
+                    )}
                     {provided.placeholder}
                 </div>
                 <div>

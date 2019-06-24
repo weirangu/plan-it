@@ -1,5 +1,5 @@
-import { Term, Course } from 'reducers/types'
-import { Action, ActionType } from 'actions/types'
+import { Term } from 'reducers/types'
+import { Action, ActionType } from 'actions/types/actionTypes'
 import { deleteFromDictionary } from './helpers'
 
 /** The state for the term reducer. */
@@ -12,42 +12,54 @@ export function termReducer (
     action: Action
 ): TermReducerState {
     switch (action.type) {
-    case ActionType.ADD_TERM:
-        return {
-            ...state,
-            [action.payload.termID]: action.payload.term
-        }
+    case ActionType.UPDATE_TERM:
+        const stateCopy = { ...state }
+        stateCopy[action.payload.id] = action.payload
+        return stateCopy
     case ActionType.DELETE_TERM:
-        return deleteFromDictionary(state, action.payload.termID)
-    case ActionType.ADD_COURSE: {
-        const term = { ...state[action.payload.termID] }
-        term.courses.push(action.payload.course)
-        return {
-            ...state,
-            [action.payload.termID]: term
-        }
+        return deleteFromDictionary(state, action.payload.id)
+    case ActionType.UPDATE_PLANNED_COURSE: {
+        const term = { ...state[action.payload.term] }
+        const stateCopy = { ...state }
+
+        term.courses[action.payload.index] = action.payload.id
+        stateCopy[action.payload.id] = term
+        return stateCopy
     }
-    case ActionType.DELETE_COURSE: {
-        const term = { ...state[action.payload.termID] }
+    case ActionType.DELETE_PLANNED_COURSE: {
+        const term = { ...state[action.payload.term] }
         const index = term.courses.findIndex(
-            (val: Course) => val.code === action.payload.course
+            (val: string) => val === action.payload.id
         )
         term.courses.splice(index, 1)
         return {
             ...state,
-            [action.payload.termID]: term
+            [action.payload.id]: term
         }
     }
-    case ActionType.MOVE_COURSE: {
-        const newState = { ...state }
-        const [removedCourse] = newState[action.payload.oldTermID]
-            .courses.splice(action.payload.oldIndex, 1)
-        newState[action.payload.newTermID].courses.splice(
-            action.payload.newIndex,
-            0,
-            removedCourse
+    case ActionType.MOVE_PLANNED_COURSE: {
+        const updatedState = { ...state }
+        const sourceTerm = updatedState[action.payload.sourceTerm]
+        const sourceIndex = sourceTerm.courses.findIndex(
+            (val: string) => val === action.payload.id
         )
-        return newState
+        const [removedCourse] = sourceTerm.courses.splice(sourceIndex, 1)
+        if (action.payload.destTerm === undefined) {
+            // We're not changing terms
+            updatedState[action.payload.sourceTerm].courses.splice(
+                action.payload.index,
+                0,
+                removedCourse
+            )
+        } else {
+            // We are changing terms
+            updatedState[action.payload.destTerm].courses.splice(
+                action.payload.index,
+                0,
+                removedCourse
+            )
+        }
+        return updatedState
     }
     default:
         return state

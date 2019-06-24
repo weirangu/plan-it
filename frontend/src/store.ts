@@ -1,13 +1,13 @@
-import { createStore, applyMiddleware, AnyAction } from 'redux'
-import thunk, { ThunkMiddleware } from 'redux-thunk'
+import { newPlan, getPlan } from 'effects/plan'
 import rootReducer from 'reducers/rootReducer'
-import { Plan } from 'reducers/types'
-import { setPlanFromAPI, newPlanFromAPI } from 'effects/plan'
+import { State } from 'reducers/types'
+import { AnyAction, applyMiddleware, createStore } from 'redux'
+import thunk, { ThunkMiddleware } from 'redux-thunk'
 
 // The main Redux store for this application
 const store = createStore(
     rootReducer,
-    applyMiddleware(thunk as ThunkMiddleware<Plan, AnyAction>)
+    applyMiddleware(thunk as ThunkMiddleware<State, AnyAction>)
 )
 
 // The following functions handle saving the store whenever it is updated
@@ -31,10 +31,10 @@ function getInitialPlan (): void {
 
     if (id !== null) {
         // We get an existing plan from the server
-        store.dispatch(setPlanFromAPI(id))
+        store.dispatch(getPlan(id))
     } else {
         // We make a new plan
-        store.dispatch(newPlanFromAPI(store.getState().plan))
+        store.dispatch(newPlan(store.getState().plan))
     }
 }
 
