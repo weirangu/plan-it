@@ -38,7 +38,7 @@ You will need Postgres 11.2 or newer.
 
 1. Enter the PostgreSQL shell through `psql`.
 
-2. Create a database using `CREATE DATABASE plan-it;`.
+2. Create a database using `CREATE DATABASE plan_it;`.
 
 3. If desired, create a user for the database with
    `CREATE USER myuser WITH PASSWORD 'password';`. Otherwise, use the default
@@ -51,7 +51,7 @@ You will need Postgres 11.2 or newer.
    ALTER ROLE myuser SET client_encoding TO 'utf8';
    ALTER ROLE myuser SET timezone TO 'UTC';
    ALTER ROLE myuser SET default_transaction_isolation TO 'read committed';
-   GRANT ALL PRIVILEGES ON DATABASE plan-it TO myuser;
+   GRANT ALL PRIVILEGES ON DATABASE plan_it TO myuser;
    ```
 
 5. Fill in the appropriate fields in the `.env` file (see
