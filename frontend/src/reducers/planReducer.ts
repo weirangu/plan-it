@@ -9,6 +9,13 @@ const initialState: Plan = {
 export function planReducer (state: Plan = initialState, action: Action): Plan {
     switch (action.type) {
     case ActionType.UPDATE_TERM: {
+        if (
+            state.terms.find(
+                (term: string) => action.payload.id === term
+            ) !== undefined
+        ) {
+            return state
+        }
         const stateCopy = { ...state }
         stateCopy.terms = [...stateCopy.terms]
         stateCopy.terms.push(action.payload.id)

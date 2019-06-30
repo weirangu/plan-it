@@ -1,6 +1,6 @@
-import { Action } from 'redux'
 import { ActionType } from 'actions/types/actionTypes'
-import { Term, ID } from 'reducers/types'
+import { ID, Term } from 'reducers/types'
+import { Action } from 'redux'
 
 /** This action is used for deleting a term. */
 export interface DeleteTermAction extends Action<ActionType.DELETE_TERM> {

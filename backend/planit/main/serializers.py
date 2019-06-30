@@ -17,7 +17,7 @@ class PlannedCourseSerializer(serializers.ModelSerializer):
 
 
 class TermSerializer(serializers.ModelSerializer):
-    courses = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    courses = PlannedCourseSerializer(many=True, read_only=True)
 
     class Meta:
         model = Term
@@ -25,7 +25,7 @@ class TermSerializer(serializers.ModelSerializer):
 
 
 class PlanSerializer(serializers.ModelSerializer):
-    terms = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    terms = TermSerializer(many=True, read_only=True)
 
     class Meta:
         model = Plan

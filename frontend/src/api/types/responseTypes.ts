@@ -6,14 +6,14 @@
 export interface APIResponsePlan {
     id: string
     name: string
-    terms: string[]
+    terms: APIResponseTerm[]
 }
 
 /** The type for a Term returned by the backend. */
 export interface APIResponseTerm {
     id: string
     name: string
-    courses: string[]
+    courses: APIResponsePlannedCourse[]
     plan: string
 }
 

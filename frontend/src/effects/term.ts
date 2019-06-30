@@ -1,9 +1,14 @@
-import { updateTermAction, deleteTermAction } from 'actions/termActions'
-import { getTermAPI, newTermAPI, deleteTermAPI } from 'api/term'
-import { AnyAction, Dispatch } from 'redux'
+import { updatePlannedCourseAction } from 'actions/plannedCourseActions'
+import { deleteTermAction, updateTermAction } from 'actions/termActions'
+import { deleteTermAPI, getTermAPI, newTermAPI } from 'api/term'
 import { APIRequestTerm } from 'api/types/requestTypes'
+import {
+    APIResponsePlannedCourse,
+    APIResponseTerm
+} from 'api/types/responseTypes'
+import { batch } from 'react-redux'
 import { State } from 'reducers/types'
-import { getPlannedCourse } from 'effects/course'
+import { AnyAction, Dispatch } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
 
 /**
@@ -12,20 +17,33 @@ import { ThunkDispatch } from 'redux-thunk'
  */
 export function getTerm (id: string) {
     return async (
-        dispatch: ThunkDispatch<State, void, AnyAction>,
-        getState: () => State
+        dispatch: ThunkDispatch<State, void, AnyAction>
     ): Promise<void> => {
         const resp = await getTermAPI(id)
-        dispatch(updateTermAction({ id, ...resp.data }))
-
-        const courses = resp.data.courses
-        for (const course of courses) {
-            if (!(course in getState().terms)) {
-                // We need to get the term from the API
-                await dispatch(getPlannedCourse(course))
-            }
-        }
+        batch(() => updateTerm(resp.data, dispatch))
     }
+}
+
+/**
+ * Updates a Term and the corresponding PlannedCourses from a APIResponseTerm.
+ * @param term The response from the API.
+ * @param dispatch The function used to dispatch actions.
+ */
+export function updateTerm (
+    term: APIResponseTerm,
+    dispatch: Dispatch<AnyAction>
+): void {
+    dispatch(
+        updateTermAction({
+            ...term,
+            courses: term.courses.map(
+                (course: APIResponsePlannedCourse) => course.id
+            )
+        })
+    )
+    term.courses.forEach((course: APIResponsePlannedCourse) =>
+        dispatch(updatePlannedCourseAction(course))
+    )
 }
 
 /**
@@ -35,9 +53,9 @@ export function getTerm (id: string) {
 export function newTerm (term: APIRequestTerm) {
     return async (
         dispatch: ThunkDispatch<State, void, AnyAction>
-    ): Promise<AnyAction> => {
+    ): Promise<void> => {
         const resp = await newTermAPI(term)
-        return dispatch(updateTermAction({ id: resp.data.id, ...resp.data }))
+        batch(() => updateTerm(resp.data, dispatch))
     }
 }
 

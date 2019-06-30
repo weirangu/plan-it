@@ -1,6 +1,6 @@
 import { Term } from 'reducers/types'
 import { Action, ActionType } from 'actions/types/actionTypes'
-import { deleteFromDictionary } from './helpers'
+import { deleteFromDictionary } from 'reducers/helpers'
 
 /** The state for the term reducer. */
 export interface TermReducerState {
@@ -19,6 +19,13 @@ export function termReducer (
     case ActionType.DELETE_TERM:
         return deleteFromDictionary(state, action.payload.id)
     case ActionType.UPDATE_PLANNED_COURSE: {
+        if (
+            state[action.payload.term].courses.find(
+                (course: string) => action.payload.id === course
+            ) !== undefined
+        ) {
+            return state
+        }
         const term = { ...state[action.payload.term] }
         const stateCopy = { ...state }
 

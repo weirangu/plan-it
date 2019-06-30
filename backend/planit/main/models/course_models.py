@@ -25,12 +25,12 @@ class Course(models.Model):
 
     # The course number (e.g. 148 for CSC148, or B07 for CSCB07)
     number = models.CharField(max_length=3)
-    length = models.CharField(choices=LENGTH)
+    length = models.CharField(max_length=1, choices=LENGTH)
     name = models.TextField()
     description = models.TextField()
     prerequisites = models.TextField()
     exclusions = models.TextField()
-    campus = models.CharField(choices=CAMPUS)
+    campus = models.CharField(max_length=4, choices=CAMPUS)
 
     # The year and month offered. Represented in the format YYYYM (e.g. 20191)
     term = models.CharField(max_length=5)
@@ -40,4 +40,4 @@ class Course(models.Model):
     breadth2 = models.PositiveSmallIntegerField(null=True, choices=BREADTH)
 
     class Meta:
-        unique_together = [["department", "number", "term"]]
+        unique_together = ["department", "number", "term"]

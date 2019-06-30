@@ -39,7 +39,7 @@ function onDragEnd (result: DropResult, terms: TermReducerState): void {
     const dest = result.destination
     const courseID = terms[source.droppableId].courses[source.index]
 
-    if (source === dest) {
+    if (source.droppableId === dest.droppableId) {
         store.dispatch(movePlannedCourse(courseID, dest.index))
     } else {
         store.dispatch(
