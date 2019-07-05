@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.db.models import F
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -27,7 +28,7 @@ class PlanViewSet(viewsets.ModelViewSet):
 
 class TermViewSet(viewsets.ModelViewSet):
     """
-    A simple viewset for Plans.
+    A simple viewset for Terms.
     """
     queryset = Term.objects.all()
     serializer_class = TermSerializer
@@ -49,7 +50,7 @@ class PlannedCourseViewSet(viewsets.ModelViewSet):
         course = PlannedCourse.objects.get(id__exact=pk)
         new_index = request.data["index"]
 
-        if "term" not in request.data:
+        if "term" not in request.data or request.data["term"] == course.term:
             terms = [self.move_course(course, new_index)]
         else:
             terms = self.move_to_new_term(course, new_index,
@@ -58,14 +59,16 @@ class PlannedCourseViewSet(viewsets.ModelViewSet):
         resp = {"updatedTerms": TermSerializer(terms, many=True).data}
         return Response(resp, status=status.HTTP_200_OK)
 
+    @transaction.atomic()
     def move_to_new_term(self, course, index, term):
         """
         Moves a course to a new term.
         Returns the terms that were modified.
         """
+        old_index = course.index
         old_term = course.term.id  # We'll need it when we get the old term data
         PlannedCourse.objects \
-            .filter(term__exact=course.term, index__gt=course.index) \
+            .filter(term__exact=course.term, index__gt=old_index) \
             .update(index=F('index') - 1)
 
         PlannedCourse.objects \
@@ -78,22 +81,29 @@ class PlannedCourseViewSet(viewsets.ModelViewSet):
         return [Term.objects.get(id__exact=old_term),
                 Term.objects.get(id__exact=term)]
 
+    @transaction.atomic()
     def move_course(self, course, index):
         """
         Moves a course without changing terms.
         Returns the term that was modified.
         """
+        old_index = course.index
+
+        # Temporary value so that we can move the other courses
+        course.index = -1
+        course.save()
+
         courses_in_term = PlannedCourse.objects \
             .filter(term__exact=course.term)
-        if course.index < index:
+        if old_index < index:
             # The course was moved forwards
             courses_in_term \
-                .filter(index__lte=index, index__gt=course.index) \
+                .filter(index__lte=index, index__gt=old_index) \
                 .update(index=F('index') - 1)
         else:
             # The course was moved backwards, or didn't move
             courses_in_term \
-                .filter(index__lt=course.index, index__gte=index) \
+                .filter(index__lt=old_index, index__gte=index) \
                 .update(index=F('index') + 1)
 
         course.index = index
