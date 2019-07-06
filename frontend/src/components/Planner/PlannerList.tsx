@@ -13,7 +13,7 @@ export interface PlannerListProps {
     items: (PlannedCourse & ID)[]
     delList: () => any // Deletes this PlannerList
     add: (term: string) => any // Provided by mapDispatchToProps
-    delItem: (id: string) => any // Provided by mapDispathToProps
+    delItem: (id: string) => any // Provided by mapDispatchToProps
 }
 
 function mapDispatchToProps (dispatch: ThunkDispatch<State, void, AnyAction>) {

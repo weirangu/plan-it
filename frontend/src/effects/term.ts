@@ -12,19 +12,6 @@ import { AnyAction, Dispatch } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
 
 /**
- * Adds a Redux term to the provided plan based on the data from the API.
- * @param id The ID of the plan to get.
- */
-export function getTerm (id: string) {
-    return async (
-        dispatch: ThunkDispatch<State, void, AnyAction>
-    ): Promise<void> => {
-        const resp = await getTermAPI(id)
-        batch(() => updateTerm(resp.data, dispatch))
-    }
-}
-
-/**
  * Updates a Term and the corresponding PlannedCourses from a APIResponseTerm.
  * @param term The response from the API.
  * @param dispatch The function used to dispatch actions.
@@ -34,15 +21,22 @@ export function updateTerm (
     dispatch: Dispatch<AnyAction>
 ): void {
     dispatch(
-        updateTermAction({
-            ...term,
-            courses: term.courses.map(
-                (course: APIResponsePlannedCourse) => course.id
-            )
-        })
+        updateTermAction(
+            term.id,
+            term.name,
+            term.courses.map((course: APIResponsePlannedCourse) => course.id),
+            term.plan
+        )
     )
     term.courses.forEach((course: APIResponsePlannedCourse) =>
-        dispatch(updatePlannedCourseAction(course))
+        dispatch(
+            updatePlannedCourseAction(
+                course.course,
+                course.term,
+                course.id,
+                course.index
+            )
+        )
     )
 }
 
@@ -55,7 +49,7 @@ export function newTerm (term: APIRequestTerm) {
         dispatch: ThunkDispatch<State, void, AnyAction>
     ): Promise<void> => {
         const resp = await newTermAPI(term)
-        batch(() => updateTerm(resp.data, dispatch))
+        batch(() => updateTerm(resp, dispatch))
     }
 }
 
@@ -66,6 +60,6 @@ export function newTerm (term: APIRequestTerm) {
 export function deleteTerm (id: string) {
     return async (dispatch: Dispatch<AnyAction>): Promise<AnyAction> => {
         const resp = await deleteTermAPI(id)
-        return dispatch(deleteTermAction({ id: id }))
+        return dispatch(deleteTermAction(id))
     }
 }

@@ -1,18 +1,22 @@
-import { Action, ActionType } from 'actions/types/actionTypes'
+import { updatePlanAction } from 'actions/planActions'
+import { deleteTermAction, updateTermAction } from 'actions/termActions'
 import { Plan } from 'reducers/types'
+import { createReducer, Reducer } from 'typesafe-actions'
+import { RootAction } from 'actions'
 
 const initialState: Plan = {
     terms: [],
     name: 'Default Plan'
 }
 
-export function planReducer (state: Plan = initialState, action: Action): Plan {
-    switch (action.type) {
-    case ActionType.UPDATE_TERM: {
+export const planReducer: Reducer<Plan, RootAction> = createReducer(
+    initialState
+)
+    .handleAction(updatePlanAction, (state, action) => action.payload)
+    .handleAction(updateTermAction, (state, action) => {
         if (
-            state.terms.find(
-                (term: string) => action.payload.id === term
-            ) !== undefined
+            state.terms.find((term: string) => action.payload.id === term) !==
+            undefined
         ) {
             return state
         }
@@ -20,21 +24,12 @@ export function planReducer (state: Plan = initialState, action: Action): Plan {
         stateCopy.terms = [...stateCopy.terms]
         stateCopy.terms.push(action.payload.id)
         return stateCopy
-    }
-    case ActionType.DELETE_TERM: {
+    })
+    .handleAction(deleteTermAction, (state, action) => {
         const stateCopy = { ...state }
         stateCopy.terms = [...stateCopy.terms]
-        stateCopy.terms.splice(
-            stateCopy.terms.indexOf(action.payload.id),
-            1
-        )
+        stateCopy.terms.splice(stateCopy.terms.indexOf(action.payload.id), 1)
         return stateCopy
-    }
-    case ActionType.UPDATE_PLAN:
-        return action.payload
-    default:
-        return state
-    }
-}
+    })
 
 export default planReducer

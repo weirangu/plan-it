@@ -1,29 +1,32 @@
+import {
+    deletePlannedCourseAction,
+    movePlannedCourseAction,
+    updatePlannedCourseAction
+} from 'actions/plannedCourseActions'
+import { deleteTermAction, updateTermAction } from 'actions/termActions'
+import { deleteFromDictionary, updateDictionary } from 'reducers/helpers'
 import { Term } from 'reducers/types'
-import { Action, ActionType } from 'actions/types/actionTypes'
-import { deleteFromDictionary } from 'reducers/helpers'
+import { createReducer, Reducer } from 'typesafe-actions'
+import { RootAction } from 'actions'
 
-/** The state for the term reducer. */
 export interface TermReducerState {
-    [id: string]: Term
+    readonly [id: string]: Term
 }
 
-export function termReducer (
-    state: TermReducerState = {},
-    action: Action
-): TermReducerState {
-    switch (action.type) {
-    case ActionType.UPDATE_TERM:
-        const stateCopy = { ...state }
-        stateCopy[action.payload.id] = action.payload
-        return stateCopy
-    case ActionType.DELETE_TERM:
-        return deleteFromDictionary(state, action.payload.id)
-    case ActionType.UPDATE_PLANNED_COURSE: {
-        if (
-            state[action.payload.term].courses.find(
-                (course: string) => action.payload.id === course
-            ) !== undefined
-        ) {
+export const termReducer: Reducer<TermReducerState, RootAction> = createReducer(
+    {} as TermReducerState
+)
+    .handleAction(updateTermAction, (state, action) =>
+        updateDictionary(state, action.payload.id, action.payload)
+    )
+    .handleAction(deleteTermAction, (state, action) =>
+        deleteFromDictionary(state, action.payload.id)
+    )
+    .handleAction(updatePlannedCourseAction, (state, action) => {
+        const courseID = state[action.payload.term].courses.find(
+            (course: string) => action.payload.id === course
+        )
+        if (courseID !== undefined) {
             return state
         }
         const term = { ...state[action.payload.term] }
@@ -32,8 +35,8 @@ export function termReducer (
         term.courses[action.payload.index] = action.payload.id
         stateCopy[action.payload.id] = term
         return stateCopy
-    }
-    case ActionType.DELETE_PLANNED_COURSE: {
+    })
+    .handleAction(deletePlannedCourseAction, (state, action) => {
         const term = { ...state[action.payload.term] }
         const index = term.courses.findIndex(
             (val: string) => val === action.payload.id
@@ -43,8 +46,8 @@ export function termReducer (
             ...state,
             [action.payload.id]: term
         }
-    }
-    case ActionType.MOVE_PLANNED_COURSE: {
+    })
+    .handleAction(movePlannedCourseAction, (state, action) => {
         const updatedState = { ...state }
         const sourceTerm = updatedState[action.payload.sourceTerm]
         const sourceIndex = sourceTerm.courses.findIndex(
@@ -67,10 +70,6 @@ export function termReducer (
             )
         }
         return updatedState
-    }
-    default:
-        return state
-    }
-}
+    })
 
 export default termReducer

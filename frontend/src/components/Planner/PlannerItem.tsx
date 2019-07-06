@@ -2,8 +2,6 @@ import React from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { PlannedCourse } from 'reducers/types'
 
-import { render } from 'react-dom'
-
 /** The props used for PlannerItem. */
 export interface PlannerItemProps {
     id: string

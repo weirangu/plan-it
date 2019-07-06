@@ -1,5 +1,5 @@
 import { newPlan, getPlan } from 'effects/plan'
-import rootReducer from 'reducers/rootReducer'
+import rootReducer from 'reducers'
 import { State } from 'reducers/types'
 import { AnyAction, applyMiddleware, createStore } from 'redux'
 import thunk, { ThunkMiddleware } from 'redux-thunk'

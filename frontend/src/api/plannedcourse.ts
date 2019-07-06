@@ -1,33 +1,35 @@
-import axios, { AxiosPromise } from 'axios'
 import {
-    APIRequestPlannedCourse,
-    APIRequestMovePlannedCourse
+    APIRequestMovePlannedCourse,
+    APIRequestPlannedCourse
 } from 'api/types/requestTypes'
 import { APIResponsePlannedCourse } from 'api/types/responseTypes'
+import axios from 'api'
 
 /**
  * Creates a new PlannedCourse.
  * @param course The new course information.
  */
-export function newPlannedCourseAPI (
+export async function newPlannedCourseAPI (
     course: APIRequestPlannedCourse
-): AxiosPromise<APIResponsePlannedCourse> {
-    return axios.post<APIResponsePlannedCourse>(
-        `http://localhost:8000/plannedcourse/`,
+): Promise<APIResponsePlannedCourse> {
+    const resp = await axios.post<APIResponsePlannedCourse>(
+        `/plannedcourse/`,
         course
     )
+    return resp.data
 }
 
 /**
  * Gets a PlannedCourse from the backend.
  * @param id The ID of the course to get.
  */
-export function getPlannedCourseAPI (
+export async function getPlannedCourseAPI (
     id: string
-): AxiosPromise<APIResponsePlannedCourse> {
-    return axios.get<APIResponsePlannedCourse>(
-        `http://localhost:8000/plannedcourse/${id}/`
+): Promise<APIResponsePlannedCourse> {
+    const resp = await axios.get<APIResponsePlannedCourse>(
+        `/plannedcourse/${id}/`
     )
+    return resp.data
 }
 
 /**
@@ -35,14 +37,15 @@ export function getPlannedCourseAPI (
  * @param course The new information of the course to update.
  * @param id The ID of the PlannedCourse to update.
  */
-export function updatePlannedCourseAPI (
+export async function updatePlannedCourseAPI (
     course: APIRequestPlannedCourse,
     id: string
-): AxiosPromise<APIResponsePlannedCourse> {
-    return axios.put<APIResponsePlannedCourse>(
-        `http://localhost:8000/plannedcourse/${id}/`,
+): Promise<APIResponsePlannedCourse> {
+    const resp = await axios.put<APIResponsePlannedCourse>(
+        `/plannedcourse/${id}/`,
         course
     )
+    return resp.data
 }
 
 /**
@@ -51,20 +54,22 @@ export function updatePlannedCourseAPI (
  * @param index The new index of the course.
  * @param newTerm The new term to assign this course to (if we're changing terms).
  */
-export function movePlannedCourseAPI (
+export async function movePlannedCourseAPI (
     req: APIRequestMovePlannedCourse,
     id: string
-) {
-    return axios.put<APIResponsePlannedCourse>(
-        `http://localhost:8000/plannedcourse/${id}/move/`,
+): Promise<APIResponsePlannedCourse> {
+    const resp = await axios.put<APIResponsePlannedCourse>(
+        `/plannedcourse/${id}/move/`,
         req
     )
+    return resp.data
 }
 
 /**
  * Deletes a PlannedCourse.
  * @param id The ID of the course to delete.
  */
-export function deletePlannedCourseAPI (id: string) {
-    return axios.delete(`http://localhost:8000/plannedcourse/${id}/`)
+export async function deletePlannedCourseAPI (id: string): Promise<{}> {
+    const resp = await axios.delete(`/plannedcourse/${id}/`)
+    return resp.data
 }

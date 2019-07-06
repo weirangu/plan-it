@@ -1,5 +1,6 @@
-import axios, { AxiosPromise, AxiosResponse } from 'axios'
+import axios from 'api'
 
-export function getCourseDetails (id: string): AxiosPromise<AxiosResponse> {
-    return axios.get(`http://localhost:8000/courses/`)
+export async function getCourseDetails (id: string): Promise<any> {
+    const resp = await axios.get(`/courses/${id}/`)
+    return resp.data
 }

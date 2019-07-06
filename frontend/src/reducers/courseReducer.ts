@@ -1,20 +1,27 @@
-import { Action, ActionType } from 'actions/types/actionTypes'
+import {
+    deletePlannedCourseAction,
+    movePlannedCourseAction,
+    updatePlannedCourseAction
+} from 'actions/plannedCourseActions'
+import { deleteTermAction } from 'actions/termActions'
 import { deleteFromDictionary, updateDictionary } from 'reducers/helpers'
 import { PlannedCourse } from 'reducers/types'
+import { createReducer, Reducer } from 'typesafe-actions'
+import { RootAction } from 'actions'
 
 /** The state for the course reducer. */
 export interface CourseReducerState {
-    [id: string]: PlannedCourse
+    readonly [id: string]: PlannedCourse
 }
 
-export function courseReducer (
-    state: CourseReducerState = {},
-    action: Action
-): CourseReducerState {
-    switch (action.type) {
-    case ActionType.UPDATE_PLANNED_COURSE:
-        return updateDictionary(state, action.payload.id, action.payload)
-    case ActionType.MOVE_PLANNED_COURSE:
+export const courseReducer: Reducer<
+CourseReducerState,
+RootAction
+> = createReducer({} as CourseReducerState)
+    .handleAction(updatePlannedCourseAction, (state, action) =>
+        updateDictionary(state, action.payload.id, action.payload)
+    )
+    .handleAction(movePlannedCourseAction, (state, action) => {
         if (action.payload.destTerm !== undefined) {
             const movedCourse = { ...state[action.payload.id] }
             movedCourse.term = action.payload.destTerm
@@ -23,9 +30,11 @@ export function courseReducer (
         // If we're here, then the term of the course never changed, so the
         // course doesn't need to change.
         return state
-    case ActionType.DELETE_PLANNED_COURSE:
-        return deleteFromDictionary(state, action.payload.id)
-    case ActionType.DELETE_TERM:
+    })
+    .handleAction(deletePlannedCourseAction, (state, action) =>
+        deleteFromDictionary(state, action.payload.id)
+    )
+    .handleAction(deleteTermAction, (state, action) => {
         const stateCopy = { ...state }
         for (const id in state) {
             if (state[id].term === action.payload.id) {
@@ -33,9 +42,6 @@ export function courseReducer (
             }
         }
         return stateCopy
-    default:
-        return state
-    }
-}
+    })
 
 export default courseReducer

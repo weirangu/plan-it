@@ -17,7 +17,7 @@ export function getPlan (id: string) {
         dispatch: ThunkDispatch<State, void, AnyAction>
     ): Promise<void> => {
         const resp = await getPlanAPI(id)
-        batch(() => updatePlan(resp.data, dispatch))
+        batch(() => updatePlan(resp, dispatch))
     }
 }
 
@@ -28,7 +28,7 @@ export function getPlan (id: string) {
 export function newPlan (plan: APIRequestPlan) {
     return async (dispatch: Dispatch<AnyAction>): Promise<void> => {
         const resp = await newPlanAPI(plan)
-        batch(() => updatePlan(resp.data, dispatch))
+        batch(() => updatePlan(resp, dispatch))
     }
 }
 
@@ -43,9 +43,9 @@ export function updatePlan (
     dispatch: Dispatch<AnyAction>
 ): void {
     dispatch(
-        updatePlanAction({
+        updatePlanAction(plan.id, {
             ...plan,
-            terms: plan.terms.map((course: APIResponseTerm) => course.id)
+            terms: plan.terms.map((term: APIResponseTerm) => term.id)
         })
     )
     plan.terms.forEach((term: APIResponseTerm) => updateTerm(term, dispatch))

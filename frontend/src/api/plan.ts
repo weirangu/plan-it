@@ -1,23 +1,25 @@
-import axios, { AxiosPromise } from 'axios'
-import { APIResponsePlan } from 'api/types/responseTypes'
 import { APIRequestPlan } from 'api/types/requestTypes'
+import { APIResponsePlan } from 'api/types/responseTypes'
+import axios from 'api'
 
 /**
  * Generates a new plan on the backend.
  * @param plan The information of the new plan.
  */
-export function newPlanAPI (
+export async function newPlanAPI (
     plan: APIRequestPlan
-): AxiosPromise<APIResponsePlan> {
-    return axios.post<APIResponsePlan>(`http://localhost:8000/plan/`, plan)
+): Promise<APIResponsePlan> {
+    const resp = await axios.post<APIResponsePlan>(`/plan/`, plan)
+    return resp.data
 }
 
 /**
  * Gets an existing Plan from the backend.
  * @param id The ID of the plan to get from the backend.
  */
-export function getPlanAPI (id: string): AxiosPromise<APIResponsePlan> {
-    return axios.get<APIResponsePlan>(`http://localhost:8000/plan/${id}/`)
+export async function getPlanAPI (id: string): Promise<APIResponsePlan> {
+    const resp = await axios.get<APIResponsePlan>(`/plan/${id}/`)
+    return resp.data
 }
 
 /**
@@ -25,9 +27,10 @@ export function getPlanAPI (id: string): AxiosPromise<APIResponsePlan> {
  * @param plan The new information of the plan.
  * @param id The ID of the plan to update.
  */
-export function updatePlanAPI (
+export async function updatePlanAPI (
     plan: APIRequestPlan,
     id: string
-): AxiosPromise<APIResponsePlan> {
-    return axios.put<APIResponsePlan>(`http://localhost:8000/plan/${id}/`, plan)
+): Promise<APIResponsePlan> {
+    const resp = await axios.put<APIResponsePlan>(`/plan/${id}/`, plan)
+    return resp.data
 }

@@ -61,7 +61,5 @@ export function updateDictionary<T> (
     id: string,
     data: T
 ): { [id: string]: T } {
-    const dictCopy = { ...dictionary }
-    dictCopy[id] = data
-    return dictCopy
+    return { ...dictionary, [id]: data }
 }

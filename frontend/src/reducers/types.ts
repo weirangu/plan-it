@@ -1,8 +1,6 @@
 import { TermReducerState } from './termReducer'
 import { CourseReducerState } from './courseReducer'
 
-// This file contains the different types used in the redux state
-
 /**
  * An interface with the property id. Use this in conjunction to the other types
  * defined in this file to create a type with the ID field.
@@ -46,7 +44,7 @@ export interface Plan {
  * The main state for the rootReducer.
  */
 export interface State {
-    plan: Plan
-    terms: TermReducerState
-    courses: CourseReducerState
+    readonly plan: Plan
+    readonly terms: TermReducerState
+    readonly courses: CourseReducerState
 }

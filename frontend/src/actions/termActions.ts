@@ -1,13 +1,14 @@
-import { ActionType } from 'actions/types/actionTypes'
-import { ID, Term } from 'reducers/types'
-import { DeleteTermAction, UpdateTermAction } from './types/termTypes'
+import { action, createAction } from 'typesafe-actions'
 
 /** Deletes a term in the plan. */
-export function deleteTermAction (payload: ID): DeleteTermAction {
-    return { type: ActionType.DELETE_TERM, payload: payload }
-}
+export const deleteTermAction = createAction(
+    'DELETE_TERM',
+    action => (id: string) => action({ id })
+)
 
 /** Updates or adds a term in the plan. */
-export function updateTermAction (payload: Term & ID): UpdateTermAction {
-    return { type: ActionType.UPDATE_TERM, payload: payload }
-}
+export const updateTermAction = createAction(
+    'UPDATE_TERM',
+    action => (id: string, name: string, courses: string[], plan: string) =>
+        action({ id, name, courses, plan })
+)

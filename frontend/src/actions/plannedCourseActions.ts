@@ -1,40 +1,31 @@
-import { ActionType } from 'actions/types/actionTypes'
-import {
-    DeletePlannedCourseAction,
-    MovePlannedCourseAction,
-    PlannedCoursePayload,
-    UpdatePlannedCourseAction
-} from 'actions/types/plannedCourseTypes'
 import store from 'store'
+import { createAction } from 'typesafe-actions'
 
 /** Updates or adds a course in the plan. */
-export function updatePlannedCourseAction (
-    payload: PlannedCoursePayload
-): UpdatePlannedCourseAction {
-    return { type: ActionType.UPDATE_PLANNED_COURSE, payload: payload }
-}
+export const updatePlannedCourseAction = createAction(
+    'UPDATE_PLANNED_COURSE',
+    action => (course: string, term: string, id: string, index: number) =>
+        action({ course, term, id, index })
+)
 
-export function movePlannedCourseAction (payload: {
-id: string
-index: number
-destTerm?: string
-}): MovePlannedCourseAction {
-    return {
-        type: ActionType.MOVE_PLANNED_COURSE,
-        payload: {
-            sourceTerm: store.getState().courses[payload.id].term,
-            ...payload
-        }
-    }
-}
+/** Moves a PlannedCourse in the plan. */
+export const movePlannedCourseAction = createAction(
+    'MOVE_PLANNED_COURSE',
+    action => (id: string, index: number, destTerm?: string) =>
+        action({
+            sourceTerm: store.getState().courses[id].term,
+            id,
+            index,
+            destTerm
+        })
+)
 
 /** Deletes a course in the plan. */
-export function deleteCourseAction (id: string): DeletePlannedCourseAction {
-    return {
-        type: ActionType.DELETE_PLANNED_COURSE,
-        payload: {
-            id: id,
+export const deletePlannedCourseAction = createAction(
+    'DELETE_PLANNED_COURSE',
+    action => (id: string) =>
+        action({
+            id,
             term: store.getState().courses[id].term
-        }
-    }
-}
+        })
+)

@@ -1,23 +1,25 @@
-import axios, { AxiosPromise } from 'axios'
 import { APIRequestTerm } from 'api/types/requestTypes'
 import { APIResponseTerm } from 'api/types/responseTypes'
+import axios from 'api'
 
 /**
  * Creates a new term in the backend.
  * @param term The information of the new term to make.
  */
-export function newTermAPI (
+export async function newTermAPI (
     term: APIRequestTerm
-): AxiosPromise<APIResponseTerm> {
-    return axios.post<APIResponseTerm>(`http://localhost:8000/term/`, term)
+): Promise<APIResponseTerm> {
+    const resp = await axios.post<APIResponseTerm>(`/term/`, term)
+    return resp.data
 }
 
 /**
  * Gets a term from the backend.
  * @param id The ID of the term to get.
  */
-export function getTermAPI (id: string): AxiosPromise<APIResponseTerm> {
-    return axios.get<APIResponseTerm>(`http://localhost:8000/term/${id}/`)
+export async function getTermAPI (id: string): Promise<APIResponseTerm> {
+    const resp = await axios.get<APIResponseTerm>(`/term/${id}/`)
+    return resp.data
 }
 
 /**
@@ -25,17 +27,19 @@ export function getTermAPI (id: string): AxiosPromise<APIResponseTerm> {
  * @param term The updated information of the term.
  * @param id The ID of the term to update.
  */
-export function updateTermAPI (
+export async function updateTermAPI (
     term: APIRequestTerm,
     id: string
-): AxiosPromise<APIResponseTerm> {
-    return axios.put<APIResponseTerm>(`http://localhost:8000/term/${id}/`, term)
+): Promise<APIResponseTerm> {
+    const resp = await axios.put<APIResponseTerm>(`/term/${id}/`, term)
+    return resp.data
 }
 
 /**
  * Gets a term from the backend.
  * @param id The ID of the term to get.
  */
-export function deleteTermAPI (id: string): AxiosPromise<APIResponseTerm> {
-    return axios.delete(`http://localhost:8000/term/${id}/`)
+export async function deleteTermAPI (id: string): Promise<{}> {
+    const resp = await axios.delete(`/term/${id}/`)
+    return resp.data
 }
