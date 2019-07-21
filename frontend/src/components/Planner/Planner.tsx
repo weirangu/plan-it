@@ -1,10 +1,10 @@
 import PlannerList from 'components/Planner/PlannerList'
-import { movePlannedCourse } from 'effects/course'
+import { movePlannedCourse } from 'effects/plannedCourse'
 import { deleteTerm, newTerm } from 'effects/term'
 import React from 'react'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import { connect } from 'react-redux'
-import { CourseReducerState } from 'reducers/courseReducer'
+import { PlannedCourseReducerState } from 'reducers/plannedCourseReducer'
 import { TermReducerState } from 'reducers/termReducer'
 import { Plan, State, Term } from 'reducers/types'
 import { AnyAction } from 'redux'
@@ -15,7 +15,7 @@ import './planner.css'
 export interface PlannerProps {
     plan: Plan
     terms: TermReducerState
-    courses: CourseReducerState
+    plannedCourses: PlannedCourseReducerState
     addTerm: (term: Term) => any // Provided by mapDispatchToProps
     delTerm: (id: string) => any // Provided by mapDispatchToProps
 }
@@ -51,10 +51,10 @@ function onDragEnd (result: DropResult, terms: TermReducerState): void {
 const ConnectedPlanner: React.FC<PlannerProps> = (props: PlannerProps) => (
     <DragDropContext onDragEnd={result => onDragEnd(result, props.terms)}>
         {props.plan.terms.map((val: string) => {
-            const { terms, courses } = props
+            const { terms, plannedCourses } = props
             const courseArray = terms[val].courses.map((id: string) => ({
                 id,
-                ...courses[id]
+                ...plannedCourses[id]
             }))
             return (
                 <div>

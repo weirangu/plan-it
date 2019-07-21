@@ -20,16 +20,17 @@ class Course(models.Model):
         (4, "Living Things and Their Environment"),
         (5, "The Physical and Mathematical Universes")
     )
-    # The 3 letter department code (e.g. CSC)
-    department = models.CharField(max_length=3)
-
-    # The course number (e.g. 148 for CSC148, or B07 for CSCB07)
-    number = models.CharField(max_length=3)
+    # The full course code (e.g. CSC148H1F, or CSCB07H3S), grad courses are 10
+    # chars long
+    code = models.CharField(max_length=10)
     length = models.CharField(max_length=1, choices=LENGTH)
     name = models.TextField()
     description = models.TextField()
     prerequisites = models.TextField()
     exclusions = models.TextField()
+
+    # The faculty (e.g. Faculty of Arts and Sciences)
+    faculty = models.TextField()
     campus = models.CharField(max_length=4, choices=CAMPUS)
 
     # The year and month offered. Represented in the format YYYYM (e.g. 20191)
@@ -38,6 +39,3 @@ class Course(models.Model):
 
     # Some courses have 2 breadth requirements
     breadth2 = models.PositiveSmallIntegerField(null=True, choices=BREADTH)
-
-    class Meta:
-        unique_together = ["department", "number", "term"]

@@ -1,0 +1,8 @@
+.courseInfo {
+    background: #202b44;
+}
+
+.courseInfo * {
+    margin: 16px 16px 16px 16px;
+    color: white;
+}

@@ -1,5 +1,7 @@
 from django.db import transaction
 from django.db.models import F
+from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -10,12 +12,31 @@ from .serializers import (CourseSerializer, PlanSerializer, TermSerializer,
                           PlannedCourseSerializer)
 
 
-class CourseViewSet(viewsets.ReadOnlyModelViewSet):
+class CourseViewSet(viewsets.ViewSet):
     """
-    A simple viewset for courses.
+    A viewset for courses.
     """
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+
+    def retrieve(self, request, pk=None, **kwargs):
+        if len(pk) == 14:
+            # pk is in the form CSC148H1F20189
+            code = pk[:9]
+            term = pk[9:]
+            query = self.queryset.filter(code__exact=code, term__exact=term)
+            course = CourseSerializer(get_object_or_404(query))
+            return Response(course.data)
+        elif len(pk) == 9 or len(pk) == 8:
+            # pk is in the form CSC148H1F or CSC148H1, we'll return the most
+            # recent
+            query = self.queryset.filter(code__contains=pk)
+            recent_course = query.order_by("-term").first()
+            if recent_course is None:
+                raise Http404
+            return Response(CourseSerializer(recent_course).data)
+        else:
+            raise Http404
 
 
 class PlanViewSet(viewsets.ModelViewSet):
@@ -47,7 +68,7 @@ class PlannedCourseViewSet(viewsets.ModelViewSet):
         Moves a PlannedCourse in the term. This updates the indices of all
         affected PlannedCourses.
         """
-        course = PlannedCourse.objects.get(id__exact=pk)
+        course = PlannedCourse.objects.get(pk=pk)
         new_index = request.data["index"]
 
         if "term" not in request.data or request.data["term"] == course.term:
@@ -59,7 +80,7 @@ class PlannedCourseViewSet(viewsets.ModelViewSet):
         resp = {"updatedTerms": TermSerializer(terms, many=True).data}
         return Response(resp, status=status.HTTP_200_OK)
 
-    @transaction.atomic()
+    @transaction.atomic
     def move_to_new_term(self, course, index, term):
         """
         Moves a course to a new term.
@@ -67,6 +88,7 @@ class PlannedCourseViewSet(viewsets.ModelViewSet):
         """
         old_index = course.index
         old_term = course.term.id  # We'll need it when we get the old term data
+
         PlannedCourse.objects \
             .filter(term__exact=course.term, index__gt=old_index) \
             .update(index=F('index') - 1)
@@ -74,24 +96,21 @@ class PlannedCourseViewSet(viewsets.ModelViewSet):
         PlannedCourse.objects \
             .filter(term__exact=term, index__gte=index) \
             .update(index=F('index') + 1)
-        course.term = Term.objects.get(id__exact=term)
+
+        course.term = Term.objects.get(pk=term)
         course.index = index
         course.save()
 
-        return [Term.objects.get(id__exact=old_term),
-                Term.objects.get(id__exact=term)]
+        return [Term.objects.get(pk=old_term),
+                Term.objects.get(pk=term)]
 
-    @transaction.atomic()
+    @transaction.atomic
     def move_course(self, course, index):
         """
         Moves a course without changing terms.
         Returns the term that was modified.
         """
         old_index = course.index
-
-        # Temporary value so that we can move the other courses
-        course.index = -1
-        course.save()
 
         courses_in_term = PlannedCourse.objects \
             .filter(term__exact=course.term)
@@ -108,4 +127,4 @@ class PlannedCourseViewSet(viewsets.ModelViewSet):
 
         course.index = index
         course.save()
-        return Term.objects.get(id__exact=course.term.id)
+        return Term.objects.get(pk=course.term.id)

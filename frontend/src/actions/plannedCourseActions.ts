@@ -13,7 +13,7 @@ export const movePlannedCourseAction = createAction(
     'MOVE_PLANNED_COURSE',
     action => (id: string, index: number, destTerm?: string) =>
         action({
-            sourceTerm: store.getState().courses[id].term,
+            sourceTerm: store.getState().plannedCourses[id].term,
             id,
             index,
             destTerm
@@ -26,6 +26,6 @@ export const deletePlannedCourseAction = createAction(
     action => (id: string) =>
         action({
             id,
-            term: store.getState().courses[id].term
+            term: store.getState().plannedCourses[id].term
         })
 )

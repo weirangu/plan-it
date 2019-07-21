@@ -1,4 +1,5 @@
 import { TermReducerState } from './termReducer'
+import { PlannedCourseReducerState } from './plannedCourseReducer'
 import { CourseReducerState } from './courseReducer'
 
 /**
@@ -40,11 +41,24 @@ export interface Plan {
     terms: string[] // The term IDs are stored here
 }
 
+/** A course's information. */
+export interface Course {
+    code: string
+    name: string
+    description: string
+    prerequisites: string
+    exclusions: string
+    faculty: string
+    campus: string
+    breadth: string[]
+}
+
 /**
  * The main state for the rootReducer.
  */
 export interface State {
     readonly plan: Plan
     readonly terms: TermReducerState
+    readonly plannedCourses: PlannedCourseReducerState
     readonly courses: CourseReducerState
 }

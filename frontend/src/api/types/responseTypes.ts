@@ -1,5 +1,5 @@
 /**
- * This file contains all the types that the API uses in a response.
+ * This file contains all the types that the API returns in a response.
  */
 
 /** The type for a Plan returned by the backend. */

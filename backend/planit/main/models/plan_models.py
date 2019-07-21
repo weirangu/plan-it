@@ -33,4 +33,3 @@ class PlannedCourse(models.Model):
 
     class Meta:
         ordering = ["index"]
-        unique_together = ("index", "term")
