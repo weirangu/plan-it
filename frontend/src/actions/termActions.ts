@@ -1,4 +1,4 @@
-import { action, createAction } from 'typesafe-actions'
+import { createAction } from 'typesafe-actions'
 
 /** Deletes a term in the plan. */
 export const deleteTermAction = createAction(

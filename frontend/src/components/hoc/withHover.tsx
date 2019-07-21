@@ -7,15 +7,15 @@ export interface WithHoverProps<P1, P2> {
     showHover: boolean
 }
 
-export function withHover<P1, P2> (
+export function withHover<P1, P2>(
     MainComponent: React.ComponentType<P1>,
     ComponentOnHover: React.ComponentType<P2>
 ): typeof React.Component {
     return class extends React.Component<
         WithHoverProps<P1, P2>,
         { showHover: boolean }
-        > {
-        constructor (props: WithHoverProps<P1, P2>) {
+    > {
+        constructor(props: WithHoverProps<P1, P2>) {
             super(props)
             this.state = { showHover: false }
         }
@@ -28,14 +28,14 @@ export function withHover<P1, P2> (
             this.setState({ showHover: false })
         }
 
-        render (): JSX.Element {
+        render(): JSX.Element {
             const componentsToShow = [
-                <MainComponent {...this.props.mainProps as P1} />
+                <MainComponent {...(this.props.mainProps as P1)} />
             ]
             if (this.state.showHover) {
                 componentsToShow.push(
                     <div className="overlay">
-                        <ComponentOnHover {...this.props.hoverProps as P2} />
+                        <ComponentOnHover {...(this.props.hoverProps as P2)} />
                     </div>
                 )
             }
@@ -43,7 +43,8 @@ export function withHover<P1, P2> (
             return (
                 <div
                     onMouseOver={this.showHoverComponent}
-                    onMouseOut={this.hideHoverComponent}>
+                    onMouseOut={this.hideHoverComponent}
+                >
                     {componentsToShow}
                 </div>
             )

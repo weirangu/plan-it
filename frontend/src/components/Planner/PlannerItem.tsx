@@ -17,7 +17,8 @@ const PlannerItem: React.FC<PlannerItemProps> = (props: PlannerItemProps) => (
                 className="a class"
                 ref={provided.innerRef}
                 {...provided.draggableProps}
-                {...provided.dragHandleProps}>
+                {...provided.dragHandleProps}
+            >
                 {props.course.course}
                 <button onClick={props.delete}>X</button>
             </div>

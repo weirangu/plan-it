@@ -17,7 +17,7 @@ import {
  * @param course The course name to add.
  * @param term The term to add the course to.
  */
-export function addPlannedCourse (course: string, term: string) {
+export function addPlannedCourse(course: string, term: string) {
     return async (
         dispatch: ThunkDispatch<State, void, AnyAction>,
         getState: () => State
@@ -43,7 +43,7 @@ export function addPlannedCourse (course: string, term: string) {
  * @param destTerm The destination term (if it is different from the current
  * term.)
  */
-export function movePlannedCourse (
+export function movePlannedCourse(
     id: string,
     index: number,
     destTerm?: string
@@ -60,7 +60,7 @@ export function movePlannedCourse (
  * Deletes a course.
  * @param id The ID of the course to delete.
  */
-export function deletePlannedCourse (id: string) {
+export function deletePlannedCourse(id: string) {
     return async (
         dispatch: ThunkDispatch<State, void, AnyAction>
     ): Promise<AnyAction> => {

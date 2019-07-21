@@ -4,7 +4,7 @@ import { State } from 'reducers/types'
 import { AnyAction } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
 
-export function getCourse (id: string) {
+export function getCourse(id: string) {
     return async (
         dispatch: ThunkDispatch<State, void, AnyAction>
     ): Promise<void> => {

@@ -15,25 +15,27 @@ export interface AddCourseItemState {
 class AddCourseItem extends React.Component<
     AddCourseItemProps,
     AddCourseItemState
-    > {
-    constructor (props: AddCourseItemProps) {
+> {
+    constructor(props: AddCourseItemProps) {
         super(props)
         this.state = {
             courseCode: ''
         }
     }
 
-    render () {
+    render() {
         return (
             <Draggable
                 key={'my props'}
                 draggableId={'my props'}
-                index={this.props.index}>
+                index={this.props.index}
+            >
                 {(provided: any) => (
                     <div
                         ref={provided.innerRef}
                         {...provided.draggableProps}
-                        {...provided.dragHandleProps}>
+                        {...provided.dragHandleProps}
+                    >
                         <div>
                             <input
                                 type="text"
@@ -48,7 +50,8 @@ class AddCourseItem extends React.Component<
                             <button
                                 onClick={() =>
                                     this.props.add(this.state.courseCode)
-                                }>
+                                }
+                            >
                                 Add
                             </button>
                         </div>

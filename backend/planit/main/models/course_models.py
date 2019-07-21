@@ -3,22 +3,22 @@ from django.db import models
 
 class Course(models.Model):
     LENGTH = (
-        ("H", "Half Year"),
-        ("Y", 'Full Year')
+        ('H', 'Half Year'),
+        ('Y', 'Full Year')
     )
 
     CAMPUS = (
-        ("UTSG", "St. George"),
-        ('UTM', "Mississauga"),
-        ("UTSC", "Scarborough")
+        ('UTSG', 'St. George'),
+        ('UTM', 'Mississauga'),
+        ('UTSC', 'Scarborough')
     )
 
     BREADTH = (
-        (1, "Creative and Cultural Representations"),
-        (2, "Thought, Belief, and Behaviour"),
-        (3, "Society and Its Institutions"),
-        (4, "Living Things and Their Environment"),
-        (5, "The Physical and Mathematical Universes")
+        (1, 'Creative and Cultural Representations'),
+        (2, 'Thought, Belief, and Behaviour'),
+        (3, 'Society and Its Institutions'),
+        (4, 'Living Things and Their Environment'),
+        (5, 'The Physical and Mathematical Universes')
     )
     # The full course code (e.g. CSC148H1F, or CSCB07H3S), grad courses are 10
     # chars long

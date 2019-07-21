@@ -1,6 +1,6 @@
 import { updatePlannedCourseAction } from 'actions/plannedCourseActions'
 import { deleteTermAction, updateTermAction } from 'actions/termActions'
-import { deleteTermAPI, getTermAPI, newTermAPI } from 'api/term'
+import { deleteTermAPI, newTermAPI } from 'api/term'
 import { APIRequestTerm } from 'api/types/requestTypes'
 import {
     APIResponsePlannedCourse,
@@ -16,7 +16,7 @@ import { ThunkDispatch } from 'redux-thunk'
  * @param term The response from the API.
  * @param dispatch The function used to dispatch actions.
  */
-export function updateTerm (
+export function updateTerm(
     term: APIResponseTerm,
     dispatch: Dispatch<AnyAction>
 ): void {
@@ -44,7 +44,7 @@ export function updateTerm (
  * Sets the Redux term with the data of a new term from the API.
  * @param name The name of the term and the planID to POST to the backend.
  */
-export function newTerm (term: APIRequestTerm) {
+export function newTerm(term: APIRequestTerm) {
     return async (
         dispatch: ThunkDispatch<State, void, AnyAction>
     ): Promise<void> => {
@@ -57,7 +57,7 @@ export function newTerm (term: APIRequestTerm) {
  * Deletes a term from the plan.
  * @param id The ID of the plan to delete.
  */
-export function deleteTerm (id: string) {
+export function deleteTerm(id: string) {
     return async (dispatch: Dispatch<AnyAction>): Promise<AnyAction> => {
         const resp = await deleteTermAPI(id)
         return dispatch(deleteTermAction(id))

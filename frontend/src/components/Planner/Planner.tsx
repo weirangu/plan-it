@@ -20,18 +20,18 @@ export interface PlannerProps {
     delTerm: (id: string) => any // Provided by mapDispatchToProps
 }
 
-function mapStateToProps (state: State): State {
+function mapStateToProps(state: State): State {
     return state
 }
 
-function mapDispatchToProps (dispatch: ThunkDispatch<State, void, AnyAction>) {
+function mapDispatchToProps(dispatch: ThunkDispatch<State, void, AnyAction>) {
     return {
         addTerm: (term: Term) => dispatch(newTerm(term)),
         delTerm: (id: string) => dispatch(deleteTerm(id))
     }
 }
 
-function onDragEnd (result: DropResult, terms: TermReducerState): void {
+function onDragEnd(result: DropResult, terms: TermReducerState): void {
     if (!result.destination) {
         return
     }
@@ -77,7 +77,8 @@ const ConnectedPlanner: React.FC<PlannerProps> = (props: PlannerProps) => (
                     courses: [],
                     plan: props.plan.id as string
                 })
-            }>
+            }
+        >
             Add Term
         </button>
     </DragDropContext>

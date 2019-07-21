@@ -12,7 +12,7 @@ import { ThunkDispatch } from 'redux-thunk'
  * Gets the Redux plan with the data of a plan from the API.
  * @param id The ID of the plan to set.
  */
-export function getPlan (id: string) {
+export function getPlan(id: string) {
     return async (
         dispatch: ThunkDispatch<State, void, AnyAction>
     ): Promise<void> => {
@@ -25,7 +25,7 @@ export function getPlan (id: string) {
  * Sets the Redux plan with the data of a new plan from the API.
  * @param plan The new plan to POST to the backend.
  */
-export function newPlan (plan: APIRequestPlan) {
+export function newPlan(plan: APIRequestPlan) {
     return async (dispatch: Dispatch<AnyAction>): Promise<void> => {
         const resp = await newPlanAPI(plan)
         batch(() => updatePlan(resp, dispatch))
@@ -38,7 +38,7 @@ export function newPlan (plan: APIRequestPlan) {
  * @param plan The response from the API.
  * @param dispatch The function used to dispatch actions.
  */
-export function updatePlan (
+export function updatePlan(
     plan: APIResponsePlan,
     dispatch: Dispatch<AnyAction>
 ): void {

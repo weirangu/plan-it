@@ -31,7 +31,7 @@ class CourseViewSet(viewsets.ViewSet):
             # pk is in the form CSC148H1F or CSC148H1, we'll return the most
             # recent
             query = self.queryset.filter(code__contains=pk)
-            recent_course = query.order_by("-term").first()
+            recent_course = query.order_by('-term').first()
             if recent_course is None:
                 raise Http404
             return Response(CourseSerializer(recent_course).data)
@@ -69,15 +69,15 @@ class PlannedCourseViewSet(viewsets.ModelViewSet):
         affected PlannedCourses.
         """
         course = PlannedCourse.objects.get(pk=pk)
-        new_index = request.data["index"]
+        new_index = request.data['index']
 
-        if "term" not in request.data or request.data["term"] == course.term:
+        if 'term' not in request.data or request.data['term'] == course.term:
             terms = [self.move_course(course, new_index)]
         else:
             terms = self.move_to_new_term(course, new_index,
-                                          request.data["term"])
+                                          request.data['term'])
 
-        resp = {"updatedTerms": TermSerializer(terms, many=True).data}
+        resp = dict(updatedTerms=TermSerializer(terms, many=True).data)
         return Response(resp, status=status.HTTP_200_OK)
 
     @transaction.atomic

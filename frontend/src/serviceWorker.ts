@@ -12,22 +12,22 @@
 
 const isLocalhost = Boolean(
     window.location.hostname === 'localhost' ||
-    // [::1] is the IPv6 localhost address.
-    window.location.hostname === '[::1]' ||
-    // 127.0.0.1/8 is considered localhost for IPv4.
-    window.location.hostname.match(
-        /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
-    )
+        // [::1] is the IPv6 localhost address.
+        window.location.hostname === '[::1]' ||
+        // 127.0.0.1/8 is considered localhost for IPv4.
+        window.location.hostname.match(
+            /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
+        )
 )
 
 type Config = {
-  onSuccess?: (registration: ServiceWorkerRegistration) => void;
-  onUpdate?: (registration: ServiceWorkerRegistration) => void;
-};
+    onSuccess?: (registration: ServiceWorkerRegistration) => void
+    onUpdate?: (registration: ServiceWorkerRegistration) => void
+}
 
-export function register (config?: Config) {
+export function register(config?: Config) {
     if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
-    // The URL constructor is available in all browsers that support SW.
+        // The URL constructor is available in all browsers that support SW.
         const publicUrl = new URL(
             (process as { env: { [key: string]: string } }).env.PUBLIC_URL,
             window.location.href
@@ -51,7 +51,7 @@ export function register (config?: Config) {
                 navigator.serviceWorker.ready.then(() => {
                     console.log(
                         'This web app is being served cache-first by a service ' +
-              'worker. To learn more, visit https://bit.ly/CRA-PWA'
+                            'worker. To learn more, visit https://bit.ly/CRA-PWA'
                     )
                 })
             } else {
@@ -62,7 +62,7 @@ export function register (config?: Config) {
     }
 }
 
-function registerValidSW (swUrl: string, config?: Config) {
+function registerValidSW(swUrl: string, config?: Config) {
     navigator.serviceWorker
         .register(swUrl)
         .then(registration => {
@@ -79,7 +79,7 @@ function registerValidSW (swUrl: string, config?: Config) {
                             // content until all client tabs are closed.
                             console.log(
                                 'New content is available and will be used when all ' +
-                  'tabs for this page are closed. See https://bit.ly/CRA-PWA.'
+                                    'tabs for this page are closed. See https://bit.ly/CRA-PWA.'
                             )
 
                             // Execute callback
@@ -106,7 +106,7 @@ function registerValidSW (swUrl: string, config?: Config) {
         })
 }
 
-function checkValidServiceWorker (swUrl: string, config?: Config) {
+function checkValidServiceWorker(swUrl: string, config?: Config) {
     // Check if the service worker can be found. If it can't reload the page.
     fetch(swUrl)
         .then(response => {
@@ -114,7 +114,8 @@ function checkValidServiceWorker (swUrl: string, config?: Config) {
             const contentType = response.headers.get('content-type')
             if (
                 response.status === 404 ||
-        (contentType != null && contentType.indexOf('javascript') === -1)
+                (contentType != null &&
+                    contentType.indexOf('javascript') === -1)
             ) {
                 // No service worker found. Probably a different app. Reload the page.
                 navigator.serviceWorker.ready.then(registration => {
@@ -134,7 +135,7 @@ function checkValidServiceWorker (swUrl: string, config?: Config) {
         })
 }
 
-export function unregister () {
+export function unregister() {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.ready.then(registration => {
             registration.unregister()

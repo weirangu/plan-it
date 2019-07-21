@@ -7,7 +7,7 @@ import { ID } from './types'
  * @param ids The list of IDs to delete from the dictionary.
  * @returns A copy of the dictionary without any of the IDs in `ids`.
  */
-export function deleteMultipleFromDictionary<V> (
+export function deleteMultipleFromDictionary<V>(
     dict: { [id: string]: V },
     ids: string[]
 ) {
@@ -25,7 +25,7 @@ export function deleteMultipleFromDictionary<V> (
  * @param id The id of the element to delete.
  * @returns A copy of the dictionary without `id`.
  */
-export function deleteFromDictionary<T> (
+export function deleteFromDictionary<T>(
     dict: { [id: string]: T },
     id: string
 ): { [id: string]: T } {
@@ -40,7 +40,7 @@ export function deleteFromDictionary<T> (
  * @param data An array of IDs and their data to add/update in the dictionary.
  * @returns A copy of the dictionary with the updated data.
  */
-export function updateMultipleInDictionary<T> (
+export function updateMultipleInDictionary<T>(
     dictionary: { [id: string]: T },
     data: (T & ID)[]
 ): { [id: string]: T } {
@@ -56,7 +56,7 @@ export function updateMultipleInDictionary<T> (
  * @param data The data to update in the dictionary.
  * @returns A copy of the dictionary with the updated data.
  */
-export function updateDictionary<T> (
+export function updateDictionary<T>(
     dictionary: { [id: string]: T },
     id: string,
     data: T

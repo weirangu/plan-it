@@ -11,7 +11,7 @@ const store = createStore(
 )
 
 // The following functions handle saving the store whenever it is updated
-function saveState (id: string) {
+function saveState(id: string) {
     localStorage.setItem('planID', id)
 }
 
@@ -26,7 +26,7 @@ store.subscribe(() => {
  * Gets the Plan from localStorage, or gets a new one from the backend
  * if one doesn't exist. This is done on page load.
  */
-function getInitialPlan (): void {
+function getInitialPlan(): void {
     let id: string | null = localStorage.getItem('planID')
 
     if (id !== null) {

@@ -133,4 +133,4 @@ STATIC_URL = '/static/'
 # CORS Headers Configuration
 # https://github.com/ottoyiu/django-cors-headers/
 
-CORS_ORIGIN_WHITELIST = os.getenv("CORS_WHITELIST").split(",")
+CORS_ORIGIN_WHITELIST = os.getenv('CORS_WHITELIST').split(',')

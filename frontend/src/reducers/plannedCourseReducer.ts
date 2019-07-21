@@ -1,3 +1,4 @@
+import { RootAction } from 'actions'
 import {
     deletePlannedCourseAction,
     movePlannedCourseAction,
@@ -7,8 +8,6 @@ import { deleteTermAction } from 'actions/termActions'
 import { deleteFromDictionary, updateDictionary } from 'reducers/helpers'
 import { PlannedCourse } from 'reducers/types'
 import { createReducer, Reducer } from 'typesafe-actions'
-import { RootAction } from 'actions'
-import { cacheCourseAction } from 'actions/courseActions'
 
 /** The state for the PlannedCourse reducer. */
 export interface PlannedCourseReducerState {
@@ -16,8 +15,8 @@ export interface PlannedCourseReducerState {
 }
 
 export const plannedCourseReducer: Reducer<
-PlannedCourseReducerState,
-RootAction
+    PlannedCourseReducerState,
+    RootAction
 > = createReducer({} as PlannedCourseReducerState)
     .handleAction(updatePlannedCourseAction, (state, action) =>
         updateDictionary(state, action.payload.id, action.payload)

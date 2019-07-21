@@ -23,7 +23,7 @@ export interface PlannerListState {
     addPlannerItems: AddCourseItemProps | null
 }
 
-function mapDispatchToProps (dispatch: ThunkDispatch<State, void, AnyAction>) {
+function mapDispatchToProps(dispatch: ThunkDispatch<State, void, AnyAction>) {
     return {
         add: (course: string, term: string) =>
             dispatch(addPlannedCourse(course, term)),
@@ -36,8 +36,8 @@ const PlannerItemWithHover = withHover(PlannerItem, CourseInfo)
 class ConnectedPlannerList extends React.Component<
     PlannerListProps,
     PlannerListState
-    > {
-    constructor (props: PlannerListProps) {
+> {
+    constructor(props: PlannerListProps) {
         super(props)
         this.state = { addPlannerItems: null }
     }
@@ -57,7 +57,7 @@ class ConnectedPlannerList extends React.Component<
         this.setState({ addPlannerItems: null })
     }
 
-    render () {
+    render() {
         const components = this.props.items.map(
             (item: PlannedCourse & ID, index: number) => (
                 <PlannerItemWithHover
@@ -81,13 +81,15 @@ class ConnectedPlannerList extends React.Component<
             <Droppable
                 droppableId={this.props.id}
                 key={this.props.id}
-                direction="horizontal">
+                direction="horizontal"
+            >
                 {(provided: any) => (
                     <div>
                         <div
                             className="name container"
                             ref={provided.innerRef}
-                            {...provided.droppableProps}>
+                            {...provided.droppableProps}
+                        >
                             {components}
                             {provided.placeholder}
                         </div>
