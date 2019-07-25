@@ -7,7 +7,7 @@ import {
     APIResponseTerm
 } from 'api/types/responseTypes'
 import { batch } from 'react-redux'
-import { State } from 'reducers/types'
+import { RootState } from 'reducers/types'
 import { AnyAction, Dispatch } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
 
@@ -41,12 +41,12 @@ export function updateTerm(
 }
 
 /**
- * Sets the Redux term with the data of a new term from the API.
- * @param name The name of the term and the planID to POST to the backend.
+ * Sets the term in the Redux state with the data of a new term from the API.
+ * @param term The information of the new term to send to the backend.
  */
 export function newTerm(term: APIRequestTerm) {
     return async (
-        dispatch: ThunkDispatch<State, void, AnyAction>
+        dispatch: ThunkDispatch<RootState, void, AnyAction>
     ): Promise<void> => {
         const resp = await newTermAPI(term)
         batch(() => updateTerm(resp, dispatch))

@@ -1,10 +1,10 @@
-import { updatePlanAction } from 'actions/planActions'
+import { updatePlanAction, newPlanAction } from 'actions/planActions'
 import { getPlanAPI, newPlanAPI } from 'api/plan'
 import { APIRequestPlan } from 'api/types/requestTypes'
 import { APIResponsePlan, APIResponseTerm } from 'api/types/responseTypes'
 import { updateTerm } from 'effects/term'
 import { batch } from 'react-redux'
-import { State } from 'reducers/types'
+import { RootState } from 'reducers/types'
 import { AnyAction, Dispatch } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
 
@@ -14,7 +14,7 @@ import { ThunkDispatch } from 'redux-thunk'
  */
 export function getPlan(id: string) {
     return async (
-        dispatch: ThunkDispatch<State, void, AnyAction>
+        dispatch: ThunkDispatch<RootState, void, AnyAction>
     ): Promise<void> => {
         const resp = await getPlanAPI(id)
         batch(() => updatePlan(resp, dispatch))
@@ -28,7 +28,12 @@ export function getPlan(id: string) {
 export function newPlan(plan: APIRequestPlan) {
     return async (dispatch: Dispatch<AnyAction>): Promise<void> => {
         const resp = await newPlanAPI(plan)
-        batch(() => updatePlan(resp, dispatch))
+        dispatch(
+            newPlanAction({
+                ...resp,
+                terms: resp.terms.map((val: APIResponseTerm) => val.id)
+            })
+        )
     }
 }
 
@@ -43,7 +48,7 @@ export function updatePlan(
     dispatch: Dispatch<AnyAction>
 ): void {
     dispatch(
-        updatePlanAction(plan.id, {
+        updatePlanAction({
             ...plan,
             terms: plan.terms.map((term: APIResponseTerm) => term.id)
         })

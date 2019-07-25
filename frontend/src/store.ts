@@ -1,25 +1,23 @@
-import { newPlan, getPlan } from 'effects/plan'
+import { getPlan, newPlan } from 'effects/plan'
 import rootReducer from 'reducers'
-import { State } from 'reducers/types'
+import { Plan, RootState } from 'reducers/types'
 import { AnyAction, applyMiddleware, createStore } from 'redux'
 import thunk, { ThunkMiddleware } from 'redux-thunk'
 
 // The main Redux store for this application
 const store = createStore(
     rootReducer,
-    applyMiddleware(thunk as ThunkMiddleware<State, AnyAction>)
+    applyMiddleware(thunk as ThunkMiddleware<RootState, AnyAction>)
 )
 
 // The following functions handle saving the store whenever it is updated
-function saveState(id: string) {
-    localStorage.setItem('planID', id)
+function saveState(ids: string[]) {
+    localStorage.setItem('plans', JSON.stringify(ids))
 }
 
 store.subscribe(() => {
-    const id = store.getState().plan.id
-    if (id !== undefined) {
-        saveState(id)
-    }
+    const plans = store.getState().plans.map((plan: Plan) => plan.id)
+    saveState(plans)
 })
 
 /**
@@ -27,14 +25,21 @@ store.subscribe(() => {
  * if one doesn't exist. This is done on page load.
  */
 function getInitialPlan(): void {
-    let id: string | null = localStorage.getItem('planID')
+    const local: string | null = localStorage.getItem('plans')
 
-    if (id !== null) {
+    if (local !== null) {
         // We get an existing plan from the server
-        store.dispatch(getPlan(id))
+        const plans: string[] = JSON.parse(local)
+        plans.forEach((plan: string) => {
+            store.dispatch(getPlan(plan))
+        })
     } else {
         // We make a new plan
-        store.dispatch(newPlan(store.getState().plan))
+        store.dispatch(
+            newPlan({
+                name: 'My Plan'
+            })
+        )
     }
 }
 

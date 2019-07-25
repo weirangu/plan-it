@@ -6,14 +6,14 @@ import {
 import { deleteTermAction, updateTermAction } from 'actions/termActions'
 import { deleteFromDictionary, updateDictionary } from 'reducers/helpers'
 import { Term } from 'reducers/types'
-import { createReducer, Reducer } from 'typesafe-actions'
+import { createReducer } from 'typesafe-actions'
 import { RootAction } from 'actions'
 
 export interface TermReducerState {
     readonly [id: string]: Term
 }
 
-export const termReducer: Reducer<TermReducerState, RootAction> = createReducer(
+export const termReducer = createReducer<TermReducerState, RootAction>(
     {} as TermReducerState
 )
     .handleAction(updateTermAction, (state, action) =>

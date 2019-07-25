@@ -2,7 +2,7 @@ import { getCourse } from 'effects/course'
 import React from 'react'
 import { connect } from 'react-redux'
 import { CourseReducerState } from 'reducers/courseReducer'
-import { State } from 'reducers/types'
+import { RootState } from 'reducers/types'
 import { AnyAction } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
 import './CourseInfo.css'
@@ -13,11 +13,13 @@ export interface CourseInfoProps {
     getCourse: (course: string) => any
 }
 
-function mapStateToProps(state: State): State {
+function mapStateToProps(state: RootState): RootState {
     return state
 }
 
-function mapDispatchToProps(dispatch: ThunkDispatch<State, void, AnyAction>) {
+function mapDispatchToProps(
+    dispatch: ThunkDispatch<RootState, void, AnyAction>
+) {
     return {
         getCourse: (course: string) => dispatch(getCourse(course))
     }

@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux'
-import { State } from 'reducers/types'
+import { RootState } from 'reducers/types'
 import {
     movePlannedCourseAPI,
     newPlannedCourseAPI,
@@ -19,8 +19,8 @@ import {
  */
 export function addPlannedCourse(course: string, term: string) {
     return async (
-        dispatch: ThunkDispatch<State, void, AnyAction>,
-        getState: () => State
+        dispatch: ThunkDispatch<RootState, void, AnyAction>,
+        getState: () => RootState
     ): Promise<AnyAction> => {
         // We want our new course at the end of the array
         const index = getState().terms[term].courses.length
@@ -49,7 +49,7 @@ export function movePlannedCourse(
     destTerm?: string
 ) {
     return async (
-        dispatch: ThunkDispatch<State, void, AnyAction>
+        dispatch: ThunkDispatch<RootState, void, AnyAction>
     ): Promise<AnyAction> => {
         const resp = await movePlannedCourseAPI({ index, term: destTerm }, id)
         return dispatch(movePlannedCourseAction(id, index, destTerm))
@@ -62,7 +62,7 @@ export function movePlannedCourse(
  */
 export function deletePlannedCourse(id: string) {
     return async (
-        dispatch: ThunkDispatch<State, void, AnyAction>
+        dispatch: ThunkDispatch<RootState, void, AnyAction>
     ): Promise<AnyAction> => {
         try {
             const resp = await deletePlannedCourseAPI(id)

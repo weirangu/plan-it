@@ -63,3 +63,25 @@ export function updateDictionary<T>(
 ): { [id: string]: T } {
     return { ...dictionary, [id]: data }
 }
+
+/**
+ * Adds a item into the array at the specified index. This is a pure function.
+ * @param array The array to operate on.
+ * @param index The index to insert an item.
+ * @param item The item to insert.
+ */
+export function addAtIndex<T>(array: T[], index: number, item: T): T[] {
+    return [...array.slice(0, index), item, ...array.slice(index)]
+}
+
+/**
+ * Replaces a item into the array at the specified index. This is a pure function.
+ * @param array The array to operate on.
+ * @param index The index to insert an item.
+ * @param item The item to insert.
+ */
+export function replaceAtIndex<T>(array: T[], index: number, item: T): T[] {
+    const copy = [...array]
+    copy[index] = item
+    return copy
+}

@@ -50,9 +50,8 @@ export async function updatePlannedCourseAPI(
 
 /**
  * Moves a PlannedCourse within a term.
+ * @param req The request to send back to the backend.
  * @param id The ID of the course to move.
- * @param index The new index of the course.
- * @param newTerm The new term to assign this course to (if we're changing terms).
  */
 export async function movePlannedCourseAPI(
     req: APIRequestMovePlannedCourse,

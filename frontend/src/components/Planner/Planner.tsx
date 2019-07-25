@@ -6,25 +6,28 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import { connect } from 'react-redux'
 import { PlannedCourseReducerState } from 'reducers/plannedCourseReducer'
 import { TermReducerState } from 'reducers/termReducer'
-import { Plan, State, Term } from 'reducers/types'
+import { Plan, RootState, Term } from 'reducers/types'
 import { AnyAction } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
 import store from 'store'
 import './planner.css'
 
 export interface PlannerProps {
-    plan: Plan
-    terms: TermReducerState
-    plannedCourses: PlannedCourseReducerState
+    planIndex: number
+    plans: Plan[] // Provided by mapStateToProps
+    terms: TermReducerState // Provided by mapStateToProps
+    plannedCourses: PlannedCourseReducerState // Provided mapStateToProps
     addTerm: (term: Term) => any // Provided by mapDispatchToProps
     delTerm: (id: string) => any // Provided by mapDispatchToProps
 }
 
-function mapStateToProps(state: State): State {
+function mapStateToProps(state: RootState): RootState {
     return state
 }
 
-function mapDispatchToProps(dispatch: ThunkDispatch<State, void, AnyAction>) {
+function mapDispatchToProps(
+    dispatch: ThunkDispatch<RootState, void, AnyAction>
+) {
     return {
         addTerm: (term: Term) => dispatch(newTerm(term)),
         delTerm: (id: string) => dispatch(deleteTerm(id))
@@ -48,41 +51,44 @@ function onDragEnd(result: DropResult, terms: TermReducerState): void {
     }
 }
 
-const ConnectedPlanner: React.FC<PlannerProps> = (props: PlannerProps) => (
-    <DragDropContext onDragEnd={result => onDragEnd(result, props.terms)}>
-        {props.plan.terms.map((val: string) => {
-            const { terms, plannedCourses } = props
-            const courseArray = terms[val].courses.map((id: string) => ({
-                id,
-                ...plannedCourses[id]
-            }))
-            return (
-                <div>
-                    <h3>Term: {props.terms[val].name}</h3>
-                    <PlannerList
-                        items={courseArray}
-                        id={val}
-                        key={val}
-                        delList={() => props.delTerm(val)}
-                    />
-                </div>
-            )
-        })}
-        <button
-            onClick={() =>
-                props.addTerm({
-                    name: Math.random()
-                        .toString(36)
-                        .substring(0, 5),
-                    courses: [],
-                    plan: props.plan.id as string
-                })
-            }
-        >
-            Add Term
-        </button>
-    </DragDropContext>
-)
+const ConnectedPlanner: React.FC<PlannerProps> = (props: PlannerProps) => {
+    console.log(props)
+    return (
+        <DragDropContext onDragEnd={result => onDragEnd(result, props.terms)}>
+            {props.plans[props.planIndex].terms.map((val: string) => {
+                const { terms, plannedCourses } = props
+                const courseArray = terms[val].courses.map((id: string) => ({
+                    id,
+                    ...plannedCourses[id]
+                }))
+                return (
+                    <div>
+                        <h3>Term: {props.terms[val].name}</h3>
+                        <PlannerList
+                            items={courseArray}
+                            id={val}
+                            key={val}
+                            delList={() => props.delTerm(val)}
+                        />
+                    </div>
+                )
+            })}
+            <button
+                onClick={() =>
+                    props.addTerm({
+                        name: Math.random()
+                            .toString(36)
+                            .substring(0, 5),
+                        courses: [],
+                        plan: props.plans[props.planIndex].id as string
+                    })
+                }
+            >
+                Add Term
+            </button>
+        </DragDropContext>
+    )
+}
 
 export const Planner = connect(
     mapStateToProps,

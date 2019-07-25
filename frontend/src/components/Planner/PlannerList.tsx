@@ -3,7 +3,7 @@ import { AnyAction } from 'redux'
 import { connect } from 'react-redux'
 import { Droppable } from 'react-beautiful-dnd'
 import PlannerItem from 'components/Planner/PlannerItem'
-import { PlannedCourse, ID, State } from 'reducers/types'
+import { PlannedCourse, ID, RootState } from 'reducers/types'
 import { addPlannedCourse, deletePlannedCourse } from 'effects/plannedCourse'
 import { ThunkDispatch } from 'redux-thunk'
 import { withHover } from 'components/hoc/withHover'
@@ -23,7 +23,9 @@ export interface PlannerListState {
     addPlannerItems: AddCourseItemProps | null
 }
 
-function mapDispatchToProps(dispatch: ThunkDispatch<State, void, AnyAction>) {
+function mapDispatchToProps(
+    dispatch: ThunkDispatch<RootState, void, AnyAction>
+) {
     return {
         add: (course: string, term: string) =>
             dispatch(addPlannedCourse(course, term)),

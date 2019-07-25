@@ -1,11 +1,11 @@
 import React from 'react'
 import './App.css'
-import Planner from 'components/Planner/Planner'
+import PlannerContainer from './Planner/PlannerContainer'
 
 const App: React.FC = () => (
     <div>
         <h1>Plan it!</h1>
-        <Planner />
+        <PlannerContainer />
     </div>
 )
 export default App

@@ -1,6 +1,7 @@
 import { TermReducerState } from './termReducer'
 import { PlannedCourseReducerState } from './plannedCourseReducer'
 import { CourseReducerState } from './courseReducer'
+import { PlanReducerState } from './planReducer'
 
 /**
  * An interface with the property id. Use this in conjunction to the other types
@@ -15,8 +16,8 @@ export interface ID {
 
 /** A course in the planner. */
 export interface PlannedCourse {
-    course: string
-    term: string
+    readonly course: string
+    readonly term: string
     // We don't have index here, we'll use term's courses array to keep track of
     // the order of courses.
 }
@@ -26,9 +27,9 @@ export interface PlannedCourse {
  * Each term consists of courses that are taken during that term.
  */
 export interface Term {
-    name: string
-    courses: string[]
-    plan: string
+    readonly name: string
+    readonly courses: string[]
+    readonly plan: string
 }
 
 /**
@@ -36,28 +37,28 @@ export interface Term {
  */
 export interface Plan {
     // If id is undefined, it means we haven't connected to the backend yet
-    id?: string
-    name: string
-    terms: string[] // The term IDs are stored here
+    readonly id: string
+    readonly name: string
+    readonly terms: string[] // The term IDs are stored here
 }
 
 /** A course's information. */
 export interface Course {
-    code: string
-    name: string
-    description: string
-    prerequisites: string
-    exclusions: string
-    faculty: string
-    campus: string
-    breadth: string[]
+    readonly code: string
+    readonly name: string
+    readonly description: string
+    readonly prerequisites: string
+    readonly exclusions: string
+    readonly faculty: string
+    readonly campus: string
+    readonly breadth: string[]
 }
 
 /**
  * The main state for the rootReducer.
  */
-export interface State {
-    readonly plan: Plan
+export interface RootState {
+    readonly plans: PlanReducerState
     readonly terms: TermReducerState
     readonly plannedCourses: PlannedCourseReducerState
     readonly courses: CourseReducerState

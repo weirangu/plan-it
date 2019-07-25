@@ -1,21 +1,14 @@
-import { updatePlanAction } from './planActions'
-import { updateTermAction, deleteTermAction } from './termActions'
-import {
-    updatePlannedCourseAction,
-    movePlannedCourseAction,
-    deletePlannedCourseAction
-} from './plannedCourseActions'
+import * as planActions from './planActions'
+import * as termActions from './termActions'
+import * as plannedCourseActions from './plannedCourseActions'
+import * as courseActions from './courseActions'
 import { ActionType } from 'typesafe-actions'
 
 export const actions = {
-    updatePlanAction,
-    updateTermAction,
-    deleteTermAction,
-    updatePlannedCourseAction,
-    movePlannedCourseAction,
-    deletePlannedCourseAction
+    planActions,
+    termActions,
+    plannedCourseActions,
+    courseActions
 }
 
 export type RootAction = ActionType<typeof actions>
-
-export default actions
