@@ -15,7 +15,9 @@ export const PlannerTabs: React.FC<PlannerTabsProps> = (
     return (
         <div>
             {props.tabs.map((tab: string, index: number) => (
-                <button onClick={() => props.setIndex(index)}>{tab}</button>
+                <button key={index} onClick={() => props.setIndex(index)}>
+                    {tab}
+                </button>
             ))}
             <button onClick={() => dispatch(newPlan({ name: 'My Plan' }))}>
                 New Plan

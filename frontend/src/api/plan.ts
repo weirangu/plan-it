@@ -18,7 +18,6 @@ export async function newPlanAPI(
  * @param id The ID of the plan to get from the backend.
  */
 export async function getPlanAPI(id: string): Promise<APIResponsePlan> {
-    console.trace()
     const resp = await axios.get<APIResponsePlan>(`/plan/${id}/`)
     return resp.data
 }

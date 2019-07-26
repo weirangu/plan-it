@@ -27,19 +27,19 @@ store.subscribe(() => {
 function getInitialPlan(): void {
     const local: string | null = localStorage.getItem('plans')
 
-    if (local !== null) {
-        // We get an existing plan from the server
-        const plans: string[] = JSON.parse(local)
-        plans.forEach((plan: string) => {
-            store.dispatch(getPlan(plan))
-        })
-    } else {
+    if (local === null) {
         // We make a new plan
         store.dispatch(
             newPlan({
                 name: 'My Plan'
             })
         )
+    } else {
+        // We get an existing plan from the server
+        const plans: string[] = JSON.parse(local)
+        plans.forEach((plan: string) => {
+            store.dispatch(getPlan(plan))
+        })
     }
 }
 

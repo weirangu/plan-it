@@ -1,36 +1,24 @@
 import { getCourse } from 'effects/course'
 import React from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { CourseReducerState } from 'reducers/courseReducer'
-import { RootState } from 'reducers/types'
-import { AnyAction } from 'redux'
-import { ThunkDispatch } from 'redux-thunk'
 import './CourseInfo.css'
+import { selectCourse } from 'selectors'
 
 export interface CourseInfoProps {
     id: string
-    courses: CourseReducerState
-    getCourse: (course: string) => any
 }
 
-function mapStateToProps(state: RootState): RootState {
-    return state
-}
+export const CourseInfo: React.FC<CourseInfoProps> = ({
+    id
+}: CourseInfoProps) => {
+    const courses: CourseReducerState = useSelector(selectCourse)
+    const course = courses[id]
 
-function mapDispatchToProps(
-    dispatch: ThunkDispatch<RootState, void, AnyAction>
-) {
-    return {
-        getCourse: (course: string) => dispatch(getCourse(course))
-    }
-}
-
-const ConnectedCourseInfo: React.FC<CourseInfoProps> = (
-    props: CourseInfoProps
-) => {
-    const { id, courses, getCourse } = props
-    if (courses[id] !== undefined) {
-        const course = courses[id]
+    if (course === undefined) {
+        getCourse(id)
+        return <div>Loading course info...</div>
+    } else {
         return (
             <div className="courseInfo">
                 <h1>{course.code}</h1>
@@ -41,15 +29,7 @@ const ConnectedCourseInfo: React.FC<CourseInfoProps> = (
                 <p>Campus: {course.campus}</p>
             </div>
         )
-    } else {
-        getCourse(id)
-        return <div>Loading course info...</div>
     }
 }
-
-export const CourseInfo = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ConnectedCourseInfo)
 
 export default CourseInfo
