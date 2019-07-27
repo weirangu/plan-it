@@ -2,8 +2,8 @@ import React, { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Droppable } from 'react-beautiful-dnd'
 import PlannerItem from 'components/Planner/PlannerItem'
-import { ID, PlannedCourse } from 'reducers/types'
-import { addPlannedCourse, deletePlannedCourse } from 'effects/plannedCourse'
+import { ID, PlannerCourse } from 'reducers/types'
+import { addPlannerCourse, deletePlannerCourse } from 'effects/plannerCourse'
 import { withHover } from 'components/hoc/withHover'
 import CourseInfo from 'components/CourseInfo/CourseInfo'
 import AddPlannerItem from './AddPlannerItem'
@@ -12,7 +12,7 @@ import { deleteTerm } from 'effects/term'
 /** The props for PlannerList. */
 export interface PlannerListProps {
     id: string
-    items: (PlannedCourse & ID)[]
+    items: (PlannerCourse & ID)[]
 }
 
 const PlannerItemWithHover = withHover(PlannerItem, CourseInfo)
@@ -26,21 +26,21 @@ export const PlannerList: React.FC<PlannerListProps> = (
 
     const addCourse = useCallback(
         (course: string) => {
-            dispatch(addPlannedCourse(course, props.id))
+            dispatch(addPlannerCourse(course, props.id))
             setAddItem(false)
         },
         [dispatch, props.id]
     )
 
     const courses = props.items.map(
-        (item: PlannedCourse & ID, index: number) => (
+        (item: PlannerCourse & ID, index: number) => (
             <PlannerItemWithHover
                 key={item.id}
                 mainProps={{
                     id: item.id,
                     course: item,
                     index: index,
-                    delete: () => dispatch(deletePlannedCourse(item.id))
+                    delete: () => dispatch(deletePlannerCourse(item.id))
                 }}
                 hoverProps={{
                     id: item.course

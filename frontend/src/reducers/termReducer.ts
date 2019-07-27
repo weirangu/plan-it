@@ -1,8 +1,8 @@
 import {
-    deletePlannedCourseAction,
-    movePlannedCourseAction,
-    updatePlannedCourseAction
-} from 'actions/plannedCourseActions'
+    deletePlannerCourseAction,
+    movePlannerCourseAction,
+    updatePlannerCourseAction
+} from 'actions/plannerCourseActions'
 import { deleteTermAction, updateTermAction } from 'actions/termActions'
 import { deleteFromDictionary, updateDictionary } from 'reducers/helpers'
 import { Term } from 'reducers/types'
@@ -22,7 +22,7 @@ export const termReducer = createReducer<TermReducerState, RootAction>(
     .handleAction(deleteTermAction, (state, action) =>
         deleteFromDictionary(state, action.payload.id)
     )
-    .handleAction(updatePlannedCourseAction, (state, action) => {
+    .handleAction(updatePlannerCourseAction, (state, action) => {
         const courseID = state[action.payload.term].courses.find(
             (course: string) => action.payload.id === course
         )
@@ -36,7 +36,7 @@ export const termReducer = createReducer<TermReducerState, RootAction>(
         stateCopy[action.payload.id] = term
         return stateCopy
     })
-    .handleAction(deletePlannedCourseAction, (state, action) => {
+    .handleAction(deletePlannerCourseAction, (state, action) => {
         const term = { ...state[action.payload.term] }
         const index = term.courses.findIndex(
             (val: string) => val === action.payload.id
@@ -47,7 +47,7 @@ export const termReducer = createReducer<TermReducerState, RootAction>(
             [action.payload.id]: term
         }
     })
-    .handleAction(movePlannedCourseAction, (state, action) => {
+    .handleAction(movePlannerCourseAction, (state, action) => {
         const updatedState = { ...state }
         const sourceTerm = updatedState[action.payload.sourceTerm]
         const sourceIndex = sourceTerm.courses.findIndex(

@@ -1,27 +1,27 @@
 import { RootAction } from 'actions'
 import {
-    deletePlannedCourseAction,
-    movePlannedCourseAction,
-    updatePlannedCourseAction
-} from 'actions/plannedCourseActions'
+    deletePlannerCourseAction,
+    movePlannerCourseAction,
+    updatePlannerCourseAction
+} from 'actions/plannerCourseActions'
 import { deleteTermAction } from 'actions/termActions'
 import { deleteFromDictionary, updateDictionary } from 'reducers/helpers'
-import { PlannedCourse } from 'reducers/types'
+import { PlannerCourse } from 'reducers/types'
 import { createReducer } from 'typesafe-actions'
 
-/** The state for the PlannedCourse reducer. */
-export interface PlannedCourseReducerState {
-    readonly [id: string]: PlannedCourse
+/** The state for the PlannerCourse reducer. */
+export interface PlannerCourseReducerState {
+    readonly [id: string]: PlannerCourse
 }
 
-export const plannedCourseReducer = createReducer<
-    PlannedCourseReducerState,
+export const PlannerCourseReducer = createReducer<
+    PlannerCourseReducerState,
     RootAction
->({} as PlannedCourseReducerState)
-    .handleAction(updatePlannedCourseAction, (state, action) =>
+>({} as PlannerCourseReducerState)
+    .handleAction(updatePlannerCourseAction, (state, action) =>
         updateDictionary(state, action.payload.id, action.payload)
     )
-    .handleAction(movePlannedCourseAction, (state, action) => {
+    .handleAction(movePlannerCourseAction, (state, action) => {
         if (action.payload.destTerm !== undefined) {
             const movedCourse = { ...state[action.payload.id] }
             movedCourse.term = action.payload.destTerm
@@ -31,7 +31,7 @@ export const plannedCourseReducer = createReducer<
         // course doesn't need to change.
         return state
     })
-    .handleAction(deletePlannedCourseAction, (state, action) =>
+    .handleAction(deletePlannerCourseAction, (state, action) =>
         deleteFromDictionary(state, action.payload.id)
     )
     .handleAction(deleteTermAction, (state, action) => {
@@ -44,4 +44,4 @@ export const plannedCourseReducer = createReducer<
         return stateCopy
     })
 
-export default plannedCourseReducer
+export default PlannerCourseReducer

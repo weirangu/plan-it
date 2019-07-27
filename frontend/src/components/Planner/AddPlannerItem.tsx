@@ -4,7 +4,7 @@ import { Draggable } from 'react-beautiful-dnd'
 /** The props used for PlannerItem. */
 export interface AddCourseItemProps {
     index: number
-    add: (course: string) => any // The function that adds a PlannedCourse
+    add: (course: string) => any // The function that adds a PlannerCourse
     delete: () => any // The function that deletes this PlannerItem
 }
 

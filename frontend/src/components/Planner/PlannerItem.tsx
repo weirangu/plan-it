@@ -1,11 +1,11 @@
 import React from 'react'
 import { Draggable } from 'react-beautiful-dnd'
-import { PlannedCourse } from 'reducers/types'
+import { PlannerCourse } from 'reducers/types'
 
 /** The props used for PlannerItem. */
 export interface PlannerItemProps {
     id: string
-    course: PlannedCourse
+    course: PlannerCourse
     index: number
     delete: () => any // The function that deletes this PlannerItem
 }

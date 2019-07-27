@@ -1,32 +1,32 @@
 import { AnyAction } from 'redux'
 import { RootState } from 'reducers/types'
 import {
-    movePlannedCourseAPI,
-    newPlannedCourseAPI,
-    deletePlannedCourseAPI
-} from 'api/plannedcourse'
+    movePlannerCourseAPI,
+    newPlannerCourseAPI,
+    deletePlannerCourseAPI
+} from 'api/plannerCourse'
 import { ThunkDispatch } from 'redux-thunk'
 import {
-    deletePlannedCourseAction,
-    movePlannedCourseAction,
-    updatePlannedCourseAction
-} from 'actions/plannedCourseActions'
+    deletePlannerCourseAction,
+    movePlannerCourseAction,
+    updatePlannerCourseAction
+} from 'actions/plannerCourseActions'
 
 /**
  * Adds a new course to the Redux state, and makes a POST request to the API.
  * @param course The course name to add.
  * @param term The term to add the course to.
  */
-export function addPlannedCourse(course: string, term: string) {
+export function addPlannerCourse(course: string, term: string) {
     return async (
         dispatch: ThunkDispatch<RootState, void, AnyAction>,
         getState: () => RootState
     ): Promise<AnyAction> => {
         // We want our new course at the end of the array
         const index = getState().terms[term].courses.length
-        const resp = await newPlannedCourseAPI({ course, index, term })
+        const resp = await newPlannerCourseAPI({ course, index, term })
         return dispatch(
-            updatePlannedCourseAction(
+            updatePlannerCourseAction(
                 resp.course,
                 resp.term,
                 resp.id,
@@ -43,7 +43,7 @@ export function addPlannedCourse(course: string, term: string) {
  * @param destTerm The destination term (if it is different from the current
  * term.)
  */
-export function movePlannedCourse(
+export function movePlannerCourse(
     id: string,
     index: number,
     destTerm?: string
@@ -51,8 +51,8 @@ export function movePlannedCourse(
     return async (
         dispatch: ThunkDispatch<RootState, void, AnyAction>
     ): Promise<AnyAction> => {
-        const resp = await movePlannedCourseAPI({ index, term: destTerm }, id)
-        return dispatch(movePlannedCourseAction(id, index, destTerm))
+        const resp = await movePlannerCourseAPI({ index, term: destTerm }, id)
+        return dispatch(movePlannerCourseAction(id, index, destTerm))
     }
 }
 
@@ -60,17 +60,17 @@ export function movePlannedCourse(
  * Deletes a course.
  * @param id The ID of the course to delete.
  */
-export function deletePlannedCourse(id: string) {
+export function deletePlannerCourse(id: string) {
     return async (
         dispatch: ThunkDispatch<RootState, void, AnyAction>
     ): Promise<AnyAction> => {
         try {
-            const resp = await deletePlannedCourseAPI(id)
+            const resp = await deletePlannerCourseAPI(id)
         } catch (err) {
             if (err.response) {
                 // Server responded with an invalid code
             }
         }
-        return dispatch(deletePlannedCourseAction(id))
+        return dispatch(deletePlannerCourseAction(id))
     }
 }

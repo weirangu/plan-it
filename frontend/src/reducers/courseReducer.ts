@@ -3,7 +3,7 @@ import { Course } from 'reducers/types'
 import { createReducer } from 'typesafe-actions'
 import { RootAction } from 'actions'
 
-/** The state for the PlannedCourse reducer. */
+/** The state for the PlannerCourse reducer. */
 export interface CourseReducerState {
     readonly [id: string]: Course
 }

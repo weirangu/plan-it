@@ -1,5 +1,5 @@
 import { TermReducerState } from './termReducer'
-import { PlannedCourseReducerState } from './plannedCourseReducer'
+import { PlannerCourseReducerState } from './plannerCourseReducer'
 import { CourseReducerState } from './courseReducer'
 import { PlanReducerState } from './planReducer'
 
@@ -15,7 +15,7 @@ export interface ID {
 }
 
 /** A course in the planner. */
-export interface PlannedCourse {
+export interface PlannerCourse {
     readonly course: string
     readonly term: string
     // We don't have index here, we'll use term's courses array to keep track of
@@ -60,6 +60,6 @@ export interface Course {
 export interface RootState {
     readonly plans: PlanReducerState
     readonly terms: TermReducerState
-    readonly plannedCourses: PlannedCourseReducerState
+    readonly plannerCourses: PlannerCourseReducerState
     readonly courses: CourseReducerState
 }

@@ -38,7 +38,7 @@ export function newPlan(plan: APIRequestPlan) {
 }
 
 /**
- * Updates a Plan and the corresponding Term and PlannedCourse from a
+ * Updates a Plan and the corresponding Term and PlannerCourse from a
  * APIResponsePlan.
  * @param plan The response from the API.
  * @param dispatch The function used to dispatch actions.

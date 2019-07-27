@@ -1,4 +1,4 @@
-import plannedCourseReducer from 'reducers/plannedCourseReducer'
+import plannerCourseReducer from 'reducers/plannerCourseReducer'
 import planReducer from 'reducers/planReducer'
 import termReducer from 'reducers/termReducer'
 import { combineReducers, Reducer } from 'redux'
@@ -11,7 +11,7 @@ import courseReducer from 'reducers/courseReducer'
 export const rootReducer: Reducer<RootState> = combineReducers({
     plans: planReducer,
     terms: termReducer,
-    plannedCourses: plannedCourseReducer,
+    plannerCourses: plannerCourseReducer,
     courses: courseReducer
 })
 

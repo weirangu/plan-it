@@ -16,13 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .main import views
+from planit.planner import views as planner_views
+from planit.courses import views as courses_views
 
 router = DefaultRouter()
-router.register('courses', views.CourseViewSet)
-router.register('plan', views.PlanViewSet)
-router.register('term', views.TermViewSet)
-router.register('plannedcourse', views.PlannedCourseViewSet)
+router.register('courses', courses_views.CourseViewSet)
+router.register('plan', planner_views.PlanViewSet)
+router.register('term', planner_views.TermViewSet)
+router.register('plannercourse', planner_views.PlannerCourseViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

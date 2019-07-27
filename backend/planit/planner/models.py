@@ -11,7 +11,6 @@ class Plan(models.Model):
 
 class Term(models.Model):
     """ A term in a plan. Each term consists of many planned courses. """
-    # The plan this term belongs to
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE,
                              related_name='terms')
@@ -21,7 +20,7 @@ class Term(models.Model):
         ordering = ['name']
 
 
-class PlannedCourse(models.Model):
+class PlannerCourse(models.Model):
     """ A course in a term. """
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     term = models.ForeignKey(Term, on_delete=models.CASCADE,

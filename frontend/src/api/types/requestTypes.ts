@@ -14,17 +14,17 @@ export interface APIRequestTerm {
 }
 
 /**
- * The type for a PlannedCourse that the backend receives.
+ * The type for a PlannerCourse that the backend receives.
  * Not used for moving courses.
  */
-export interface APIRequestPlannedCourse {
+export interface APIRequestPlannerCourse {
     course: string
     term: string
     index: number // The index of this course in the term
 }
 
-/** The type for moving a PlannedCourse that the backend receives. */
-export interface APIRequestMovePlannedCourse {
+/** The type for moving a PlannerCourse that the backend receives. */
+export interface APIRequestMovePlannerCourse {
     index: number
     term?: string
 }

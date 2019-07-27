@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'planit.main'
+    'planit.planner.apps.PlannerConfig',
+    'planit.courses.apps.CoursesConfig'
 ]
 
 MIDDLEWARE = [

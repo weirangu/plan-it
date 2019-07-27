@@ -1,15 +1,15 @@
 import PlannerList from 'components/Planner/PlannerList'
-import { movePlannedCourse } from 'effects/plannedCourse'
+import { movePlannerCourse } from 'effects/plannerCourse'
 import { newTerm } from 'effects/term'
 import React, { useCallback } from 'react'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import { useDispatch, useSelector } from 'react-redux'
 import './planner.css'
-import { selectPlan, selectPlannedCourse, selectTerm } from 'selectors'
+import { selectPlan, selectPlannerCourse, selectTerm } from 'selectors'
 import { PlanReducerState } from 'reducers/planReducer'
 import { TermReducerState } from 'reducers/termReducer'
 import { ThunkDispatch } from 'redux-thunk'
-import { PlannedCourseReducerState } from 'reducers/plannedCourseReducer'
+import { PlannerCourseReducerState } from 'reducers/plannerCourseReducer'
 import { RootState } from 'reducers/types'
 import { RootAction } from 'actions'
 
@@ -20,8 +20,8 @@ export interface PlannerProps {
 const Planner: React.FC<PlannerProps> = (props: PlannerProps) => {
     const plans: PlanReducerState = useSelector(selectPlan)
     const terms: TermReducerState = useSelector(selectTerm)
-    const plannedCourses: PlannedCourseReducerState = useSelector(
-        selectPlannedCourse
+    const plannerCourses: PlannerCourseReducerState = useSelector(
+        selectPlannerCourse
     )
     const dispatch: ThunkDispatch<RootState, void, RootAction> = useDispatch()
 
@@ -34,10 +34,10 @@ const Planner: React.FC<PlannerProps> = (props: PlannerProps) => {
                 return
             }
             if (source.droppableId === dest.droppableId) {
-                dispatch(movePlannedCourse(courseID, dest.index))
+                dispatch(movePlannerCourse(courseID, dest.index))
             } else {
                 dispatch(
-                    movePlannedCourse(courseID, dest.index, dest.droppableId)
+                    movePlannerCourse(courseID, dest.index, dest.droppableId)
                 )
             }
         },
@@ -49,7 +49,7 @@ const Planner: React.FC<PlannerProps> = (props: PlannerProps) => {
             {plans[props.planIndex].terms.map((id: string) => {
                 const courseArray = terms[id].courses.map((id: string) => ({
                     id,
-                    ...plannedCourses[id]
+                    ...plannerCourses[id]
                 }))
                 return (
                     <div key={id}>

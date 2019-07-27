@@ -4,7 +4,7 @@
 import { RootState } from 'reducers/types'
 import { PlanReducerState } from 'reducers/planReducer'
 import { TermReducerState } from 'reducers/termReducer'
-import { PlannedCourseReducerState } from 'reducers/plannedCourseReducer'
+import { PlannerCourseReducerState } from 'reducers/plannerCourseReducer'
 import { CourseReducerState } from 'reducers/courseReducer'
 
 /**
@@ -26,14 +26,14 @@ export function selectTerm(state: RootState): TermReducerState {
 }
 
 /**
- * Selects the PlannedCourseReducerState from the global Redux state.
+ * Selects the PlannerCourseReducerState from the global Redux state.
  * @param state The global Redux state.
  * @returns The part of the state that represents the planned courses.
  */
-export function selectPlannedCourse(
+export function selectPlannerCourse(
     state: RootState
-): PlannedCourseReducerState {
-    return state.plannedCourses
+): PlannerCourseReducerState {
+    return state.plannerCourses
 }
 
 /**

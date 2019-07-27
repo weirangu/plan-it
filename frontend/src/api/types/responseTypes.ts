@@ -13,19 +13,19 @@ export interface APIResponsePlan {
 export interface APIResponseTerm {
     id: string
     name: string
-    courses: APIResponsePlannedCourse[]
+    courses: APIResponsePlannerCourse[]
     plan: string
 }
 
-/** The type for a PlannedCourse returned by the backend (for non-move requests). */
-export interface APIResponsePlannedCourse {
+/** The type for a PlannerCourse returned by the backend (for non-move requests). */
+export interface APIResponsePlannerCourse {
     id: string
     course: string
     term: string
     index: number // The index of this course in the term
 }
 
-/** The type for a PlannedCourse move returned by the backend. */
-export interface APIResponseMovePlannedCourse {
+/** The type for a PlannerCourse move returned by the backend. */
+export interface APIResponseMovePlannerCourse {
     updatedTerms: APIResponseTerm[]
 }

@@ -1,9 +1,12 @@
 import { getCourse } from 'effects/course'
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { CourseReducerState } from 'reducers/courseReducer'
 import './CourseInfo.css'
 import { selectCourse } from 'selectors'
+import { RootState } from 'reducers/types'
+import { RootAction } from 'actions'
+import { ThunkDispatch } from 'redux-thunk'
 
 export interface CourseInfoProps {
     id: string
@@ -13,10 +16,11 @@ export const CourseInfo: React.FC<CourseInfoProps> = ({
     id
 }: CourseInfoProps) => {
     const courses: CourseReducerState = useSelector(selectCourse)
+    const dispatch: ThunkDispatch<RootState, null, RootAction> = useDispatch()
     const course = courses[id]
 
     if (course === undefined) {
-        getCourse(id)
+        dispatch(getCourse(id))
         return <div>Loading course info...</div>
     } else {
         return (
