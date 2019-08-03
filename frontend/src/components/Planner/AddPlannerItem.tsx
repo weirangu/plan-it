@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
+import CourseSuggestionBox from '../CourseSearch/CourseSuggestionBox'
+import { Course } from '../../reducers/types'
 
 /** The props used for PlannerItem. */
 export interface AddCourseItemProps {
@@ -12,6 +14,10 @@ const AddPlannerItem: React.FC<AddCourseItemProps> = (
     props: AddCourseItemProps
 ) => {
     const [course, setCourse] = useState<string>('')
+
+    function onCourseSearchChange(event: ChangeEvent<HTMLInputElement>): void {
+        setCourse(event.target.value)
+    }
 
     return (
         <Draggable
@@ -27,10 +33,15 @@ const AddPlannerItem: React.FC<AddCourseItemProps> = (
                 >
                     <div>
                         <input
-                            type="text"
+                            type="search"
                             value={course}
-                            onChange={e => setCourse(e.target.value)}
-                            name="code"
+                            onChange={onCourseSearchChange}
+                        />
+                        <CourseSuggestionBox
+                            search={course}
+                            onSelectSuggestion={(course: Course) =>
+                                setCourse(course.code)
+                            }
                         />
                         <button onClick={() => props.add(course)}>Add</button>
                     </div>

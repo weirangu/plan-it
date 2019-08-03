@@ -1,6 +1,6 @@
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 
 from planit.courses.models import Course
@@ -14,7 +14,14 @@ class CourseViewSet(viewsets.ViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
-    def retrieve(self, request, pk=None, **kwargs):
+    def list(self, request):
+        query = request.query_params.get('q', None)
+        if query is None:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        results = self.queryset.filter(code__icontains=query).distinct("code")
+        return Response(CourseSerializer(results, many=True).data[:20])
+
+    def retrieve(self, request, pk=None):
         if len(pk) == 14:
             # pk is in the form CSC148H1F20189
             code = pk[:9]
@@ -32,4 +39,3 @@ class CourseViewSet(viewsets.ViewSet):
             return Response(CourseSerializer(recent_course).data)
         else:
             raise Http404
-
