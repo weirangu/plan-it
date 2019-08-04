@@ -20,9 +20,9 @@ class Course(models.Model):
         (4, 'Living Things and Their Environment'),
         (5, 'The Physical and Mathematical Universes')
     )
-    # The full course code (e.g. CSC148H1F, or CSCB07H3S), grad courses are 10
+    # The full course code (e.g. CSC148H1, or CSCB07H3), grad courses are 9
     # chars long
-    code = models.CharField(max_length=10)
+    code = models.CharField(db_index=True, max_length=9)
     length = models.CharField(max_length=1, choices=LENGTH)
     name = models.TextField()
     description = models.TextField()
