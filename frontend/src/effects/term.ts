@@ -23,7 +23,8 @@ export function updateTerm(
     dispatch(
         updateTermAction(
             term.id,
-            term.name,
+            term.year,
+            term.month,
             term.courses.map((course: APIResponsePlannerCourse) => course.id),
             term.plan
         )
@@ -55,7 +56,7 @@ export function newTerm(term: APIRequestTerm) {
 
 /**
  * Deletes a term from the plan.
- * @param id The ID of the plan to delete.
+ * @param id The ID of the term to delete.
  */
 export function deleteTerm(id: string) {
     return async (dispatch: Dispatch<AnyAction>): Promise<AnyAction> => {

@@ -49,19 +49,28 @@ export const planReducer = createReducer<PlanReducerState, RootAction>(
         })
     })
     .handleAction(deleteTermAction, (state, action) => {
-        const index = state.findIndex(
-            (val: Plan) => val.id === action.payload.id
+        const planIndex = state.findIndex(
+            (val: Plan) => val.id === action.payload.plan
         )
-        if (index === -1) {
+        if (planIndex === -1) {
             return state
         }
-        const termIndex = state[index].terms.findIndex(
+        const termIndex = state[planIndex].terms.findIndex(
             (term: string) => action.payload.id === term
         )
         if (termIndex === -1) {
             return state
         }
-        return [...state.slice(0, index), ...state.slice(index + 1)]
+
+        const newTerm = [
+            ...state[planIndex].terms.slice(0, termIndex),
+            ...state[planIndex].terms.slice(termIndex + 1)
+        ]
+        return [
+            ...state.slice(0, planIndex),
+            { ...state[planIndex], terms: newTerm },
+            ...state.slice(planIndex + 1)
+        ]
     })
 
 export default planReducer

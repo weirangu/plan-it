@@ -1,5 +1,5 @@
 import React from 'react'
-import { Draggable } from 'react-beautiful-dnd'
+import { Draggable, DraggableProvided } from 'react-beautiful-dnd'
 import { PlannerCourse } from 'reducers/types'
 
 /** The props used for PlannerItem. */
@@ -12,9 +12,8 @@ export interface PlannerItemProps {
 
 const PlannerItem: React.FC<PlannerItemProps> = (props: PlannerItemProps) => (
     <Draggable key={props.id} draggableId={props.id} index={props.index}>
-        {(provided: any) => (
+        {(provided: DraggableProvided) => (
             <div
-                className="a class"
                 ref={provided.innerRef}
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Droppable } from 'react-beautiful-dnd'
+import { Droppable, DroppableProvided } from 'react-beautiful-dnd'
 import PlannerItem from 'components/Planner/PlannerItem'
 import { ID, PlannerCourse } from 'reducers/types'
 import { addPlannerCourse, deletePlannerCourse } from 'effects/plannerCourse'
@@ -61,8 +61,8 @@ export const PlannerList: React.FC<PlannerListProps> = (
 
     return (
         <Droppable droppableId={props.id} key={props.id} direction="horizontal">
-            {(provided: any) => (
-                <div>
+            {(provided: DroppableProvided) => (
+                <>
                     <div
                         className="container"
                         ref={provided.innerRef}
@@ -79,7 +79,7 @@ export const PlannerList: React.FC<PlannerListProps> = (
                             Delete Term
                         </button>
                     </div>
-                </div>
+                </>
             )}
         </Droppable>
     )

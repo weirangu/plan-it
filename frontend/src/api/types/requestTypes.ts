@@ -9,7 +9,8 @@ export interface APIRequestPlan {
 
 /** The type for a Term that the backend receives. */
 export interface APIRequestTerm {
-    name: string
+    year: number
+    month: number
     plan: string
 }
 

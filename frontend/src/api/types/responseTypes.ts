@@ -12,7 +12,8 @@ export interface APIResponsePlan {
 /** The type for a Term returned by the backend. */
 export interface APIResponseTerm {
     id: string
-    name: string
+    year: number
+    month: number
     courses: APIResponsePlannerCourse[]
     plan: string
 }

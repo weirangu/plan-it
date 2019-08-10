@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Plan, RootState } from 'reducers/types'
+import { Plan } from 'reducers/types'
 import Planner from './Planner'
 import './planner.css'
 import { PlannerTabs } from './PlannerTabs'
+import { selectPlan } from 'selectors'
 
 export const PlannerContainer: React.FC = () => {
-    const plans: Plan[] = useSelector((state: RootState) => state.plans)
+    const plans: Plan[] = useSelector(selectPlan)
     const [activeIndex, setActiveIndex] = useState<number>(0)
 
     let planner: JSX.Element | undefined

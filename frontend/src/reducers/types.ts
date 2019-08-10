@@ -27,7 +27,8 @@ export interface PlannerCourse {
  * Each term consists of courses that are taken during that term.
  */
 export interface Term {
-    readonly name: string
+    readonly year: number
+    readonly month: number
     readonly courses: string[]
     readonly plan: string
 }
