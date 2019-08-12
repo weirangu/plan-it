@@ -2,6 +2,8 @@
  * This file contains all the types that the API returns in a response.
  */
 
+import { Month } from 'reducers/types'
+
 /** The type for a Plan returned by the backend. */
 export interface APIResponsePlan {
     id: string
@@ -13,7 +15,7 @@ export interface APIResponsePlan {
 export interface APIResponseTerm {
     id: string
     year: number
-    month: number
+    month: Month
     courses: APIResponsePlannerCourse[]
     plan: string
 }

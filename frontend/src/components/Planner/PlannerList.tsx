@@ -7,7 +7,6 @@ import { addPlannerCourse, deletePlannerCourse } from 'effects/plannerCourse'
 import { withHover } from 'components/hoc/withHover'
 import CourseInfo from 'components/CourseInfo/CourseInfo'
 import AddPlannerItem from './AddPlannerItem'
-import { deleteTerm } from 'effects/term'
 
 /** The props for PlannerList. */
 export interface PlannerListProps {
@@ -74,9 +73,6 @@ export const PlannerList: React.FC<PlannerListProps> = (
                     <div>
                         <button onClick={() => setAddItem(true)}>
                             Add Course
-                        </button>
-                        <button onClick={() => dispatch(deleteTerm(props.id))}>
-                            Delete Term
                         </button>
                     </div>
                 </>

@@ -22,13 +22,15 @@ export interface PlannerCourse {
     // the order of courses.
 }
 
+export type Month = 1 | 5 | 7 | 9
+
 /**
  * A dictionary of terms.
  * Each term consists of courses that are taken during that term.
  */
 export interface Term {
     readonly year: number
-    readonly month: number
+    readonly month: Month
     readonly courses: string[]
     readonly plan: string
 }

@@ -4,7 +4,7 @@ import { APIRequestPlan } from 'api/types/requestTypes'
 import { APIResponsePlan, APIResponseTerm } from 'api/types/responseTypes'
 import { updateTerm } from 'effects/term'
 import { batch } from 'react-redux'
-import { RootState } from 'reducers/types'
+import { Month, RootState } from 'reducers/types'
 import { AnyAction, Dispatch } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
 import { newTermAPI } from 'api/term'
@@ -28,7 +28,7 @@ export function getPlan(id: string) {
  * @param year The year of the first term in the plan.
  * @param month The month of the first term in the plan.
  */
-export function newPlan(plan: APIRequestPlan, year: number, month: number) {
+export function newPlan(plan: APIRequestPlan, year: number, month: Month) {
     return async (dispatch: Dispatch<AnyAction>): Promise<void> => {
         const planResp = await newPlanAPI(plan)
         const termResp = await newTermAPI({ year, month, plan: planResp.id })

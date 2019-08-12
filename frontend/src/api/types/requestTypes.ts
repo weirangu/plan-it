@@ -2,6 +2,8 @@
  * This file contains all the types that the API uses in a request body.
  */
 
+import { Month } from 'reducers/types'
+
 /** The type for a Plan that the backend receives. */
 export interface APIRequestPlan {
     name: string
@@ -10,7 +12,7 @@ export interface APIRequestPlan {
 /** The type for a Term that the backend receives. */
 export interface APIRequestTerm {
     year: number
-    month: number
+    month: Month
     plan: string
 }
 
