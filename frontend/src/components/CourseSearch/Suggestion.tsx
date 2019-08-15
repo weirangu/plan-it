@@ -1,4 +1,5 @@
 import React, { MouseEvent } from 'react'
+import styles from './Suggestion.module.css'
 
 export interface SuggestionProps {
     code: string
@@ -10,9 +11,9 @@ export const Suggestion: React.FC<SuggestionProps> = (
     props: SuggestionProps
 ) => {
     return (
-        <button onClick={props.onClick}>
-            <h6>{props.name}</h6>
-            {props.code}
+        <button className={styles.suggestion} onClick={props.onClick}>
+            <span className={styles.courseName}>{props.name}</span>
+            <span className={styles.courseCode}>{props.code}</span>
         </button>
     )
 }

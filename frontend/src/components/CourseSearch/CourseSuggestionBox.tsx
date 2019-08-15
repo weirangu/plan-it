@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Suggestion from './Suggestion'
 import { searchCoursesAPI } from 'api/course'
-import { Course } from '../../reducers/types'
+import { Course } from 'reducers/types'
+import styles from './CourseSuggestionBox.module.css'
 
 export interface CourseSuggestionBoxProps {
     search: string
@@ -22,18 +23,16 @@ const CourseSuggestionBox: React.FC<CourseSuggestionBoxProps> = (
     }, [props.search])
 
     return (
-        <div>
-            <ul>
-                {list.map((course: Course) => (
-                    <Suggestion
-                        code={course.code}
-                        name={course.name}
-                        key={course.code}
-                        onClick={() => props.onSelectSuggestion(course)}
-                    />
-                ))}
-            </ul>
-        </div>
+        <ul className={styles.list}>
+            {list.map((course: Course) => (
+                <Suggestion
+                    code={course.code}
+                    name={course.name}
+                    key={course.code}
+                    onClick={() => props.onSelectSuggestion(course)}
+                />
+            ))}
+        </ul>
     )
 }
 
