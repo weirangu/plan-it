@@ -1,11 +1,11 @@
 import React from 'react'
-import './App.css'
+import styles from './App.module.css'
 import PlannerContainer from './Planner/PlannerContainer'
 
 const App: React.FC = () => (
-    <div>
-        <h1>Plan it!</h1>
+    <>
+        <h1 className={styles.header}>Plan it!</h1>
         <PlannerContainer />
-    </div>
+    </>
 )
 export default App

@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { Droppable, DroppableProvided } from 'react-beautiful-dnd'
 import PlannerItem from 'components/Planner/PlannerItem'
 import { ID, PlannerCourse } from 'reducers/types'
+import styles from './PlannerList.module.css'
 import { addPlannerCourse, deletePlannerCourse } from 'effects/plannerCourse'
 import { withHover } from 'components/hoc/withHover'
 import CourseInfo from 'components/CourseInfo/CourseInfo'
@@ -63,7 +64,7 @@ export const PlannerList: React.FC<PlannerListProps> = (
             {(provided: DroppableProvided) => (
                 <>
                     <div
-                        className="container"
+                        className={styles.container}
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                     >

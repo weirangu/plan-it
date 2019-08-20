@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Plan } from 'reducers/types'
 import Planner from './Planner'
-import './planner.css'
 import { PlannerTabs } from './PlannerTabs'
 import { selectPlan } from 'selectors'
 
@@ -17,6 +16,7 @@ export const PlannerContainer: React.FC = () => {
     return (
         <div>
             <PlannerTabs
+                activeIndex={activeIndex}
                 setIndex={setActiveIndex}
                 tabs={plans.map((plan: Plan) => plan.name)}
             />

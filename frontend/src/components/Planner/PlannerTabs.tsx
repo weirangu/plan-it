@@ -1,13 +1,14 @@
 import React, { useCallback } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { newPlan } from 'effects/plan'
-import { newTerm } from 'effects/term'
-import { APIResponsePlan } from 'api/types/responseTypes'
 import { ThunkDispatch } from 'redux-thunk'
-import { RootState } from 'reducers/types'
+import { Plan, RootState } from 'reducers/types'
 import { RootAction } from 'actions'
+import styles from './PlannerTabs.module.css'
+import { selectPlan } from 'selectors'
 
 export interface PlannerTabsProps {
+    activeIndex: number
     setIndex: (index: number) => any
     tabs: string[]
 }
@@ -15,20 +16,36 @@ export interface PlannerTabsProps {
 export const PlannerTabs: React.FC<PlannerTabsProps> = (
     props: PlannerTabsProps
 ) => {
+    const plan: Plan[] = useSelector(selectPlan)
     const dispatch: ThunkDispatch<RootState, void, RootAction> = useDispatch()
     const newPlanCallback = useCallback(
-        () => dispatch(newPlan({ name: 'My Plan' }, 2019, 9)),
-        [dispatch]
+        () =>
+            dispatch(newPlan({ name: 'My Plan' }, 2019, 9)).then(() =>
+                props.setIndex(plan.length)
+            ),
+        [dispatch, plan.length, props]
     )
 
     return (
-        <div>
-            {props.tabs.map((tab: string, index: number) => (
-                <button key={index} onClick={() => props.setIndex(index)}>
-                    {tab}
-                </button>
-            ))}
-            <button onClick={newPlanCallback}>New Plan</button>
+        <div className={styles.tabs}>
+            {props.tabs.map((tab: string, index: number) => {
+                let buttonClass = styles.buttons
+                if (index === props.activeIndex) {
+                    buttonClass += ` ${styles.selectedButton}`
+                }
+                return (
+                    <button
+                        className={buttonClass}
+                        key={index}
+                        onClick={() => props.setIndex(index)}
+                    >
+                        {tab}
+                    </button>
+                )
+            })}
+            <button className={styles.buttons} onClick={newPlanCallback}>
+                New Plan
+            </button>
         </div>
     )
 }
