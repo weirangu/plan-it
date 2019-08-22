@@ -1,16 +1,16 @@
 import PlannerList from 'components/Planner/PlannerList'
-import { movePlannerCourse } from 'effects/plannerCourse'
-import { deleteTerm, newTerm } from 'effects/term'
+import { movePlannerCourse } from 'store/effects/plannerCourse'
+import { deleteTerm, newTerm } from 'store/effects/term'
 import React, { useCallback, useMemo } from 'react'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectPlan, selectPlannerCourse, selectTerm } from 'selectors'
-import { PlanReducerState } from 'reducers/planReducer'
-import { TermReducerState } from 'reducers/termReducer'
+import { selectPlan, selectPlannerCourse, selectTerm } from 'store/selectors'
+import { PlanReducerState } from 'store/reducers/planReducer'
+import { TermReducerState } from 'store/reducers/termReducer'
 import { ThunkDispatch } from 'redux-thunk'
-import { PlannerCourseReducerState } from 'reducers/plannerCourseReducer'
-import { ID, Month, RootState, Term } from 'reducers/types'
-import { RootAction } from 'actions'
+import { PlannerCourseReducerState } from 'store/reducers/plannerCourseReducer'
+import { ID, TermMonth, RootState, Term } from 'store/reducers/types'
+import { RootAction } from 'store/actions'
 
 export interface PlannerProps {
     planIndex: number
@@ -25,9 +25,9 @@ function getNextTerm({
     month,
     year
 }: {
-    month: Month
+    month: TermMonth
     year: number
-}): { month: Month; year: number } {
+}): { month: TermMonth; year: number } {
     switch (month) {
         case 1:
             return { month: 5, year }
@@ -51,9 +51,9 @@ function getPrevTerm({
     month,
     year
 }: {
-    month: Month
+    month: TermMonth
     year: number
-}): { month: Month; year: number } {
+}): { month: TermMonth; year: number } {
     switch (month) {
         case 1:
             return { month: 9, year: year - 1 }
@@ -72,7 +72,7 @@ function getPrevTerm({
  * Maps a month to the name of a term.
  * @param month The month to get the name of the term of.
  */
-function mapMonthToTerm(month: Month): string {
+function mapMonthToTerm(month: TermMonth): string {
     switch (month) {
         case 1:
             return 'Winter'

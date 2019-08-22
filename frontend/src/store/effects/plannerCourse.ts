@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux'
-import { RootState } from 'reducers/types'
+import { RootState } from 'store/reducers/types'
 import {
     movePlannerCourseAPI,
     newPlannerCourseAPI,
@@ -10,7 +10,7 @@ import {
     deletePlannerCourseAction,
     movePlannerCourseAction,
     updatePlannerCourseAction
-} from 'actions/plannerCourseActions'
+} from 'store/actions/plannerCourseActions'
 
 /**
  * Adds a new course to the Redux state, and makes a POST request to the API.

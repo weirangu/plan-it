@@ -1,4 +1,4 @@
-import { ID } from './types'
+import { ID } from 'store/reducers/types'
 
 /**
  * Deletes the given keys from the dictionary. This function doesn't mutate the
@@ -32,36 +32,6 @@ export function deleteFromDictionary<T>(
     const dictCopy = { ...dict }
     delete dictCopy[id]
     return dictCopy
-}
-
-/**
- * Updates multiple values in the provided dictionary.
- * @param dictionary The dictionary to update. This won't be modified.
- * @param data An array of IDs and their data to add/update in the dictionary.
- * @returns A copy of the dictionary with the updated data.
- */
-export function updateMultipleInDictionary<T>(
-    dictionary: { [id: string]: T },
-    data: (T & ID)[]
-): { [id: string]: T } {
-    const dictCopy = { ...dictionary }
-    data.forEach((val: T & ID) => (dictCopy[val.id] = val))
-    return dictCopy
-}
-
-/**
- * Updates a value in the provided dictionary.
- * @param dictionary The dictionary to update. This won't be modified.
- * @param id The ID of the data to update.
- * @param data The data to update in the dictionary.
- * @returns A copy of the dictionary with the updated data.
- */
-export function updateDictionary<T>(
-    dictionary: { [id: string]: T },
-    id: string,
-    data: T
-): { [id: string]: T } {
-    return { ...dictionary, [id]: data }
 }
 
 /**

@@ -1,6 +1,6 @@
 import { createAction } from 'typesafe-actions'
 import store from 'store'
-import { Month } from 'reducers/types'
+import { TermMonth } from 'store/reducers/types'
 
 /** Deletes a term in the plan. */
 export const deleteTermAction = createAction(
@@ -15,7 +15,7 @@ export const updateTermAction = createAction(
     action => (
         id: string,
         year: number,
-        month: Month,
+        month: TermMonth,
         courses: string[],
         plan: string
     ) => action({ id, year, month, courses, plan })

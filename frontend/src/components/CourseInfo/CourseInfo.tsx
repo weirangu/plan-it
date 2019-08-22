@@ -1,11 +1,11 @@
-import { getCourse } from 'effects/course'
+import { getCourse } from 'store/effects/course'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { CourseReducerState } from 'reducers/courseReducer'
+import { CourseReducerState } from 'store/reducers/courseReducer'
 import './CourseInfo.css'
-import { selectCourse } from 'selectors'
-import { RootState } from 'reducers/types'
-import { RootAction } from 'actions'
+import { selectCourse } from 'store/selectors'
+import { RootState } from 'store/reducers/types'
+import { RootAction } from 'store/actions'
 import { ThunkDispatch } from 'redux-thunk'
 
 export interface CourseInfoProps {

@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import CourseSuggestionBox from '../CourseSearch/CourseSuggestionBox'
-import { Course } from '../../reducers/types'
+import { Course } from '../../store/reducers/types'
 
 /** The props used for PlannerItem. */
 export interface AddCourseItemProps {

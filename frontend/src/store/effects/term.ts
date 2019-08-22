@@ -1,5 +1,5 @@
-import { updatePlannerCourseAction } from 'actions/plannerCourseActions'
-import { deleteTermAction, updateTermAction } from 'actions/termActions'
+import { updatePlannerCourseAction } from 'store/actions/plannerCourseActions'
+import { deleteTermAction, updateTermAction } from 'store/actions/termActions'
 import { deleteTermAPI, newTermAPI } from 'api/term'
 import { APIRequestTerm } from 'api/types/requestTypes'
 import {
@@ -7,7 +7,7 @@ import {
     APIResponseTerm
 } from 'api/types/responseTypes'
 import { batch } from 'react-redux'
-import { RootState } from 'reducers/types'
+import { RootState } from 'store/reducers/types'
 import { AnyAction, Dispatch } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
 

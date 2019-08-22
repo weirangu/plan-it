@@ -1,9 +1,9 @@
-import { updatePlanAction, newPlanAction } from 'actions/planActions'
-import { deleteTermAction, updateTermAction } from 'actions/termActions'
-import { Plan } from 'reducers/types'
+import { updatePlanAction, newPlanAction } from 'store/actions/planActions'
+import { deleteTermAction, updateTermAction } from 'store/actions/termActions'
+import { Plan } from 'store/reducers/types'
 import { createReducer } from 'typesafe-actions'
-import { RootAction } from 'actions'
-import { addAtIndex, replaceAtIndex } from './helpers'
+import { RootAction } from 'store/actions'
+import { addAtIndex, replaceAtIndex } from 'store/reducers/helpers'
 
 export type PlanReducerState = Plan[]
 

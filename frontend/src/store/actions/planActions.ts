@@ -1,4 +1,4 @@
-import { Plan } from 'reducers/types'
+import { Plan } from 'store/reducers/types'
 import { createAction } from 'typesafe-actions'
 
 /**

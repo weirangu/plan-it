@@ -1,7 +1,7 @@
-import { TermReducerState } from './termReducer'
-import { PlannerCourseReducerState } from './plannerCourseReducer'
-import { CourseReducerState } from './courseReducer'
-import { PlanReducerState } from './planReducer'
+import { TermReducerState } from 'store/reducers/termReducer'
+import { PlannerCourseReducerState } from 'store/reducers/plannerCourseReducer'
+import { CourseReducerState } from 'store/reducers/courseReducer'
+import { PlanReducerState } from 'store/reducers/planReducer'
 
 /**
  * An interface with the property id. Use this in conjunction to the other types
@@ -22,7 +22,8 @@ export interface PlannerCourse {
     // the order of courses.
 }
 
-export type Month = 1 | 5 | 7 | 9
+/** The month that a term begins with. */
+export type TermMonth = 1 | 5 | 7 | 9
 
 /**
  * A dictionary of terms.
@@ -30,7 +31,7 @@ export type Month = 1 | 5 | 7 | 9
  */
 export interface Term {
     readonly year: number
-    readonly month: Month
+    readonly month: TermMonth
     readonly courses: string[]
     readonly plan: string
 }

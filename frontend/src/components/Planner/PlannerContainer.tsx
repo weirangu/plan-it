@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Plan } from 'reducers/types'
+import { Plan } from 'store/reducers/types'
 import Planner from './Planner'
 import { PlannerTabs } from './PlannerTabs'
-import { selectPlan } from 'selectors'
+import { selectPlan } from 'store/selectors'
 
 export const PlannerContainer: React.FC = () => {
     const plans: Plan[] = useSelector(selectPlan)

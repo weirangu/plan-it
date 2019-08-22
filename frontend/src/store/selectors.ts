@@ -1,11 +1,11 @@
 /**
  * A collection of functions used in the useSelector hook provided by React Redux.
  */
-import { RootState } from 'reducers/types'
-import { PlanReducerState } from 'reducers/planReducer'
-import { TermReducerState } from 'reducers/termReducer'
-import { PlannerCourseReducerState } from 'reducers/plannerCourseReducer'
-import { CourseReducerState } from 'reducers/courseReducer'
+import { RootState } from 'store/reducers/types'
+import { PlanReducerState } from 'store/reducers/planReducer'
+import { TermReducerState } from 'store/reducers/termReducer'
+import { PlannerCourseReducerState } from 'store/reducers/plannerCourseReducer'
+import { CourseReducerState } from 'store/reducers/courseReducer'
 
 /**
  * Selects the PlanReducerState from the global Redux state.

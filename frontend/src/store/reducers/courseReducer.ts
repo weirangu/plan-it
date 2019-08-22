@@ -1,7 +1,7 @@
-import { cacheCourseAction } from 'actions/courseActions'
-import { Course } from 'reducers/types'
+import { cacheCourseAction } from 'store/actions/courseActions'
+import { Course } from 'store/reducers/types'
 import { createReducer } from 'typesafe-actions'
-import { RootAction } from 'actions'
+import { RootAction } from 'store/actions'
 
 /** The state for the PlannerCourse reducer. */
 export interface CourseReducerState {

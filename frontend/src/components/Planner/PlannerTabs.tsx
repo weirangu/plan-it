@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { newPlan } from 'effects/plan'
+import { newPlan } from 'store/effects/plan'
 import { ThunkDispatch } from 'redux-thunk'
-import { Plan, RootState } from 'reducers/types'
-import { RootAction } from 'actions'
+import { Plan, RootState } from 'store/reducers/types'
+import { RootAction } from 'store/actions'
 import styles from './PlannerTabs.module.css'
-import { selectPlan } from 'selectors'
+import { selectPlan } from 'store/selectors'
 
 export interface PlannerTabsProps {
     activeIndex: number

@@ -1,4 +1,4 @@
-import { Course } from 'reducers/types'
+import { Course } from 'store/reducers/types'
 import { createAction } from 'typesafe-actions'
 
 /** Updates the current plan. */

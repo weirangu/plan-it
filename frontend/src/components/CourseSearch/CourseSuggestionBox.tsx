@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Suggestion from './Suggestion'
 import { searchCoursesAPI } from 'api/course'
-import { Course } from 'reducers/types'
+import { Course } from 'store/reducers/types'
 import styles from './CourseSuggestionBox.module.css'
 
 export interface CourseSuggestionBoxProps {
