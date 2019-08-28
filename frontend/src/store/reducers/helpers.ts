@@ -1,5 +1,3 @@
-import { ID } from 'store/reducers/types'
-
 /**
  * Deletes the given keys from the dictionary. This function doesn't mutate the
  * dictionary.
