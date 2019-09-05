@@ -1,16 +1,17 @@
+import AddDeleteButton from 'components/Planner/AddDeleteButton'
 import PlannerList from 'components/Planner/PlannerList'
-import { movePlannerCourse } from 'store/effects/plannerCourse'
-import { deleteTerm, newTerm } from 'store/effects/term'
 import React, { useCallback, useMemo } from 'react'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectPlan, selectPlannerCourse, selectTerm } from 'store/selectors'
+import { ThunkDispatch } from 'redux-thunk'
+import { RootAction } from 'store/actions'
+import { movePlannerCourse } from 'store/effects/plannerCourse'
+import { deleteTerm, newTerm } from 'store/effects/term'
 import { PlanReducerState } from 'store/reducers/planReducer'
 import { TermReducerState } from 'store/reducers/termReducer'
-import { ThunkDispatch } from 'redux-thunk'
-import { PlannerCourseReducerState } from 'store/reducers/plannerCourseReducer'
-import { ID, TermMonth, RootState, Term } from 'store/reducers/types'
-import { RootAction } from 'store/actions'
+import { ID, RootState, Term, TermMonth } from 'store/reducers/types'
+import { selectPlan, selectTerm } from 'store/selectors'
+import styles from './Planner.module.css'
 
 export interface PlannerProps {
     planIndex: number
@@ -68,31 +69,9 @@ function getPrevTerm({
     }
 }
 
-/**
- * Maps a month to the name of a term.
- * @param month The month to get the name of the term of.
- */
-function mapMonthToTerm(month: TermMonth): string {
-    switch (month) {
-        case 1:
-            return 'Winter'
-        case 5:
-            return 'Summer F'
-        case 7:
-            return 'Summer S'
-        case 9:
-            return 'Fall'
-        default:
-            throw new Error('Month is not one of 1, 5, 7, 9!')
-    }
-}
-
 const Planner: React.FC<PlannerProps> = (props: PlannerProps) => {
     const plans: PlanReducerState = useSelector(selectPlan)
     const terms: TermReducerState = useSelector(selectTerm)
-    const plannerCourses: PlannerCourseReducerState = useSelector(
-        selectPlannerCourse
-    )
     const dispatch: ThunkDispatch<RootState, void, RootAction> = useDispatch()
 
     const sortedTerms: (Term & ID)[] = useMemo(
@@ -167,38 +146,25 @@ const Planner: React.FC<PlannerProps> = (props: PlannerProps) => {
         [sortedTerms, dispatch]
     )
 
-    let deleteNewTermButton: JSX.Element | undefined
-    let deleteOldTermButton: JSX.Element | undefined
-    if (sortedTerms.length > 1) {
-        deleteNewTermButton = <button onClick={deleteNewTerm}>Delete</button>
-        deleteOldTermButton = <button onClick={deleteOldTerm}>Delete</button>
-    }
-
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <button onClick={addNewTerm}>Add</button>
-            {deleteNewTermButton}
-            {sortedTerms.map((term: Term & ID) => {
-                const courseArray = term.courses.map((id: string) => ({
-                    id,
-                    ...plannerCourses[id]
-                }))
-                return (
-                    <div key={term.id}>
-                        <h3>
-                            Term: {term.year.toString()}{' '}
-                            {mapMonthToTerm(term.month)}
-                        </h3>
-                        <PlannerList
-                            items={courseArray}
-                            id={term.id}
-                            key={term.id}
-                        />
-                    </div>
-                )
-            })}
-            <button onClick={addOldTerm}>Add</button>
-            {deleteOldTermButton}
+            <div className={styles.planner}>
+                <AddDeleteButton
+                    onAdd={addNewTerm}
+                    onDelete={
+                        sortedTerms.length > 1 ? deleteNewTerm : undefined
+                    }
+                />
+                {sortedTerms.map((term: Term & ID) => (
+                    <PlannerList term={term} />
+                ))}
+                <AddDeleteButton
+                    onAdd={addOldTerm}
+                    onDelete={
+                        sortedTerms.length > 1 ? deleteOldTerm : undefined
+                    }
+                />
+            </div>
         </DragDropContext>
     )
 }

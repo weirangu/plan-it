@@ -1,21 +1,41 @@
-import React, { useCallback, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Droppable, DroppableProvided } from 'react-beautiful-dnd'
+import CourseInfo from 'components/CourseInfo/CourseInfo'
+import { withHover } from 'components/hoc/withHover'
 import PlannerItem from 'components/Planner/PlannerItem'
-import { ID, PlannerCourse } from 'store/reducers/types'
-import styles from './PlannerList.module.css'
+import React, { useCallback, useState } from 'react'
+import { Droppable, DroppableProvided } from 'react-beautiful-dnd'
+import { useDispatch, useSelector } from 'react-redux'
 import {
     addPlannerCourse,
     deletePlannerCourse
 } from 'store/effects/plannerCourse'
-import { withHover } from 'components/hoc/withHover'
-import CourseInfo from 'components/CourseInfo/CourseInfo'
+import { PlannerCourseReducerState } from 'store/reducers/plannerCourseReducer'
+import { ID, Term, TermMonth } from 'store/reducers/types'
+import { selectPlannerCourse } from 'store/selectors'
 import AddPlannerItem from './AddPlannerItem'
+import styles from './PlannerList.module.css'
 
 /** The props for PlannerList. */
 export interface PlannerListProps {
-    id: string
-    items: (PlannerCourse & ID)[]
+    term: Term & ID
+}
+
+/**
+ * Maps a month to the name of a term.
+ * @param month The month to get the name of the term of.
+ */
+function mapMonthToTerm(month: TermMonth): string {
+    switch (month) {
+        case 1:
+            return 'Winter'
+        case 5:
+            return 'Summer F'
+        case 7:
+            return 'Summer S'
+        case 9:
+            return 'Fall'
+        default:
+            throw new Error('Month is not one of 1, 5, 7, 9!')
+    }
 }
 
 const PlannerItemWithHover = withHover(PlannerItem, CourseInfo)
@@ -23,39 +43,53 @@ const PlannerItemWithHover = withHover(PlannerItem, CourseInfo)
 export const PlannerList: React.FC<PlannerListProps> = (
     props: PlannerListProps
 ) => {
+    const {
+        id,
+        year,
+        month,
+        courses
+    }: {
+        id: string
+        year: number
+        month: TermMonth
+        courses: string[]
+    } = props.term
     // addItem determines whether the user is trying to add a new course
     const [addItem, setAddItem] = useState<boolean>(false)
+    const plannerCourses: PlannerCourseReducerState = useSelector(
+        selectPlannerCourse
+    )
     const dispatch = useDispatch()
 
     const addCourse = useCallback(
         (course: string) => {
-            dispatch(addPlannerCourse(course, props.id))
+            dispatch(addPlannerCourse(course, props.term.id))
             setAddItem(false)
         },
-        [dispatch, props.id]
+        [dispatch, props.term.id]
     )
 
-    const courses = props.items.map(
-        (item: PlannerCourse & ID, index: number) => (
+    const listItems: JSX.Element[] = courses.map(
+        (courseID: string, index: number) => (
             <PlannerItemWithHover
-                key={item.id}
+                key={courseID}
                 mainProps={{
-                    id: item.id,
-                    course: item,
+                    id: courseID,
+                    course: plannerCourses[courseID],
                     index: index,
-                    delete: () => dispatch(deletePlannerCourse(item.id))
+                    delete: () => dispatch(deletePlannerCourse(courseID))
                 }}
                 hoverProps={{
-                    id: item.course
+                    id: plannerCourses[courseID].course
                 }}
             />
         )
     )
     if (addItem) {
-        courses.push(
+        listItems.push(
             <AddPlannerItem
                 key={'add planner item'}
-                index={courses.length}
+                index={listItems.length}
                 add={addCourse}
                 delete={() => setAddItem(false)}
             />
@@ -63,15 +97,18 @@ export const PlannerList: React.FC<PlannerListProps> = (
     }
 
     return (
-        <Droppable droppableId={props.id} key={props.id} direction="horizontal">
+        <Droppable droppableId={id} key={id} direction="vertical">
             {(provided: DroppableProvided) => (
-                <>
+                <div key={id} className={styles.container}>
+                    <h3 className={styles.header}>
+                        {year.toString()} {mapMonthToTerm(month)}
+                    </h3>
                     <div
-                        className={styles.container}
+                        className={styles.items}
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                     >
-                        {courses}
+                        {listItems}
                         {provided.placeholder}
                     </div>
                     <div>
@@ -79,7 +116,7 @@ export const PlannerList: React.FC<PlannerListProps> = (
                             Add Course
                         </button>
                     </div>
-                </>
+                </div>
             )}
         </Droppable>
     )

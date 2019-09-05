@@ -1,0 +1,8 @@
+.planner {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    float: left;
+    overflow: auto;
+    text-align: center;
+}

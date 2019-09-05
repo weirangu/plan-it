@@ -1,0 +1,21 @@
+.container {
+    display: grid;
+}
+
+.add {
+    background-color: lightgreen;
+    border: none;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.delete {
+    background-color: lightgreen;
+    border: none;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+}

@@ -1,7 +1,17 @@
 .container {
     align-items: center;
     display: flex;
+    flex-direction: column;
+    float: left;
     justify-content: center;
     min-height: 22px;
-    width: 100%;
+    width: 160px;
+}
+
+.header {
+    font-family: sans-serif;
+}
+
+.items {
+    text-align: center;
 }

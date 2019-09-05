@@ -1,0 +1,15 @@
+.container {
+    font-family: sans-serif;
+}
+
+.container:hover .deleteButton {
+    display: inline;
+}
+
+.deleteButton {
+    background-color: red;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: none;
+}
