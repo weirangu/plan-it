@@ -75,9 +75,9 @@ export const PlannerList: React.FC<PlannerListProps> = (
                 key={courseID}
                 mainProps={{
                     id: courseID,
-                    course: plannerCourses[courseID],
                     index: index,
-                    delete: () => dispatch(deletePlannerCourse(courseID))
+                    onDelete: () => dispatch(deletePlannerCourse(courseID)),
+                    children: plannerCourses[courseID].course
                 }}
                 hoverProps={{
                     id: plannerCourses[courseID].course

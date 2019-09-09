@@ -2,4 +2,5 @@
     height: 240px;
     position: fixed;
     width: auto;
+    z-index: 1;
 }

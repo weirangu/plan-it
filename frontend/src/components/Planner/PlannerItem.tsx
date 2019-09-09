@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Draggable, DraggableProvided } from 'react-beautiful-dnd'
 import { PlannerCourse } from 'store/reducers/types'
 import styles from './PlannerItem.module.css'
@@ -6,15 +6,14 @@ import styles from './PlannerItem.module.css'
 /** The props used for PlannerItem. */
 export interface PlannerItemProps {
     id: string
-    course: PlannerCourse
     index: number
-    delete: () => any // The function that deletes this PlannerItem
+    onDelete: () => any // The function that deletes this PlannerItem
+    children: ReactNode
 }
 
 const PlannerItem: React.FC<PlannerItemProps> = (props: PlannerItemProps) => (
     <Draggable key={props.id} draggableId={props.id} index={props.index}>
         {(provided: DraggableProvided) => {
-            console.log(provided)
             return (
                 <div
                     ref={provided.innerRef}
@@ -22,9 +21,9 @@ const PlannerItem: React.FC<PlannerItemProps> = (props: PlannerItemProps) => (
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                 >
-                    {props.course.course}
+                    {props.children}
                     <button
-                        onClick={props.delete}
+                        onClick={props.onDelete}
                         className={styles.deleteButton}
                     >
                         X

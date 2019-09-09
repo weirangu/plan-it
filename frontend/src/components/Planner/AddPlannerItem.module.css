@@ -1,0 +1,7 @@
+.container {
+    display: flex;
+}
+
+.searchBox {
+    width: 100px;
+}

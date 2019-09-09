@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import CourseSuggestionBox from 'components/CourseSearch/CourseSuggestionBox'
 import { Course } from 'store/reducers/types'
+import styles from './AddPlannerItem.module.css'
 
 /** The props used for PlannerItem. */
 export interface AddCourseItemProps {
@@ -30,21 +31,21 @@ const AddPlannerItem: React.FC<AddCourseItemProps> = (
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
+                    className={styles.container}
                 >
-                    <div>
-                        <input
-                            type="search"
-                            value={course}
-                            onChange={onCourseSearchChange}
-                        />
-                        <CourseSuggestionBox
-                            search={course}
-                            onSelectSuggestion={(course: Course) =>
-                                setCourse(course.code)
-                            }
-                        />
-                        <button onClick={() => props.add(course)}>Add</button>
-                    </div>
+                    <input
+                        type="search"
+                        value={course}
+                        onChange={onCourseSearchChange}
+                        className={styles.searchBox}
+                    />
+                    <CourseSuggestionBox
+                        search={course}
+                        onSelectSuggestion={(course: Course) =>
+                            setCourse(course.code)
+                        }
+                    />
+                    <button onClick={() => props.add(course)}>Add</button>
                     <button onClick={props.delete}>X</button>
                 </div>
             )}

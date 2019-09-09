@@ -4,7 +4,6 @@
     flex-direction: column;
     float: left;
     justify-content: center;
-    min-height: 22px;
     width: 160px;
 }
 
@@ -14,4 +13,6 @@
 
 .items {
     text-align: center;
+    min-height: 22px;
+    width: 100%;
 }
