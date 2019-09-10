@@ -4,7 +4,7 @@
         "browser": true,
         "es6": true
     },
-    "extends": ["standard", "react-app", "prettier"],
+    "extends": ["react-app", "prettier"],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"

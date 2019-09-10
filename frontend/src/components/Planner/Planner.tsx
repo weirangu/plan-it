@@ -7,14 +7,13 @@ import { ThunkDispatch } from 'redux-thunk'
 import { RootAction } from 'store/actions'
 import { movePlannerCourse } from 'store/effects/plannerCourse'
 import { deleteTerm, newTerm } from 'store/effects/term'
-import { PlanReducerState } from 'store/reducers/planReducer'
 import { TermReducerState } from 'store/reducers/termReducer'
-import { ID, RootState, Term, TermMonth } from 'store/reducers/types'
-import { selectPlan, selectTerm } from 'store/selectors'
+import { ID, Plan, RootState, Term, TermMonth } from 'store/reducers/types'
+import { selectTerm } from 'store/selectors'
 import styles from './Planner.module.css'
 
 export interface PlannerProps {
-    planIndex: number
+    plan: Plan // The plan that we're showing
 }
 
 /**
@@ -70,16 +69,14 @@ function getPrevTerm({
 }
 
 const Planner: React.FC<PlannerProps> = (props: PlannerProps) => {
-    const plans: PlanReducerState = useSelector(selectPlan)
+    const { plan }: { plan: Plan } = props
     const terms: TermReducerState = useSelector(selectTerm)
     const dispatch: ThunkDispatch<RootState, void, RootAction> = useDispatch()
 
     const sortedTerms: (Term & ID)[] = useMemo(
         () =>
             Object.entries(terms)
-                .filter(([key]: [string, Term]) =>
-                    plans[props.planIndex].terms.includes(key)
-                )
+                .filter(([key]: [string, Term]) => plan.terms.includes(key))
                 .map(([key, term]: [string, Term]) => ({ ...term, id: key }))
                 .sort(
                     (term1: Term, term2: Term) =>
@@ -88,7 +85,7 @@ const Planner: React.FC<PlannerProps> = (props: PlannerProps) => {
                         term1.year * 10 -
                         term1.month
                 ),
-        [plans, terms, props.planIndex]
+        [terms, plan]
     )
 
     const onDragEnd = useCallback(
@@ -116,10 +113,10 @@ const Planner: React.FC<PlannerProps> = (props: PlannerProps) => {
             dispatch(
                 newTerm({
                     ...getNextTerm(sortedTerms[0]),
-                    plan: plans[props.planIndex].id as string
+                    plan: plan.id as string
                 })
             ),
-        [sortedTerms, plans, dispatch, props.planIndex]
+        [sortedTerms, plan, dispatch]
     )
 
     /** This function is used to delete the newest term in the plan. */
@@ -134,10 +131,10 @@ const Planner: React.FC<PlannerProps> = (props: PlannerProps) => {
             dispatch(
                 newTerm({
                     ...getPrevTerm(sortedTerms[sortedTerms.length - 1]),
-                    plan: plans[props.planIndex].id as string
+                    plan: plan.id as string
                 })
             ),
-        [sortedTerms, plans, dispatch, props.planIndex]
+        [sortedTerms, plan, dispatch]
     )
 
     /** This function is used to delete the oldest term in the plan. */

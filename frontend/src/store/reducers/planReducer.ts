@@ -1,9 +1,9 @@
-import { updatePlanAction, newPlanAction } from 'store/actions/planActions'
+import { RootAction } from 'store/actions'
+import { newPlanAction, updatePlanAction } from 'store/actions/planActions'
 import { deleteTermAction, updateTermAction } from 'store/actions/termActions'
+import { addAtIndex, replaceAtIndex } from 'store/reducers/helpers'
 import { Plan } from 'store/reducers/types'
 import { createReducer } from 'typesafe-actions'
-import { RootAction } from 'store/actions'
-import { addAtIndex, replaceAtIndex } from 'store/reducers/helpers'
 
 export type PlanReducerState = Plan[]
 
@@ -20,7 +20,7 @@ export const planReducer = createReducer<PlanReducerState, RootAction>(
             return [
                 ...state.slice(0, planIndex),
                 action.payload,
-                ...state.slice(planIndex)
+                ...state.slice(planIndex + 1)
             ]
         }
     })
