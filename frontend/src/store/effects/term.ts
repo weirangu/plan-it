@@ -1,5 +1,3 @@
-import { updatePlannerCourseAction } from 'store/actions/plannerCourseActions'
-import { deleteTermAction, updateTermAction } from 'store/actions/termActions'
 import { deleteTermAPI, newTermAPI } from 'api/term'
 import { APIRequestTerm } from 'api/types/requestTypes'
 import {
@@ -7,12 +5,14 @@ import {
     APIResponseTerm
 } from 'api/types/responseTypes'
 import { batch } from 'react-redux'
-import { RootState } from 'store/reducers/types'
 import { AnyAction, Dispatch } from 'redux'
-import { ThunkDispatch } from 'redux-thunk'
+import { updatePlannerCourseAction } from 'store/actions/plannerCourseActions'
+import { deleteTermAction, updateTermAction } from 'store/actions/termActions'
+import { RootState } from 'store/reducers/types'
 
 /**
  * Updates a Term and the corresponding PlannerCourses from a APIResponseTerm.
+ * Can be batched using React Redux.
  * @param term The response from the API.
  * @param dispatch The function used to dispatch actions.
  */
@@ -46,11 +46,14 @@ export function updateTerm(
  * @param term The information of the new term to send to the backend.
  */
 export function newTerm(term: APIRequestTerm) {
-    return async (
-        dispatch: ThunkDispatch<RootState, void, AnyAction>
-    ): Promise<void> => {
-        const resp = await newTermAPI(term)
-        batch(() => updateTerm(resp, dispatch))
+    return async (dispatch: Dispatch<AnyAction>): Promise<void> => {
+        try {
+            const resp = await newTermAPI(term)
+            batch(() => updateTerm(resp, dispatch))
+        } catch (err) {
+            // The request did not succeed
+            console.error(err)
+        }
     }
 }
 
@@ -59,8 +62,17 @@ export function newTerm(term: APIRequestTerm) {
  * @param id The ID of the term to delete.
  */
 export function deleteTerm(id: string) {
-    return async (dispatch: Dispatch<AnyAction>): Promise<AnyAction> => {
-        const resp = await deleteTermAPI(id)
-        return dispatch(deleteTermAction(id))
+    return async (
+        dispatch: Dispatch<AnyAction>,
+        getState: () => RootState
+    ): Promise<void> => {
+        try {
+            const { terms } = getState()
+            await deleteTermAPI(id)
+            dispatch(deleteTermAction(id, terms[id].plan))
+        } catch (err) {
+            // The request did not succeed
+            console.error(err)
+        }
     }
 }

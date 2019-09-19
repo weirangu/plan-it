@@ -5,6 +5,8 @@ import axios from 'api'
 /**
  * Creates a new term in the backend.
  * @param term The information of the new term to make.
+ * @throws If the response isn't 2XX or if a connection couldn't be made, Axios
+ * throws an error.
  */
 export async function newTermAPI(
     term: APIRequestTerm
@@ -16,6 +18,8 @@ export async function newTermAPI(
 /**
  * Gets a term from the backend.
  * @param id The ID of the term to get.
+ * @throws If the response isn't 2XX or if a connection couldn't be made, Axios
+ * throws an error.
  */
 export async function getTermAPI(id: string): Promise<APIResponseTerm> {
     const resp = await axios.get<APIResponseTerm>(`/term/${id}/`)
@@ -26,6 +30,8 @@ export async function getTermAPI(id: string): Promise<APIResponseTerm> {
  * Updates a term in the backend.
  * @param term The updated information of the term.
  * @param id The ID of the term to update.
+ * @throws If the response isn't 2XX or if a connection couldn't be made, Axios
+ * throws an error.
  */
 export async function updateTermAPI(
     term: APIRequestTerm,
@@ -38,6 +44,8 @@ export async function updateTermAPI(
 /**
  * Gets a term from the backend.
  * @param id The ID of the term to get.
+ * @throws If the response isn't 2XX or if a connection couldn't be made, Axios
+ * throws an error.
  */
 export async function deleteTermAPI(id: string): Promise<{}> {
     const resp = await axios.delete(`/term/${id}/`)

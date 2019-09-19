@@ -42,13 +42,10 @@ class PlannerCourseViewSet(viewsets.ModelViewSet):
         new_index = request.data['index']
 
         if 'term' not in request.data or request.data['term'] == course.term:
-            terms = [self.move_course(course, new_index)]
+            self.move_course(course, new_index)
         else:
-            terms = self.move_to_new_term(course, new_index,
-                                          request.data['term'])
-
-        resp = dict(updatedTerms=TermSerializer(terms, many=True).data)
-        return Response(resp, status=status.HTTP_200_OK)
+            self.move_to_new_term(course, new_index, request.data['term'])
+        return Response(status=status.HTTP_200_OK)
 
     @transaction.atomic
     def move_to_new_term(self, course, index, term):
@@ -70,9 +67,6 @@ class PlannerCourseViewSet(viewsets.ModelViewSet):
         course.term = Term.objects.get(pk=term)
         course.index = index
         course.save()
-
-        return [Term.objects.get(pk=old_term),
-                Term.objects.get(pk=term)]
 
     @transaction.atomic
     def move_course(self, course, index):
@@ -97,4 +91,3 @@ class PlannerCourseViewSet(viewsets.ModelViewSet):
 
         course.index = index
         course.save()
-        return Term.objects.get(pk=course.term.id)

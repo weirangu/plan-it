@@ -1,16 +1,15 @@
-import { AnyAction } from 'redux'
-import { RootState } from 'store/reducers/types'
 import {
+    deletePlannerCourseAPI,
     movePlannerCourseAPI,
-    newPlannerCourseAPI,
-    deletePlannerCourseAPI
+    newPlannerCourseAPI
 } from 'api/plannerCourse'
-import { ThunkDispatch } from 'redux-thunk'
+import { AnyAction, Dispatch } from 'redux'
 import {
     deletePlannerCourseAction,
     movePlannerCourseAction,
     updatePlannerCourseAction
 } from 'store/actions/plannerCourseActions'
+import { RootState } from 'store/reducers/types'
 
 /**
  * Adds a new course to the Redux state, and makes a POST request to the API.
@@ -19,20 +18,30 @@ import {
  */
 export function addPlannerCourse(course: string, term: string) {
     return async (
-        dispatch: ThunkDispatch<RootState, void, AnyAction>,
+        dispatch: Dispatch<AnyAction>,
         getState: () => RootState
-    ): Promise<AnyAction> => {
+    ): Promise<AnyAction | void> => {
         // We want our new course at the end of the array
-        const index = getState().terms[term].courses.length
-        const resp = await newPlannerCourseAPI({ course, index, term })
-        return dispatch(
-            updatePlannerCourseAction(
-                resp.course,
-                resp.term,
-                resp.id,
-                resp.index
+        const { terms } = getState()
+        try {
+            const resp = await newPlannerCourseAPI({
+                course,
+                term,
+                index: terms[term].courses.length
+            })
+            // We can't dispatch before the API returns, as we need the course ID
+            return dispatch(
+                updatePlannerCourseAction(
+                    resp.course,
+                    resp.term,
+                    resp.id,
+                    resp.index
+                )
             )
-        )
+        } catch (err) {
+            // The request wasn't sent properly
+            console.error(err)
+        }
     }
 }
 
@@ -49,10 +58,25 @@ export function movePlannerCourse(
     destTerm?: string
 ) {
     return async (
-        dispatch: ThunkDispatch<RootState, void, AnyAction>
-    ): Promise<AnyAction> => {
-        const resp = await movePlannerCourseAPI({ index, term: destTerm }, id)
-        return dispatch(movePlannerCourseAction(id, index, destTerm))
+        dispatch: Dispatch<AnyAction>,
+        getState: () => RootState
+    ): Promise<void> => {
+        const { plannerCourses } = getState()
+        dispatch(
+            movePlannerCourseAction(
+                plannerCourses[id].term,
+                id,
+                index,
+                destTerm
+            )
+        )
+        try {
+            await movePlannerCourseAPI({ index, term: destTerm }, id)
+        } catch (err) {
+            // The request was not sent properly, or a non-200 status code was
+            // returned
+            console.error(err)
+        }
     }
 }
 
@@ -62,15 +86,17 @@ export function movePlannerCourse(
  */
 export function deletePlannerCourse(id: string) {
     return async (
-        dispatch: ThunkDispatch<RootState, void, AnyAction>
-    ): Promise<AnyAction> => {
+        dispatch: Dispatch<AnyAction>,
+        getState: () => RootState
+    ): Promise<void> => {
+        const { plannerCourses } = getState()
         try {
-            const resp = await deletePlannerCourseAPI(id)
+            await deletePlannerCourseAPI(id)
+            dispatch(deletePlannerCourseAction(id, plannerCourses[id].term))
         } catch (err) {
-            if (err.response) {
-                // Server responded with an invalid code
-            }
+            // The request was not sent properly, or a non-200 status code was
+            // returned
+            console.error(err)
         }
-        return dispatch(deletePlannerCourseAction(id))
     }
 }

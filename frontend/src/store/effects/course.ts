@@ -1,8 +1,6 @@
-import { cacheCourseAction } from 'store/actions/courseActions'
 import { getCourseAPI } from 'api/course'
-import { RootState } from 'store/reducers/types'
-import { AnyAction } from 'redux'
-import { ThunkDispatch } from 'redux-thunk'
+import { AnyAction, Dispatch } from 'redux'
+import { cacheCourseAction } from 'store/actions/courseActions'
 
 /**
  * Gets a course's information and caches it into the store.
@@ -10,10 +8,12 @@ import { ThunkDispatch } from 'redux-thunk'
  * or MAT135H120179.
  */
 export function getCourse(id: string) {
-    return async (
-        dispatch: ThunkDispatch<RootState, void, AnyAction>
-    ): Promise<void> => {
-        const resp = await getCourseAPI(id)
-        dispatch(cacheCourseAction(resp, id))
+    return async (dispatch: Dispatch<AnyAction>): Promise<void> => {
+        try {
+            const resp = await getCourseAPI(id)
+            dispatch(cacheCourseAction(resp, id))
+        } catch (err) {
+            console.error(err)
+        }
     }
 }

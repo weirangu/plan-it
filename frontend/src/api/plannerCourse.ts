@@ -8,6 +8,8 @@ import axios from 'api'
 /**
  * Creates a new PlannerCourse.
  * @param course The new course information.
+ * @throws If the response isn't 2XX or if a connection couldn't be made, Axios
+ * throws an error.
  */
 export async function newPlannerCourseAPI(
     course: APIRequestPlannerCourse
@@ -22,6 +24,8 @@ export async function newPlannerCourseAPI(
 /**
  * Gets a PlannerCourse from the backend.
  * @param id The ID of the course to get.
+ * @throws If the response isn't 2XX or if a connection couldn't be made, Axios
+ * throws an error.
  */
 export async function getPlannerCourseAPI(
     id: string
@@ -36,6 +40,8 @@ export async function getPlannerCourseAPI(
  * Updates an existing PlannerCourse.
  * @param course The new information of the course to update.
  * @param id The ID of the PlannerCourse to update.
+ * @throws If the response isn't 2XX or if a connection couldn't be made, Axios
+ * throws an error.
  */
 export async function updatePlannerCourseAPI(
     course: APIRequestPlannerCourse,
@@ -52,6 +58,8 @@ export async function updatePlannerCourseAPI(
  * Moves a PlannerCourse within a term.
  * @param req The request to send back to the backend.
  * @param id The ID of the course to move.
+ * @throws If the response isn't 2XX or if a connection couldn't be made, Axios
+ * throws an error.
  */
 export async function movePlannerCourseAPI(
     req: APIRequestMovePlannerCourse,
@@ -67,6 +75,8 @@ export async function movePlannerCourseAPI(
 /**
  * Deletes a PlannerCourse.
  * @param id The ID of the course to delete.
+ * @throws If the response isn't 2XX or if a connection couldn't be made, Axios
+ * throws an error.
  */
 export async function deletePlannerCourseAPI(id: string): Promise<{}> {
     const resp = await axios.delete(`/plannercourse/${id}/`)
