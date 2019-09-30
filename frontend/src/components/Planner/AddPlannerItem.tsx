@@ -15,9 +15,11 @@ const AddPlannerItem: React.FC<AddCourseItemProps> = (
     props: AddCourseItemProps
 ) => {
     const [course, setCourse] = useState<string>('')
+    const [showBox, setShowBox] = useState<boolean>(false)
 
     function onCourseSearchChange(event: ChangeEvent<HTMLInputElement>): void {
         setCourse(event.target.value)
+        setShowBox(true)
     }
 
     return (
@@ -39,14 +41,24 @@ const AddPlannerItem: React.FC<AddCourseItemProps> = (
                         onChange={onCourseSearchChange}
                         className={styles.searchBox}
                     />
-                    <CourseSuggestionBox
-                        search={course}
-                        onSelectSuggestion={(course: Course) =>
-                            setCourse(course.code)
-                        }
-                    />
-                    <button onClick={() => props.add(course)}>Add</button>
-                    <button onClick={props.delete}>X</button>
+                    {showBox && (
+                        <CourseSuggestionBox
+                            search={course}
+                            onSelectSuggestion={(course: Course) => {
+                                setCourse(course.code)
+                                setShowBox(false)
+                            }}
+                        />
+                    )}
+                    <button onClick={props.delete} className={styles.delete}>
+                        Cancel
+                    </button>
+                    <button
+                        onClick={() => props.add(course)}
+                        className={styles.add}
+                    >
+                        Add
+                    </button>
                 </div>
             )}
         </Draggable>

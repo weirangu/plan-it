@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import './withHover.css'
+import styles from 'components/hoc/withHover.module.css'
 
 export interface WithHoverProps<P1, P2> {
     mainProps: P1
@@ -12,22 +12,17 @@ export function withHover<P1, P2>(
 ): React.FC<WithHoverProps<P1, P2>> {
     return function(props: WithHoverProps<P1, P2>) {
         const [hover, setHover] = useState(false)
-        let hoverComponent = null
-        if (hover) {
-            hoverComponent = (
-                <div className="overlay">
-                    <ComponentOnHover {...(props.hoverProps as P2)} />
-                </div>
-            )
-        }
-
         return (
             <div
                 onMouseOver={() => setHover(true)}
                 onMouseOut={() => setHover(false)}
             >
                 <MainComponent {...(props.mainProps as P1)} />
-                {hoverComponent}
+                {hover && (
+                    <div className={styles.overlay}>
+                        <ComponentOnHover {...(props.hoverProps as P2)} />
+                    </div>
+                )}
             </div>
         )
     }

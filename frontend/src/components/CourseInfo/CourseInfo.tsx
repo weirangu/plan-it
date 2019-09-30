@@ -2,7 +2,7 @@ import { getCourse } from 'store/effects/course'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CourseReducerState } from 'store/reducers/courseReducer'
-import './CourseInfo.css'
+import styles from 'components/CourseInfo/CourseInfo.module.css'
 import { selectCourse } from 'store/selectors'
 import { RootState } from 'store/reducers/types'
 import { RootAction } from 'store/actions'
@@ -21,10 +21,14 @@ export const CourseInfo: React.FC<CourseInfoProps> = ({
 
     if (course === undefined) {
         dispatch(getCourse(id))
-        return <div>Loading course info...</div>
+        return (
+            <div className={styles.courseInfo}>
+                <p>Loading course info...</p>
+            </div>
+        )
     } else {
         return (
-            <div className="courseInfo">
+            <div className={styles.courseInfo}>
                 <h1>{course.code}</h1>
                 <h2>{course.name}</h2>
                 <p>Prerequisites: {course.prerequisites}</p>

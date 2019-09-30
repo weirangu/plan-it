@@ -1,0 +1,12 @@
+.courseInfo {
+    background: darkslategray;
+    border-radius: 12px;
+    padding: 8px;
+    font-family: sans-serif;
+    text-align: left;
+}
+
+.courseInfo * {
+    margin: 16px 16px 16px 16px;
+    color: white;
+}

@@ -1,7 +1,8 @@
 .container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 40% 60%;
 }
 
 .searchBox {
-    width: 100px;
+    grid-column: 1 / 3;
 }

@@ -14,14 +14,14 @@ export const AddDeleteButton: React.FC<AddDeleteButtonProps> = (
 
     if (props.onAdd !== undefined) {
         addButton = (
-            <button onClick={props.onAdd} className={styles.delete}>
+            <button onClick={props.onAdd} className={styles.add}>
                 +
             </button>
         )
     }
     if (props.onDelete !== undefined) {
         deleteButton = (
-            <button onClick={props.onDelete} className={styles.add}>
+            <button onClick={props.onDelete} className={styles.delete}>
                 -
             </button>
         )
