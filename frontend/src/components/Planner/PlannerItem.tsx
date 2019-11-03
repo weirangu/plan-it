@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react'
 import { Draggable, DraggableProvided } from 'react-beautiful-dnd'
-import { PlannerCourse } from 'store/reducers/types'
 import styles from './PlannerItem.module.css'
 
 /** The props used for PlannerItem. */

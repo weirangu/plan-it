@@ -21,7 +21,8 @@ export const PlannerContainer = (
         props.history.push(`/${id}`)
     }
 
-    if (plan === undefined) {
+    if (plan === undefined && activePlan !== undefined) {
+        // Try to get a new plan
         dispatch(getPlan(activePlan))
     }
 

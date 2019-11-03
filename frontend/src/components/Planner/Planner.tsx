@@ -153,7 +153,7 @@ const Planner: React.FC<PlannerProps> = (props: PlannerProps) => {
                     }
                 />
                 {sortedTerms.map((term: Term & ID) => (
-                    <PlannerList term={term} />
+                    <PlannerList key={term.id} term={term} />
                 ))}
                 <AddDeleteButton
                     onAdd={addOldTerm}
