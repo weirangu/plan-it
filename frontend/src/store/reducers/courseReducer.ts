@@ -5,14 +5,14 @@ import { AnyAction } from 'redux'
 
 /** The state for the PlannerCourse reducer. */
 export interface CourseReducerState {
-    readonly [id: string]: Course
+    readonly [id: string]: Course | null
 }
 
 export const courseReducer = createReducer<CourseReducerState, AnyAction>(
     {} as CourseReducerState
 ).handleAction(cacheCourseAction, (state, action) => ({
     ...state,
-    [action.payload.id]: action.payload
+    [action.payload.id]: action.payload.course
 }))
 
 export default courseReducer

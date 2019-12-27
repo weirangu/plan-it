@@ -18,25 +18,38 @@ export const CourseInfo: React.FC<CourseInfoProps> = ({
     const courses: CourseReducerState = useSelector(selectCourse)
     const dispatch: ThunkDispatch<RootState, null, AnyAction> = useDispatch()
     const course = courses[id]
-
-    if (course === undefined) {
-        dispatch(getCourse(id))
-        return (
-            <div className={styles.courseInfo}>
-                <p>Loading course info...</p>
-            </div>
-        )
-    } else {
-        return (
-            <div className={styles.courseInfo}>
-                <h1>{course.code}</h1>
-                <h2>{course.name}</h2>
-                <p>Prerequisites: {course.prerequisites}</p>
-                <p>Exclusions: {course.exclusions}</p>
-                <p>Faculty: {course.faculty}</p>
-                <p>Campus: {course.campus}</p>
-            </div>
-        )
+    switch (course) {
+        case undefined:
+            dispatch(getCourse(id))
+            return (
+                <div className={styles.courseInfo}>
+                    <p>Loading course info...</p>
+                </div>
+            )
+        case null:
+            return (
+                <div className={styles.courseInfo}>
+                    <p>Information for {id} could not be found.</p>
+                </div>
+            )
+        default:
+            return (
+                <div className={styles.courseInfo}>
+                    <h1>{course.code}</h1>
+                    <h2>{course.name}</h2>
+                    {course.description && (
+                        <p>Description: {course.description}</p>
+                    )}
+                    {course.prerequisites && (
+                        <p>Prerequisites: {course.prerequisites}</p>
+                    )}
+                    {course.exclusions && (
+                        <p>Exclusions: {course.exclusions}</p>
+                    )}
+                    {course.faculty && <p>Faculty: {course.faculty}</p>}
+                    {course.campus && <p>Campus: {course.campus}</p>}
+                </div>
+            )
     }
 }
 
