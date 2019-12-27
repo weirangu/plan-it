@@ -9,9 +9,13 @@ import { createAction } from 'typesafe-actions'
  */
 export const updatePlannerCourseAction = createAction(
     'UPDATE_PLANNED_COURSE',
-    action => (course: string, term: string, id: string, index: number) =>
-        action({ course, term, id, index })
-)
+    (course: string, term: string, id: string, index: number) => ({
+        course,
+        term,
+        id,
+        index
+    })
+)()
 
 /**
  * Moves a PlannerCourse in the plan.
@@ -23,19 +27,13 @@ export const updatePlannerCourseAction = createAction(
  */
 export const movePlannerCourseAction = createAction(
     'MOVE_PLANNED_COURSE',
-    action => (
-        sourceTerm: string,
-        id: string,
-        index: number,
-        destTerm?: string
-    ) =>
-        action({
-            sourceTerm,
-            id,
-            index,
-            destTerm
-        })
-)
+    (sourceTerm: string, id: string, index: number, destTerm?: string) => ({
+        sourceTerm,
+        id,
+        index,
+        destTerm
+    })
+)()
 
 /**
  * Deletes a course in the plan.
@@ -44,9 +42,8 @@ export const movePlannerCourseAction = createAction(
  */
 export const deletePlannerCourseAction = createAction(
     'DELETE_PLANNED_COURSE',
-    action => (id: string, term: string) =>
-        action({
-            id,
-            term
-        })
-)
+    (id: string, term: string) => ({
+        id,
+        term
+    })
+)()

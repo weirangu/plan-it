@@ -1,4 +1,4 @@
-import { RootAction } from 'store/actions'
+import { AnyAction } from 'redux'
 import {
     deletePlannerCourseAction,
     movePlannerCourseAction,
@@ -13,7 +13,7 @@ export interface TermReducerState {
     readonly [id: string]: Term
 }
 
-export const termReducer = createReducer<TermReducerState, RootAction>(
+export const termReducer = createReducer<TermReducerState, AnyAction>(
     {} as TermReducerState
 )
     .handleAction(updateTermAction, (state, { payload }) => ({

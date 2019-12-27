@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { AnyAction } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
-import { RootAction } from 'store/actions'
 import { newPlan } from 'store/effects/plan'
 import { Plan, RootState } from 'store/reducers/types'
 import { selectPlan } from 'store/selectors'
@@ -16,7 +16,7 @@ export const PlannerTabs: React.FC<PlannerTabsProps> = (
     props: PlannerTabsProps
 ) => {
     const plans: Plan[] = useSelector(selectPlan)
-    const dispatch: ThunkDispatch<RootState, void, RootAction> = useDispatch()
+    const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch()
     const newPlanCallback = useCallback(
         () => dispatch(newPlan({ name: 'My Plan' }, 2019, 9)),
         [dispatch]

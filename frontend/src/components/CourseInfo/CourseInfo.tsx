@@ -5,8 +5,8 @@ import { CourseReducerState } from 'store/reducers/courseReducer'
 import styles from 'components/CourseInfo/CourseInfo.module.css'
 import { selectCourse } from 'store/selectors'
 import { RootState } from 'store/reducers/types'
-import { RootAction } from 'store/actions'
 import { ThunkDispatch } from 'redux-thunk'
+import { AnyAction } from 'redux'
 
 export interface CourseInfoProps {
     id: string
@@ -16,7 +16,7 @@ export const CourseInfo: React.FC<CourseInfoProps> = ({
     id
 }: CourseInfoProps) => {
     const courses: CourseReducerState = useSelector(selectCourse)
-    const dispatch: ThunkDispatch<RootState, null, RootAction> = useDispatch()
+    const dispatch: ThunkDispatch<RootState, null, AnyAction> = useDispatch()
     const course = courses[id]
 
     if (course === undefined) {

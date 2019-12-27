@@ -1,5 +1,5 @@
-import { createAction } from 'typesafe-actions'
 import { TermMonth } from 'store/reducers/types'
+import { createAction } from 'typesafe-actions'
 
 /**
  * Deletes a term in the plan.
@@ -8,8 +8,8 @@ import { TermMonth } from 'store/reducers/types'
  */
 export const deleteTermAction = createAction(
     'DELETE_TERM',
-    action => (id: string, plan: string) => action({ id, plan })
-)
+    (id: string, plan: string) => ({ id, plan })
+)()
 
 /**
  * Updates or adds a term in the plan.
@@ -21,11 +21,11 @@ export const deleteTermAction = createAction(
  */
 export const updateTermAction = createAction(
     'UPDATE_TERM',
-    action => (
+    (
         id: string,
         year: number,
         month: TermMonth,
         courses: string[],
         plan: string
-    ) => action({ id, year, month, courses, plan })
-)
+    ) => ({ id, year, month, courses, plan })
+)()

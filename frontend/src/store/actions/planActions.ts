@@ -6,10 +6,7 @@ import { createAction } from 'typesafe-actions'
  * @param plan The information of the Plan to update. The ID in the plan object
  * will be used to identify which Plan to update in the state.
  * */
-export const updatePlanAction = createAction(
-    'UPDATE_PLAN',
-    action => (plan: Plan) => action(plan)
-)
+export const updatePlanAction = createAction('UPDATE_PLAN')<Plan>()
 
 /**
  * Adds a plan to the state.
@@ -19,5 +16,8 @@ export const updatePlanAction = createAction(
  */
 export const newPlanAction = createAction(
     'NEW_PLAN',
-    action => (plan: Plan, index?: number) => action({ plan, index })
-)
+    (plan: Plan, index?: number) => ({
+        plan,
+        index
+    })
+)()

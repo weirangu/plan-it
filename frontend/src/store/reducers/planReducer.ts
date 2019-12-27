@@ -1,4 +1,4 @@
-import { RootAction } from 'store/actions'
+import { AnyAction } from 'redux'
 import { newPlanAction, updatePlanAction } from 'store/actions/planActions'
 import { deleteTermAction, updateTermAction } from 'store/actions/termActions'
 import { addAtIndex, replaceAtIndex } from 'store/reducers/helpers'
@@ -7,7 +7,7 @@ import { createReducer } from 'typesafe-actions'
 
 export type PlanReducerState = Plan[]
 
-export const planReducer = createReducer<PlanReducerState, RootAction>(
+export const planReducer = createReducer<PlanReducerState, AnyAction>(
     [] as PlanReducerState
 )
     .handleAction(updatePlanAction, (state, action) => {

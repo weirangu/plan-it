@@ -1,4 +1,4 @@
-import { Course } from 'store/reducers/types'
+import { Course, ID } from 'store/reducers/types'
 import { createAction } from 'typesafe-actions'
 
 /**
@@ -6,7 +6,4 @@ import { createAction } from 'typesafe-actions'
  * @param course The information of the course to cache.
  * @param id The ID of the course.
  */
-export const cacheCourseAction = createAction(
-    'CACHE_COURSE',
-    action => (course: Course, id: string) => action({ ...course, id })
-)
+export const cacheCourseAction = createAction('CACHE_COURSE')<Course & ID>()

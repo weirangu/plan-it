@@ -1,4 +1,4 @@
-import { RootAction } from 'store/actions'
+import { AnyAction } from 'redux'
 import {
     deletePlannerCourseAction,
     movePlannerCourseAction,
@@ -16,7 +16,7 @@ export interface PlannerCourseReducerState {
 
 export const PlannerCourseReducer = createReducer<
     PlannerCourseReducerState,
-    RootAction
+    AnyAction
 >({} as PlannerCourseReducerState)
     .handleAction(updatePlannerCourseAction, (state, action) => ({
         ...state,

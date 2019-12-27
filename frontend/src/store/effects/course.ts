@@ -11,7 +11,7 @@ export function getCourse(id: string) {
     return async (dispatch: Dispatch<AnyAction>): Promise<void> => {
         try {
             const resp = await getCourseAPI(id)
-            dispatch(cacheCourseAction(resp, id))
+            dispatch(cacheCourseAction({ ...resp, id }))
         } catch (err) {
             console.error(err)
         }

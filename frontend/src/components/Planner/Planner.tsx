@@ -3,8 +3,8 @@ import PlannerList from 'components/Planner/PlannerList'
 import React, { useCallback, useMemo } from 'react'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import { useDispatch, useSelector } from 'react-redux'
+import { AnyAction } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
-import { RootAction } from 'store/actions'
 import { movePlannerCourse } from 'store/effects/plannerCourse'
 import { deleteTerm, newTerm } from 'store/effects/term'
 import { TermReducerState } from 'store/reducers/termReducer'
@@ -71,7 +71,7 @@ function getPrevTerm({
 const Planner: React.FC<PlannerProps> = (props: PlannerProps) => {
     const { plan }: { plan: Plan } = props
     const terms: TermReducerState = useSelector(selectTerm)
-    const dispatch: ThunkDispatch<RootState, void, RootAction> = useDispatch()
+    const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch()
 
     const sortedTerms: (Term & ID)[] = useMemo(
         () =>
