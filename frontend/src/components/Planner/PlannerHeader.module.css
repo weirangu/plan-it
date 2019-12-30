@@ -1,0 +1,16 @@
+.header {
+    font-family: sans-serif;
+    font-size: 36px;
+    margin: 4px 2px;
+}
+
+.header:disabled {
+    background-color: transparent;
+    border-color: transparent;
+    color: black;
+}
+
+.editButton {
+    background-color: blue;
+    height: 100%;
+}

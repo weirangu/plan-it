@@ -1,12 +1,12 @@
-import { getPlanAPI, newPlanAPI } from 'api/plan'
+import { getPlanAPI, newPlanAPI, updatePlanAPI } from 'api/plan'
 import { newTermAPI } from 'api/term'
 import { APIRequestPlan } from 'api/types/requestTypes'
 import { APIResponsePlan, APIResponseTerm } from 'api/types/responseTypes'
 import { batch } from 'react-redux'
 import { AnyAction, Dispatch } from 'redux'
 import { newPlanAction, updatePlanAction } from 'store/actions/planActions'
-import { updateTerm } from 'store/effects/term'
-import { TermMonth } from 'store/reducers/types'
+import { updateTermFromResponse } from 'store/effects/term'
+import { Plan, TermMonth } from 'store/reducers/types'
 
 /**
  * Updates a Plan and the corresponding Term and PlannerCourse from a
@@ -14,7 +14,7 @@ import { TermMonth } from 'store/reducers/types'
  * @param plan The response from the API.
  * @param dispatch The function used to dispatch actions.
  */
-export function updatePlan(
+export function updatePlanFromResponse(
     plan: APIResponsePlan,
     dispatch: Dispatch<AnyAction>
 ): void {
@@ -24,7 +24,9 @@ export function updatePlan(
             terms: plan.terms.map((term: APIResponseTerm) => term.id)
         })
     )
-    plan.terms.forEach((term: APIResponseTerm) => updateTerm(term, dispatch))
+    plan.terms.forEach((term: APIResponseTerm) =>
+        updateTermFromResponse(term, dispatch)
+    )
 }
 
 /**
@@ -35,7 +37,7 @@ export function getPlan(id: string) {
     return async (dispatch: Dispatch<AnyAction>): Promise<void> => {
         try {
             const resp = await getPlanAPI(id)
-            batch(() => updatePlan(resp, dispatch))
+            batch(() => updatePlanFromResponse(resp, dispatch))
         } catch (err) {
             // The request wasn't successful
             console.error(err)
@@ -71,13 +73,29 @@ export function newPlan(plan: APIRequestPlan, year: number, month: TermMonth) {
             )
             batch(() => {
                 planResp.terms.forEach((term: APIResponseTerm) =>
-                    updateTerm(term, dispatch)
+                    updateTermFromResponse(term, dispatch)
                 )
-                updateTerm(termResp, dispatch)
+                updateTermFromResponse(termResp, dispatch)
             })
         } catch (err) {
             // There was an error with either the Plan request or the Term
             // request
+            console.error(err)
+        }
+    }
+}
+
+/**
+ * Updates the plan with the same ID in the backend.
+ * @param plan The updated plan information.
+ */
+export function updatePlan(plan: Plan) {
+    return async (dispatch: Dispatch<AnyAction>): Promise<void> => {
+        try {
+            const resp = await updatePlanAPI(plan, plan.id)
+            batch(() => updatePlanFromResponse(resp, dispatch))
+        } catch (err) {
+            // The request wasn't successful
             console.error(err)
         }
     }

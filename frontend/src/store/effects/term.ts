@@ -16,7 +16,7 @@ import { RootState } from 'store/reducers/types'
  * @param term The response from the API.
  * @param dispatch The function used to dispatch actions.
  */
-export function updateTerm(
+export function updateTermFromResponse(
     term: APIResponseTerm,
     dispatch: Dispatch<AnyAction>
 ): void {
@@ -49,7 +49,7 @@ export function newTerm(term: APIRequestTerm) {
     return async (dispatch: Dispatch<AnyAction>): Promise<void> => {
         try {
             const resp = await newTermAPI(term)
-            batch(() => updateTerm(resp, dispatch))
+            batch(() => updateTermFromResponse(resp, dispatch))
         } catch (err) {
             // The request did not succeed
             console.error(err)

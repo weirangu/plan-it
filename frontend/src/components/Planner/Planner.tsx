@@ -1,5 +1,6 @@
 import AddDeleteButton from 'components/Planner/AddDeleteButton'
 import PlannerList from 'components/Planner/PlannerList'
+import PlannerHeader from 'components/Planner/PlannerHeader'
 import React, { useCallback, useMemo } from 'react'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import { useDispatch, useSelector } from 'react-redux'
@@ -145,6 +146,7 @@ const Planner: React.FC<PlannerProps> = (props: PlannerProps) => {
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
+            <PlannerHeader planID={plan.id} />
             <div className={styles.planner}>
                 <AddDeleteButton
                     onAdd={addNewTerm}

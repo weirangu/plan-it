@@ -16,8 +16,14 @@
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
-    "plugins": ["@typescript-eslint", "promise", "import","react", "react-hooks"],
+    "plugins": [
+        "@typescript-eslint",
+        "promise",
+        "import",
+        "react",
+        "react-hooks"
+    ],
     "rules": {
-        "indent": [1, 4]
+        "indent": [1, 4, { "SwitchCase": 1 }]
     }
 }
